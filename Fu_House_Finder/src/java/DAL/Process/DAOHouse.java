@@ -49,7 +49,8 @@ public class DAOHouse extends DAO {
         return n;
     }
     
-    public static void main(String[] args) {
-        
+    public int insertHouse(House house){
+        int n = 0;
+        return n;
     }
 }
