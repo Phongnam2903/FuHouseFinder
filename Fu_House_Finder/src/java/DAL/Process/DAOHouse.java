@@ -48,9 +48,4 @@ public class DAOHouse extends DAO {
         }
         return n;
     }
-    
-    public int insertHouse(House house){
-        int n = 0;
-        return n;
-    }
 }
