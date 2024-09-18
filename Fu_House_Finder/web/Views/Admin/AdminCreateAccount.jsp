@@ -11,8 +11,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Create Account</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/adminAcc.css" rel="stylesheet" type="text/css"/>
-        <link href="../../css/adminCreateAcc.css" rel="stylesheet" type="text/css"/>
+        <link href="${pageContext.request.contextPath}/css/adminAcc.css" rel="stylesheet" type="text/css"/>
+        <link href="${pageContext.request.contextPath}/css/adminCreateAcc.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <!-- Header -->
@@ -47,17 +47,6 @@
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
-                </div>
-
-                <!-- Position -->
-                <div class="mb-3">
-                    <label for="position" class="form-label">Position</label>
-                    <select id="position" class="form-control" required>
-                        <option value="">Choose Position</option>
-                        <option value="HR">Phòng Nhân sự</option>
-                        <option value="Sales">Phòng Kinh doanh</option>
-                        <option value="IT">Phòng Công nghệ thông tin</option>
-                    </select>
                 </div>
 
                 <!-- Password -->

@@ -30,7 +30,6 @@ public class CreateAccount extends HttpServlet {
         //Get data from HTML
         String username = request.getParameter("username");
         String email = request.getParameter("email");
-        String position = request.getParameter("position");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
         String message = "";
@@ -44,7 +43,6 @@ public class CreateAccount extends HttpServlet {
             Student student = new Student();
             student.setUsername(username);
             student.setEmail(email);
-            student.setPosition(position);
             student.setPassword(password);
             student.setRoleID(4);
             student.setStatusID(1);

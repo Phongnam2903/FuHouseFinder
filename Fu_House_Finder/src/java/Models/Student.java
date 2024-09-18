@@ -16,13 +16,13 @@ public class Student {
     private int StatusID;
     private int roleID;
     private String avatar;
-    private String position;
+
     private Date createdDate;
 
     public Student() {
     }
 
-    public Student(int id, String facebookUserid, String googleUserid, String username, String password, String email, String phone, Date dateOfBirth, String address, int StatusID, int roleID, String avatar, String position, Date createdDate) {
+    public Student(int id, String facebookUserid, String googleUserid, String username, String password, String email, String phone, Date dateOfBirth, String address, int StatusID, int roleID, String avatar, Date createdDate) {
         this.id = id;
         this.facebookUserid = facebookUserid;
         this.googleUserid = googleUserid;
@@ -35,7 +35,6 @@ public class Student {
         this.StatusID = StatusID;
         this.roleID = roleID;
         this.avatar = avatar;
-        this.position = position;
         this.createdDate = createdDate;
     }
 
@@ -135,14 +134,6 @@ public class Student {
         this.avatar = avatar;
     }
 
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -153,7 +144,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" + "id=" + id + ", facebookUserid=" + facebookUserid + ", googleUserid=" + googleUserid + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", StatusID=" + StatusID + ", roleID=" + roleID + ", avatar=" + avatar + ", position=" + position + ", createdDate=" + createdDate + '}';
+        return "Student{" + "id=" + id + ", facebookUserid=" + facebookUserid + ", googleUserid=" + googleUserid + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", StatusID=" + StatusID + ", roleID=" + roleID + ", avatar=" + avatar + ", createdDate=" + createdDate + '}';
     }
 
 }
