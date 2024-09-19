@@ -37,12 +37,14 @@ public class DAOHouse extends DAO {
             pre.setDouble(6, house.getPowerPrice());
             pre.setDouble(7, house.getWaterPrice());
             pre.setDouble(8, house.getOtherServicePrice());
-            pre.setInt(9, (house.isFingerPrintLock() == true ? 1 : 0));
-            pre.setInt(10, (house.isCamera() == true ? 1 : 0));
-            pre.setInt(11, (house.isParking() == true ? 1 : 0));
+            pre.setInt(9, (house.isFingerPrintLock() ? 1 : 0));
+            pre.setInt(10, (house.isCamera() ? 1 : 0));
+            pre.setInt(11, (house.isParking() ? 1 : 0));
             pre.setDate(12, new java.sql.Date(house.getCreatedDate().getTime()));
             pre.setDate(13, new java.sql.Date(house.getLastModifiedDate().getTime()));
             pre.setString(14, house.getImage());
+            
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
         }
