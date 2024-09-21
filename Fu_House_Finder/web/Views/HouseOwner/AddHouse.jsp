@@ -6,7 +6,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Thêm nhà trọ</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <style>
             body {
                 padding: 20px;
@@ -14,47 +14,52 @@
             .form-section {
                 margin-bottom: 30px;
             }
-            .form-group label {
+            .form-label {
                 font-weight: bold;
             }
         </style>
     </head>
     <body>
+        <%@include file="../Partials/Header.jsp" %>
 
         <div class="container">
             <h2 class="text-center mb-4">Thêm nhà trọ mới</h2>
 
-            <c:if test="${not empty message}">
-                <div class="alert ${alertClass}">
-                    ${message}
+            <c:if test="${not empty errors}">
+                <div class="alert alert-danger">
+                    <ul>
+                        <c:forEach var="error" items="${errors}">
+                            <li>${error}</li>
+                            </c:forEach>
+                    </ul>
                 </div>
             </c:if>
 
-            <form action="${pageContext.request.contextPath}/AddHouse" method="POST">
+            <form action="${pageContext.request.contextPath}/AddHouse" method="POST" enctype="multipart/form-data">
 
                 <div class="row">
                     <!-- Left Column -->
                     <div class="col-md-6">
                         <div class="form-section">
-                            <div class="form-group">
-                                <label for="houseName">Tên nhà trọ</label>
-                                <input type="text" class="form-control" id="houseName" name="houseName" placeholder="Nhập tên nhà trọ" required>
+                            <div class="mb-3">
+                                <label for="houseName" class="form-label">Tên nhà trọ</label>
+                                <input type="text" class="form-control" id="houseName" name="houseName" placeholder="Nhập tên nhà trọ">
                             </div>
-                            <div class="form-group">
-                                <label for="address">Địa chỉ</label>
-                                <input type="text" class="form-control" id="address" name="address" placeholder="Nhập địa chỉ" required>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Địa chỉ</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Nhập địa chỉ">
                             </div>
-                            <div class="form-group">
-                                <label for="powerPrice">Giá tiền điện trên tháng (VND)</label>
-                                <input type="number" class="form-control" id="powerPrice" name="powerPrice" placeholder="Nhập giá điện" required>
+                            <div class="mb-3">
+                                <label for="powerPrice" class="form-label">Giá tiền điện trên tháng (VND)</label>
+                                <input type="number" class="form-control" id="powerPrice" name="powerPrice" placeholder="Nhập giá điện">
                             </div>
-                            <div class="form-group">
-                                <label for="waterPrice">Giá nước trên tháng (VND)</label>
-                                <input type="number" class="form-control" id="waterPrice" name="waterPrice" placeholder="Nhập giá nước" required>
+                            <div class="mb-3">
+                                <label for="waterPrice" class="form-label">Giá nước trên tháng (VND)</label>
+                                <input type="number" class="form-control" id="waterPrice" name="waterPrice" placeholder="Nhập giá nước">
                             </div>
-                            <div class="form-group">
-                                <label for="servicePrice">Giá tiền dịch vụ trên tháng (VND)</label>
-                                <input type="number" class="form-control" id="servicePrice" name="servicePrice" placeholder="Nhập giá tiền dịch vụ" required>
+                            <div class="mb-3">
+                                <label for="servicePrice" class="form-label">Giá tiền dịch vụ trên tháng (VND)</label>
+                                <input type="number" class="form-control" id="servicePrice" name="servicePrice" placeholder="Nhập giá tiền dịch vụ">
                             </div>
                         </div>
                     </div>
@@ -62,20 +67,20 @@
                     <!-- Right Column -->
                     <div class="col-md-6">
                         <div class="form-section">
-                            <div class="form-group">
-                                <label for="image1">Ảnh nhà (1)</label>
-                                <input type="file" class="form-control-file" id="image1" name="image1" accept="image/*">
+                            <div class="mb-3">
+                                <label for="image1" class="form-label">Ảnh nhà (1)</label>
+                                <input type="file" class="form-control" id="image1" name="image1" accept="image/*">
                             </div>
-                            <div class="form-group">
-                                <label for="image2">Ảnh nhà (2)</label>
-                                <input type="file" class="form-control-file" id="image2" name="image2" accept="image/*">
+                            <div class="mb-3">
+                                <label for="image2" class="form-label">Ảnh nhà (2)</label>
+                                <input type="file" class="form-control" id="image2" name="image2" accept="image/*">
                             </div>
-                            <div class="form-group">
-                                <label for="image3">Ảnh nhà (3)</label>
-                                <input type="file" class="form-control-file" id="image3" name="image3" accept="image/*">
+                            <div class="mb-3">
+                                <label for="image3" class="form-label">Ảnh nhà (3)</label>
+                                <input type="file" class="form-control" id="image3" name="image3" accept="image/*">
                             </div>
-                            <div class="form-group">
-                                <label>Tiện ích</label><br>
+                            <div class="mb-3">
+                                <label class="form-label">Tiện ích</label><br>
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input" id="fingerPrintLock" name="fingerPrintLock">
                                     <label class="form-check-label" for="fingerPrintLock">Khóa vân tay</label>
@@ -89,17 +94,23 @@
                                     <label class="form-check-label" for="parking">Chỗ để xe</label>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="distance">Khoảng cách đến trường (km)</label>
-                                <input type="text" class="form-control" id="distance" name="distance" placeholder="Nhập khoảng cách" required>
+                            <div class="mb-3">
+                                <label for="distance" class="form-label">Khoảng cách đến trường (km)</label>
+                                <input type="text" class="form-control" id="distance" name="distance" placeholder="Nhập khoảng cách">
                             </div>
-                            <div class="form-group">
-                                <label for="description">Thông tin mô tả</label>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Thông tin mô tả</label>
                                 <textarea class="form-control" id="description" name="description" rows="7" placeholder="Nhập thông tin mô tả"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <c:if test="${not empty message}">
+                    <div class="alert ${alertClass}">
+                        ${message}
+                    </div>
+                </c:if>
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-success">Thêm mới</button>
@@ -108,9 +119,7 @@
             </form>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     </body>
 </html>

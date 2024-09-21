@@ -8,7 +8,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AddHouse extends HttpServlet {
 
@@ -22,13 +24,50 @@ public class AddHouse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            List<String> errors = new ArrayList<>();
+
             String houseName = request.getParameter("houseName");
             String address = request.getParameter("address");
             String description = request.getParameter("description");
-            float distanceToSchool = Float.parseFloat(request.getParameter("distance"));
-            double powerPrice = Double.parseDouble(request.getParameter("powerPrice"));
-            double waterPrice = Double.parseDouble(request.getParameter("waterPrice"));
-            double servicePrice = Double.parseDouble(request.getParameter("servicePrice"));
+            String distanceString = request.getParameter("distance");
+            String powerPriceString = request.getParameter("powerPrice");
+            String waterPriceString = request.getParameter("waterPrice");
+            String servicePriceString = request.getParameter("servicePrice");
+
+            // Kiểm tra các trường không được để trống
+            if (houseName == null || houseName.trim().isEmpty()) {
+                errors.add("Tên nhà trọ không được để trống");
+            }
+            if (address == null || address.trim().isEmpty()) {
+                errors.add("Địa chỉ không được để trống");
+            }
+            if (description == null || description.trim().isEmpty()) {
+                errors.add("Thông tin mô tả không được để trống");
+            }
+            if (distanceString == null || distanceString.trim().isEmpty()) {
+                errors.add("Khoảng cách đến trường không được để trống");
+            }
+            if (powerPriceString == null || powerPriceString.trim().isEmpty()) {
+                errors.add("Giá điện không được để trống");
+            }
+            if (waterPriceString == null || waterPriceString.trim().isEmpty()) {
+                errors.add("Giá nước không được để trống");
+            }
+            if (servicePriceString == null || servicePriceString.trim().isEmpty()) {
+                errors.add("Giá dịch vụ không được để trống");
+            }
+
+            if (!errors.isEmpty()) {
+                request.setAttribute("errors", errors);
+                request.getRequestDispatcher("Views/HouseOwner/AddHouse.jsp").forward(request, response);
+                return;
+            }
+
+            distanceString = distanceString.replace(",", ".");
+            float distance = Float.parseFloat(distanceString);
+            double powerPrice = Double.parseDouble(powerPriceString);
+            double waterPrice = Double.parseDouble(waterPriceString);
+            double servicePrice = Double.parseDouble(servicePriceString);
             boolean fingerPrintLock = request.getParameter("fingerPrintLock") != null;
             boolean camera = request.getParameter("camera") != null;
             boolean parking = request.getParameter("parking") != null;
@@ -38,7 +77,7 @@ public class AddHouse extends HttpServlet {
             house.setHouseName(houseName);
             house.setAddress(address);
             house.setDescription(description);
-            house.setDistanceToSchool(distanceToSchool);
+            house.setDistanceToSchool(distance);
             house.setPowerPrice(powerPrice);
             house.setWaterPrice(waterPrice);
             house.setOtherServicePrice(servicePrice);
@@ -46,11 +85,10 @@ public class AddHouse extends HttpServlet {
             house.setCamera(camera);
             house.setParking(parking);
             house.setOwnerId(7);
-            house.setCreatedDate(new Date());  
-            house.setLastModifiedDate(new Date()); 
-            house.setImage(image);  
+            house.setCreatedDate(new Date());
+            house.setLastModifiedDate(new Date());
+            house.setImage(image);
 
-            // Gọi DAO để lưu nhà trọ vào cơ sở dữ liệu
             DAOHouse daoHouse = new DAOHouse();
             int result = daoHouse.addHouse(house);
 
