@@ -25,17 +25,7 @@
         <div class="container">
             <h2 class="text-center mb-4">Thêm nhà trọ mới</h2>
 
-            <c:if test="${not empty errors}">
-                <div class="alert alert-danger">
-                    <ul>
-                        <c:forEach var="error" items="${errors}">
-                            <li>${error}</li>
-                            </c:forEach>
-                    </ul>
-                </div>
-            </c:if>
-
-            <form action="${pageContext.request.contextPath}/AddHouse" method="POST" enctype="multipart/form-data">
+            <form action="${pageContext.request.contextPath}/AddHouse" method="POST">
 
                 <div class="row">
                     <!-- Left Column -->
