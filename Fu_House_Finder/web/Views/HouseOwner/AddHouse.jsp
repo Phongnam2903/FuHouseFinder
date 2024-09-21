@@ -1,10 +1,10 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Thêm nhà trọ</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <style>
@@ -25,6 +25,12 @@
         <div class="container">
             <h2 class="text-center mb-4">Thêm nhà trọ mới</h2>
 
+            <c:if test="${not empty message}">
+                <div class="alert ${alertClass}">
+                    ${message}
+                </div>
+            </c:if>
+
             <form action="${pageContext.request.contextPath}/AddHouse" method="POST">
 
                 <div class="row">
@@ -41,15 +47,15 @@
                             </div>
                             <div class="mb-3">
                                 <label for="powerPrice" class="form-label">Giá tiền điện trên tháng (VND)</label>
-                                <input type="number" class="form-control" id="powerPrice" name="powerPrice" placeholder="Nhập giá điện">
+                                <input type="number" class="form-control" id="powerPrice" name="powerPrice" placeholder="Nhập giá tiền điện">
                             </div>
                             <div class="mb-3">
                                 <label for="waterPrice" class="form-label">Giá nước trên tháng (VND)</label>
-                                <input type="number" class="form-control" id="waterPrice" name="waterPrice" placeholder="Nhập giá nước">
+                                <input type="number" class="form-control" id="waterPrice" name="waterPrice" placeholder="Nhập giá tiền nước">
                             </div>
                             <div class="mb-3">
                                 <label for="servicePrice" class="form-label">Giá tiền dịch vụ trên tháng (VND)</label>
-                                <input type="number" class="form-control" id="servicePrice" name="servicePrice" placeholder="Nhập giá tiền dịch vụ">
+                                <input type="number" class="form-control" id="servicePrice" name="servicePrice" placeholder="Nhập giá dịch vụ">
                             </div>
                         </div>
                     </div>
@@ -96,14 +102,8 @@
                     </div>
                 </div>
 
-                <c:if test="${not empty message}">
-                    <div class="alert ${alertClass}">
-                        ${message}
-                    </div>
-                </c:if>
-
                 <div class="text-center">
-                    <button type="submit" class="btn btn-success">Thêm mới</button>
+                    <button type="submit" class="btn btn-success">Thêm Mới</button>
                 </div>
 
             </form>

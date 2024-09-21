@@ -4,8 +4,16 @@
         <servlet-name>AddHouse</servlet-name>
         <servlet-class>Controllers.AddHouse</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListHouse</servlet-name>
+        <servlet-class>Controllers.ListHouse</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AddHouse</servlet-name>
         <url-pattern>/AddHouse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListHouse</servlet-name>
+        <url-pattern>/ListHouse</url-pattern>
     </servlet-mapping>
 </web-app>
