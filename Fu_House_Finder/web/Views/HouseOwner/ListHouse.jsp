@@ -50,15 +50,22 @@
                                     chưa thêm
                                 </td>
                                 <td>
-                                    <c:if test="${house.fingerPrintLock}">
-                                        <i class="fas fa-fingerprint" title="Khóa vân tay" style="font-size: 2rem; margin-right: 20px;"></i>
-                                    </c:if>
-                                    <c:if test="${house.camera}">
-                                        <i class="fas fa-camera" title="Camera giám sát" style="font-size: 2rem; margin-right: 20px;"></i>
-                                    </c:if>
-                                    <c:if test="${house.parking}">
-                                        <i class="fas fa-parking" title="Chỗ để xe" style="font-size: 2rem;"  ></i>
-                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${house.fingerPrintLock || house.camera || house.parking}">
+                                            <c:if test="${house.fingerPrintLock}">
+                                                <i class="fas fa-fingerprint" title="Khóa vân tay" style="font-size: 2rem; margin-right: 20px;"></i>
+                                            </c:if>
+                                            <c:if test="${house.camera}">
+                                                <i class="fas fa-camera" title="Camera giám sát" style="font-size: 2rem; margin-right: 20px;"></i>
+                                            </c:if>
+                                            <c:if test="${house.parking}">
+                                                <i class="fas fa-parking" title="Chỗ để xe" style="font-size: 2rem;"  ></i>
+                                            </c:if>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i class="fas fa-ban" title="Không có tiện ích" style="font-size: 2rem;"></i>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                                 <td>
                                     <a href="EditHouse?id=${house.id}" class="btn btn-warning" style="margin-right: 20px;">
