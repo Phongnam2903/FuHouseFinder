@@ -65,7 +65,7 @@
                                                    margin-right: 20px;"></i>
                                             </c:if>
                                             <c:if test="${house.camera}">
-                                                <i class="fas fa-camera" title="Camera giám sát" style="font-size: 2rem;
+                                                <i class="fas fa-video" title="Camera giám sát" style="font-size: 2rem;
                                                    margin-right: 20px;"></i>
                                             </c:if>
                                             <c:if test="${house.parking}">
