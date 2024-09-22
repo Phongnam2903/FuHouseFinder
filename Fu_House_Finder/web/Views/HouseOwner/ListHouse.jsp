@@ -19,6 +19,14 @@
                 background-color: #f8f9fa; /* Màu nền khi hover */
                 cursor: pointer; /* Con trỏ chuột biến thành pointer khi hover */
             }
+            .modal-header {
+                background-color: #ff8c00; /* Màu cam */
+                color: white;
+            }
+            .modal-footer .btn-danger {
+                background-color: #ff8c00; /* Nút xóa màu cam */
+                border-color: #ff8c00;
+            }
         </style>
     </head>
     <body>
@@ -53,10 +61,12 @@
                                     <c:choose>
                                         <c:when test="${house.fingerPrintLock || house.camera || house.parking}">
                                             <c:if test="${house.fingerPrintLock}">
-                                                <i class="fas fa-fingerprint" title="Khóa vân tay" style="font-size: 2rem; margin-right: 20px;"></i>
+                                                <i class="fas fa-fingerprint" title="Khóa vân tay" style="font-size: 2rem;
+                                                   margin-right: 20px;"></i>
                                             </c:if>
                                             <c:if test="${house.camera}">
-                                                <i class="fas fa-camera" title="Camera giám sát" style="font-size: 2rem; margin-right: 20px;"></i>
+                                                <i class="fas fa-camera" title="Camera giám sát" style="font-size: 2rem;
+                                                   margin-right: 20px;"></i>
                                             </c:if>
                                             <c:if test="${house.parking}">
                                                 <i class="fas fa-parking" title="Chỗ để xe" style="font-size: 2rem;"  ></i>
@@ -71,7 +81,7 @@
                                     <a href="EditHouse?id=${house.id}" class="btn btn-warning" style="margin-right: 20px;">
                                         <i class="fas fa-tools"></i>
                                     </a>
-                                    <a href="DeleteHouse?id=${house.id}" class="btn btn-danger">
+                                    <a href="javascript:void(0);" onclick="openDeleteModal(${house.id}, '${house.houseName}');" class="btn btn-danger">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </td>
@@ -88,6 +98,38 @@
             </c:if>
         </div>
 
+        <!-- Modal xác nhận xóa -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa nhà trọ</h5>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn xóa nhà trọ <span id="houseNameToDelete"></span> không?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Xóa</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+                                        // Hàm mở modal và cập nhật tên nhà trọ
+                                        function openDeleteModal(houseId, houseName) {
+                                            // Cập nhật nội dung modal với tên nhà trọ
+                                            document.getElementById('houseNameToDelete').textContent = houseName;
+
+                                            // Cập nhật liên kết để xóa nhà trọ
+                                            document.getElementById('confirmDeleteBtn').href = 'ListHouse?id=' + houseId;
+
+                                            // Hiển thị modal
+                                            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+                                            deleteModal.show();
+                                        }
+        </script>
     </body>
 </html>

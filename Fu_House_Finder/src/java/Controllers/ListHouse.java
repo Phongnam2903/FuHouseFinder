@@ -14,6 +14,21 @@ public class ListHouse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        DAOHouse daoHouse = new DAOHouse();
+
+        // Kiểm tra xem có tham số id không (nếu có tức là yêu cầu xóa)
+        String houseIdToDelete = request.getParameter("id");
+        if (houseIdToDelete != null) {
+            // Gọi hàm delete trong DAO để xóa nhà trọ
+            int houseId = Integer.parseInt(houseIdToDelete);
+            daoHouse.deleteHouseById(houseId);
+
+            // Sau khi xóa, chuyển hướng về danh sách nhà trọ
+            response.sendRedirect(request.getContextPath() + "/ListHouse");
+            return;
+        }
+
         // Mặc định ownerId là 7
         int ownerId = 7;
 
@@ -21,9 +36,6 @@ public class ListHouse extends HttpServlet {
         if (request.getParameter("ownerId") != null) {
             ownerId = Integer.parseInt(request.getParameter("ownerId"));
         }
-
-        // Tạo đối tượng DAOHouse để truy xuất dữ liệu
-        DAOHouse daoHouse = new DAOHouse();
 
         // Lấy danh sách nhà trọ thuộc ownerId
         List<House> houseList = daoHouse.getHousesByOwnerId(ownerId);

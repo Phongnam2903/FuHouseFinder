@@ -74,8 +74,8 @@ public class DAOHouse extends DAO {
                 house.setPowerPrice(rs.getDouble("powerPrice"));
                 house.setWaterPrice(rs.getDouble("waterPrice"));
                 house.setOtherServicePrice(rs.getDouble("otherServicePrice"));
-                house.setFingerPrintLock(rs.getInt("fingerPrintLock") == 1); 
-                house.setCamera(rs.getInt("camera") == 1); 
+                house.setFingerPrintLock(rs.getInt("fingerPrintLock") == 1);
+                house.setCamera(rs.getInt("camera") == 1);
                 house.setParking(rs.getInt("parking") == 1);
                 house.setCreatedDate(rs.getDate("createdDate"));
                 house.setLastModifiedDate(rs.getDate("lastModifiedDate"));
@@ -88,5 +88,18 @@ public class DAOHouse extends DAO {
         }
 
         return houses;
+    }
+
+    public int deleteHouseById(int houseId) {
+        int result = 0;
+        String sql = "DELETE FROM [dbo].[house] WHERE id = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, houseId);
+            result = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
 }
