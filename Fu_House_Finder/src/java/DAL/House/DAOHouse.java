@@ -1,4 +1,4 @@
-package DAL.Process;
+package DAL.House;
 
 import DAL.DAO;
 import Models.House;

@@ -1,6 +1,6 @@
-package Controllers;
+package Controllers.House;
 
-import DAL.Process.DAOHouse;
+import DAL.House.DAOHouse;
 import Models.House;
 import java.io.IOException;
 import jakarta.servlet.ServletException;

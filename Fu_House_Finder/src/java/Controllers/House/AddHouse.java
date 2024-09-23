@@ -1,9 +1,8 @@
-package Controllers;
+package Controllers.House;
 
-import DAL.Process.DAOHouse;
+import DAL.House.DAOHouse;
 import Models.House;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
