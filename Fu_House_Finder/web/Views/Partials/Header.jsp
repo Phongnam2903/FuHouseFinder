@@ -15,7 +15,7 @@
         <!-- Header -->
         <div class="header">
             <div class="header-logo">
-                <img src="../../images/logo/logo_house_finder.jpg" alt="FU House Finder">
+                <img src="${pageContext.request.contextPath}/images/logo/logo_house_finder.jpg" alt="FU House Finder">
                 <h1 style="justify-content: "center">Find FPT Student Accommodation</h1>
             </div>
             <div class="dropdown">
@@ -24,7 +24,7 @@
                     Admin
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="admin_profile">Profile</a></li>
                     <li><a class="dropdown-item" href="logout">Logout</a></li>
                 </ul>
             </div>

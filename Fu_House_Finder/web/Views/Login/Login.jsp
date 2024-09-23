@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FU House Finder - Đăng Nhập</title>
+        <title>FU House Finder - Login</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
         <link href="${pageContext.request.contextPath}/css/login/styles.css" rel="stylesheet" type="text/css"/>
@@ -21,7 +21,7 @@
 
             <!-- Right Section - Login Form -->
             <div class="right-section d-flex flex-column justify-content-center align-items-center w-50 p-5">
-                <h2 class="mb-4">ĐĂNG NHẬP</h2>
+                <h2 class="mb-4">Login</h2>
 
                 <!-- Login Form -->
                 <form action="${pageContext.request.contextPath}/login_user" method="POST" class="w-75">
