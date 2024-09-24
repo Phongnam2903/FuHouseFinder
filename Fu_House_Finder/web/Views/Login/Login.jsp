@@ -24,7 +24,7 @@
                 <h2 class="mb-4">Login</h2>
 
                 <!-- Login Form -->
-                <form action="${pageContext.request.contextPath}/login_user" method="POST" class="w-75">
+                <form action="${pageContext.request.contextPath}/login" method="POST" class="w-75">
                     <!-- Email input -->
                     <div class="form-group mb-3">
                         <input type="email" name="email" class="form-control form-control-lg" placeholder="Email" required>

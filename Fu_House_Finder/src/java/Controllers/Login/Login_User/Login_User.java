@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author xuxum
  */
-@WebServlet(name = "Login_User", urlPatterns = {"/login_user"})
+@WebServlet(name = "Login_User", urlPatterns = {"/login"})
 public class Login_User extends HttpServlet {
 
     @Override
