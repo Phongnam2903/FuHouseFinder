@@ -12,7 +12,7 @@
     </head>
 
     <body>
-        <%@include file="../Partials/Header.jsp" %>
+        <%@include file="../Partials/HeaderAdmin.jsp" %>
         <!-- Navigation -->
         <%@include file="../Partials/Navbar.jsp" %>
         <!-- Breadcrumb -->

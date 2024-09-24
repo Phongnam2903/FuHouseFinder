@@ -41,8 +41,8 @@
                 </form>
 
                 <!-- Social Login buttons -->
-                <button class="btn-google btn-lg mb-3 w-75"><i class="fab fa-google"></i> Đăng nhập bằng Google</button>
-                <button class="btn-facebook btn-lg mb-3 w-75"><i class="fab fa-facebook"></i> Đăng nhập bằng Facebook</button>
+                <a href="loginGoogle" class="btn-google btn-lg mb-3 w-75"><i class="fab fa-google"></i> Login with Google</a>
+                <a href="https://www.facebook.com/login" class="btn-facebook btn-lg mb-3 w-75"><i class="fab fa-facebook"></i> Login with Facebook</a>
 
                 <!-- Register link -->
                 <a href="#" class="mt-3">Đăng ký tài khoản?</a>

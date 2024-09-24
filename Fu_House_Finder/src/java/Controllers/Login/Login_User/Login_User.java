@@ -7,7 +7,6 @@ package Controllers.Login.Login_User;
 import DAL.Login.DAOLogin;
 import Models.Student;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

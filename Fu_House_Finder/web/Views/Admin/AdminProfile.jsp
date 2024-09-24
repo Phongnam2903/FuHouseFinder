@@ -19,7 +19,7 @@
 
     <body>
         <!-- Header -->
-        <%@include file="../Partials/Header.jsp" %>
+        <%@include file="../Partials/HeaderAdmin.jsp" %>
         <!-- Navigation -->
         <%@include file="../Partials/Navbar.jsp" %>
         <!-- Breadcrumb -->
@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-                            
+
         <!-- Footer -->
         <%@include file="../Partials/Footer.jsp" %>
 
