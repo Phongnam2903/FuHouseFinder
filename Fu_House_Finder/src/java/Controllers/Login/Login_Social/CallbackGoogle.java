@@ -32,8 +32,8 @@ import java.sql.PreparedStatement;
 @WebServlet(name = "CallbackGoogle", urlPatterns = {"/callbackGoogle"})
 public class CallbackGoogle extends HttpServlet {
     
-    private static final String CLIENT_ID = "676915622854-csj092neit40ppk7bidp1b1afp2maoqo.apps.googleusercontent.com";
-    private static final String CLIENT_SECRET = "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";
+//    private static final String CLIENT_ID = "676915622854-csj092neit40ppk7bidp1b1afp2maoqo.apps.googleusercontent.com";
+//    private static final String CLIENT_SECRET = "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";
     private static final String REDIRECT_URI = "http://localhost:8080/Fu_House_Finder/callbackGoogle";
     private static final String TOKEN_URL = "https://oauth2.googleapis.com/token";
     private static final String USERINFO_URL = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
@@ -84,8 +84,8 @@ public class CallbackGoogle extends HttpServlet {
         connection.setDoOutput(true);
         
         String params = "code=" + code
-                + "&client_id=" + CLIENT_ID
-                + "&client_secret=" + CLIENT_SECRET
+//                + "&client_id=" + CLIENT_ID
+//                + "&client_secret=" + CLIENT_SECRET
                 + "&redirect_uri=" + REDIRECT_URI
                 + "&grant_type=authorization_code";
         
