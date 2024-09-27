@@ -45,7 +45,11 @@
                 <a href="https://www.facebook.com/login" class="btn-facebook btn-lg mb-3 w-75"><i class="fab fa-facebook"></i> Login with Facebook</a>
 
                 <!-- Register link -->
-                <a href="#" class="mt-3">Đăng ký tài khoản?</a>
+                <div class="d-flex justify-content-between w-75 mt-3">
+                    <a href="#">Quên mật khẩu</a>
+                    <a href="#">Đăng ký tài khoản?</a>
+                </div>
+
             </div>
         </div>
 
