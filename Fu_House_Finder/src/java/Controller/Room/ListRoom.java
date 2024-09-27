@@ -1,14 +1,15 @@
 package Controller.Room;
 
+import java.io.IOException;
+import java.util.List;
+
 import DAL.Room.DAORoom;
 import Models.Room;
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @WebServlet(name = "ListRoom", urlPatterns = {"/ListRoom"})
 public class ListRoom extends HttpServlet {
@@ -23,6 +24,17 @@ public class ListRoom extends HttpServlet {
         request.setAttribute("roomList", roomList);
         // Chuyển hướng đến trang JSP để hiển thị danh sách phòng
         request.getRequestDispatcher("/Views/HouseOwner/ListRoom.jsp").forward(request, response);
+                String roomId = request.getParameter("id");
+                
+                if(roomId != null){
+                   DAORoom roomDAO = new DAORoom();
+                   roomDAO.deleteRoom(Integer.parseInt(roomId));
+                   response.sendRedirect("ListRoom");
+                }else{
+                    List<Room> rooms = daoRoom.getRooms();
+                    request.setAttribute("rooms", rooms);
+                    request.getRequestDispatcher("/Views/HouseOwner/ListRoom.jsp").forward(request, response);
+                }
     }
 
     @Override

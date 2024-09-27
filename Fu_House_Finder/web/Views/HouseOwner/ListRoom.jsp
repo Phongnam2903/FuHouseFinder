@@ -126,11 +126,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function openDeleteModal(roomId, roomNumber) {
-            document.getElementById('roomNumberToDelete').textContent = roomNumber;
-            document.getElementById('confirmDeleteBtn').href = 'ListRoom?id=' + roomId;
-            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-            deleteModal.show();
-        }
+    document.getElementById('roomNumberToDelete').textContent = roomNumber;
+    document.getElementById('confirmDeleteBtn').href = 'ListRoom?id=' + roomId;  // Link for deletion
+    var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    deleteModal.show();
+}
+
     </script>
 </body>
 </html>

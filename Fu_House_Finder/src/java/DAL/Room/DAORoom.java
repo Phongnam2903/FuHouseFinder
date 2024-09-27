@@ -94,17 +94,18 @@ public class DAORoom extends DAO {
     }
 
     // Xóa phòng theo roomId
-    public int deleteRoomById(int roomId) {
-        int result = 0;
-        String query = "UPDATE Room SET deleted = 1 WHERE id = ?"; // Use soft delete
+    public void deleteRoom(int id) {
+        
+        String query = "DELETE FROM [dbo].[room]\n" +
+"      WHERE id=?"; // Use soft delete
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, roomId);
-            result = ps.executeUpdate();
+            ps.setInt(1, id);
+            ps.executeUpdate();
         } catch (SQLException e) {
-            Logger.getLogger(DAORoom.class.getName()).log(Level.SEVERE, "Error deleting room", e);
+            e.printStackTrace();
         }
-        return result;
+        
     }
 
     //Thêm phòng
