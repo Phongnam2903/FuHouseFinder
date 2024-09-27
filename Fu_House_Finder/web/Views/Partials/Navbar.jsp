@@ -17,6 +17,7 @@
             <div class="navbar">
                 <ul class="navbar-nav">
                     <li class="nav-item"><a href="viewAccountList" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">Introduce</a></li>
                 </ul>

@@ -8,4 +8,28 @@
         <servlet-name>CreateAccount</servlet-name>
         <url-pattern>/createAccount</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AddHouse</servlet-name>
+        <servlet-class>Controllers.House.AddHouse</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddHouse</servlet-name>
+        <url-pattern>/AddHouse</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ListHouse</servlet-name>
+        <servlet-class>Controllers.House.ListHouse</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ListHouse</servlet-name>
+        <url-pattern>/ListHouse</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateHouse</servlet-name>
+        <servlet-class>Controllers.House.UpdateHouse</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateHouse</servlet-name>
+        <url-pattern>/UpdateHouse</url-pattern>
+    </servlet-mapping>
 </web-app>
