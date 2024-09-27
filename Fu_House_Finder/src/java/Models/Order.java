@@ -6,7 +6,7 @@ public class Order {
 
     private int id;
     private int userID;
-    private String userName;
+    private String FullName;
     private String phoneNumber;
     private String email;
     private String orderContent;
@@ -14,14 +14,15 @@ public class Order {
     private Date orderedDate;
     private Date solvedDate;
     private int solvedBy;
+    private int houseID;
 
     public Order() {
     }
 
-    public Order(int id, int userID, String userName, String phoneNumber, String email, String orderContent, int statusID, Date orderedDate, Date solvedDate, int solvedBy) {
+    public Order(int id, int userID, String FullName, String phoneNumber, String email, String orderContent, int statusID, Date orderedDate, Date solvedDate, int solvedBy, int houseID) {
         this.id = id;
         this.userID = userID;
-        this.userName = userName;
+        this.FullName = FullName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.orderContent = orderContent;
@@ -29,6 +30,7 @@ public class Order {
         this.orderedDate = orderedDate;
         this.solvedDate = solvedDate;
         this.solvedBy = solvedBy;
+        this.houseID = houseID;
     }
 
     public int getId() {
@@ -47,12 +49,12 @@ public class Order {
         this.userID = userID;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getFullName() {
+        return FullName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setFullName(String FullName) {
+        this.FullName = FullName;
     }
 
     public String getPhoneNumber() {
@@ -111,9 +113,17 @@ public class Order {
         this.solvedBy = solvedBy;
     }
 
+    public int getHouseID() {
+        return houseID;
+    }
+
+    public void setHouseID(int houseID) {
+        this.houseID = houseID;
+    }
+
     @Override
     public String toString() {
-        return "Order{" + "id=" + id + ", userID=" + userID + ", userName=" + userName + ", phoneNumber=" + phoneNumber + ", email=" + email + ", orderContent=" + orderContent + ", statusID=" + statusID + ", orderedDate=" + orderedDate + ", solvedDate=" + solvedDate + ", solvedBy=" + solvedBy + '}';
+        return "Order{" + "id=" + id + ", userID=" + userID + ", FullName=" + FullName + ", phoneNumber=" + phoneNumber + ", email=" + email + ", orderContent=" + orderContent + ", statusID=" + statusID + ", orderedDate=" + orderedDate + ", solvedDate=" + solvedDate + ", solvedBy=" + solvedBy + ", houseID=" + houseID + '}';
     }
 
 }

@@ -10,6 +10,7 @@ public class House {
     private String description;
     private float distanceToSchool;
     private int ownerId;
+    private int price;
     private double powerPrice;
     private double waterPrice;
     private double otherServicePrice;
@@ -23,30 +24,14 @@ public class House {
     public House() {
     }
 
-    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image) {
+    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, int price, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image) {
         this.id = id;
         this.houseName = houseName;
         this.address = address;
         this.description = description;
         this.distanceToSchool = distanceToSchool;
         this.ownerId = ownerId;
-        this.powerPrice = powerPrice;
-        this.waterPrice = waterPrice;
-        this.otherServicePrice = otherServicePrice;
-        this.fingerPrintLock = fingerPrintLock;
-        this.camera = camera;
-        this.parking = parking;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
-        this.image = image;
-    }
-
-    public House(String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image) {
-        this.houseName = houseName;
-        this.address = address;
-        this.description = description;
-        this.distanceToSchool = distanceToSchool;
-        this.ownerId = ownerId;
+        this.price = price;
         this.powerPrice = powerPrice;
         this.waterPrice = waterPrice;
         this.otherServicePrice = otherServicePrice;
@@ -104,6 +89,14 @@ public class House {
 
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public double getPowerPrice() {
@@ -180,7 +173,7 @@ public class House {
 
     @Override
     public String toString() {
-        return "House{" + "id=" + id + ", houseName=" + houseName + ", address=" + address + ", description=" + description + ", distanceToSchool=" + distanceToSchool + ", ownerId=" + ownerId + ", powerPrice=" + powerPrice + ", waterPrice=" + waterPrice + ", otherServicePrice=" + otherServicePrice + ", fingerPrintLock=" + fingerPrintLock + ", camera=" + camera + ", parking=" + parking + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + ", image=" + image + '}';
+        return "House{" + "id=" + id + ", houseName=" + houseName + ", address=" + address + ", description=" + description + ", distanceToSchool=" + distanceToSchool + ", ownerId=" + ownerId + ", price=" + price + ", powerPrice=" + powerPrice + ", waterPrice=" + waterPrice + ", otherServicePrice=" + otherServicePrice + ", fingerPrintLock=" + fingerPrintLock + ", camera=" + camera + ", parking=" + parking + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + ", image=" + image + '}';
     }
 
 }

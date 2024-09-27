@@ -2,8 +2,7 @@ package Models;
 
 import java.util.Date;
 
-
-public class Student {
+public class User {
 
     private int id;
     private String facebookUserid;
@@ -17,11 +16,13 @@ public class Student {
     private int StatusID;
     private int roleID;
     private String avatar;
+    private Date createdDate;
+    private int roomHistoriesID;
 
-    public Student() {
+    public User() {
     }
 
-    public Student(int id, String facebookUserid, String googleUserid, String username, String password, String email, String phone, Date dateOfBirth, String address, int StatusID, int roleID, String avatar) {
+    public User(int id, String facebookUserid, String googleUserid, String username, String password, String email, String phone, Date dateOfBirth, String address, int StatusID, int roleID, String avatar, Date createdDate, int roomHistoriesID) {
         this.id = id;
         this.facebookUserid = facebookUserid;
         this.googleUserid = googleUserid;
@@ -34,6 +35,8 @@ public class Student {
         this.StatusID = StatusID;
         this.roleID = roleID;
         this.avatar = avatar;
+        this.createdDate = createdDate;
+        this.roomHistoriesID = roomHistoriesID;
     }
 
     public int getId() {
@@ -132,9 +135,25 @@ public class Student {
         this.avatar = avatar;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public int getRoomHistoriesID() {
+        return roomHistoriesID;
+    }
+
+    public void setRoomHistoriesID(int roomHistoriesID) {
+        this.roomHistoriesID = roomHistoriesID;
+    }
+
     @Override
     public String toString() {
-        return "Student{" + "id=" + id + ", facebookUserid=" + facebookUserid + ", googleUserid=" + googleUserid + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", StatusID=" + StatusID + ", roleID=" + roleID + ", avatar=" + avatar + '}';
+        return "Student{" + "id=" + id + ", facebookUserid=" + facebookUserid + ", googleUserid=" + googleUserid + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", StatusID=" + StatusID + ", roleID=" + roleID + ", avatar=" + avatar + ", createdDate=" + createdDate + ", roomHistoriesID=" + roomHistoriesID + '}';
     }
 
 }

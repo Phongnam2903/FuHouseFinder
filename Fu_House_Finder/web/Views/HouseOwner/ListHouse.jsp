@@ -79,7 +79,7 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="EditHouse?id=${house.id}" class="btn btn-warning" style="margin-right: 20px;">
+                                    <a href="UpdateHouse?id=${house.id}" class="btn btn-warning" style="margin-right: 20px;">
                                         <i class="fas fa-tools"></i>
                                     </a>
                                     <a href="javascript:void(0);" onclick="openDeleteModal(${house.id}, '${house.houseName}');" class="btn btn-danger">

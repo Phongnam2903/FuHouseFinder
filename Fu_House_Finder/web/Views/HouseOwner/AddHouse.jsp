@@ -29,7 +29,7 @@
                 </div>
             </c:if>
 
-            <form action="${pageContext.request.contextPath}/AddHouse" method="POST">
+            <form action="${pageContext.request.contextPath}/AddHouse" method="POST" enctype="multipart/form-data">
 
                 <div class="row">
                     <!-- Left Column -->
