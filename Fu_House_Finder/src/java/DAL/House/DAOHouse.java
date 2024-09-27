@@ -102,4 +102,39 @@ public class DAOHouse extends DAO {
         }
         return result;
     }
+    
+        public List<House> getHouses() {
+        List<House> houses = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[house]";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery(); // Thực hiện truy vấn
+
+            while (rs.next()) {
+                House house = new House();
+                house.setId(rs.getInt("id"));
+                house.setHouseName(rs.getString("houseName"));
+                house.setAddress(rs.getString("address"));
+                house.setDescription(rs.getString("description"));
+                house.setDistanceToSchool(rs.getFloat("distanceToSchool"));
+                house.setOwnerId(rs.getInt("ownerid"));
+                house.setPowerPrice(rs.getDouble("powerPrice"));
+                house.setWaterPrice(rs.getDouble("waterPrice"));
+                house.setOtherServicePrice(rs.getDouble("otherServicePrice"));
+                house.setFingerPrintLock(rs.getInt("fingerPrintLock") == 1);
+                house.setCamera(rs.getInt("camera") == 1);
+                house.setParking(rs.getInt("parking") == 1);
+                house.setCreatedDate(rs.getDate("createdDate"));
+                house.setLastModifiedDate(rs.getDate("lastModifiedDate"));
+                house.setImage(rs.getString("image"));
+
+                houses.add(house);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return houses;
+    }
 }
