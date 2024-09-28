@@ -52,8 +52,8 @@
 
                 <!-- Register link -->
                 <div class="d-flex justify-content-between w-75 mt-3">
-                    <a href="#">Quên mật khẩu</a>
-                    <a href="#">Đăng ký tài khoản?</a>
+                    <a href="#">Forgot Password</a>
+                    <a href="#">Sign Up?</a>
                 </div>
 
             </div>
