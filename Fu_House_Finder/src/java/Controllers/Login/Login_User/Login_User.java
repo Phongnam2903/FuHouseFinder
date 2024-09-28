@@ -62,7 +62,7 @@ public class Login_User extends HttpServlet {
                     if (account.getRoleID() == 1) {
                         response.sendRedirect("viewAccountList");
                     } else {
-                        response.sendRedirect("staff");
+                        response.sendRedirect("ListHouse");
                     }
                 } else {
                     request.setAttribute("message", "Email or Password is not correct!");
