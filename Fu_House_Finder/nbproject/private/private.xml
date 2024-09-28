@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/RoomStatuses.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controllers/House/AddHouse.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Room/DAORoom.java</file>
@@ -11,6 +12,9 @@
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controller/Room/AddRoom.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Room/DAORoomStatus.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/DAO.java</file>
+=======
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Login/Login_Social/CallbackGoogle.java</file>
+>>>>>>> 330c22cf019bd35d28ddca419c43ca3166cea2f6
         </group>
     </open-files>
 </project-private>

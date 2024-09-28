@@ -60,8 +60,8 @@ public class DAOHouse extends DAO {
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, ownerId); // Đặt giá trị cho ownerId
-            ResultSet rs = pre.executeQuery(); // Thực hiện truy vấn
+            pre.setInt(1, ownerId);
+            ResultSet rs = pre.executeQuery();
 
             while (rs.next()) {
                 House house = new House();
@@ -102,6 +102,7 @@ public class DAOHouse extends DAO {
         }
         return result;
     }
+<<<<<<< HEAD
     
         public List<House> getHouses() {
         List<House> houses = new ArrayList<>();
@@ -113,6 +114,21 @@ public class DAOHouse extends DAO {
 
             while (rs.next()) {
                 House house = new House();
+=======
+
+    public House getHouseById(int id) {
+        House house = null;
+        String sql = "SELECT * FROM [dbo].[house] WHERE id = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+
+            ResultSet rs = pre.executeQuery();
+
+            if (rs.next()) {
+                house = new House();
+>>>>>>> 330c22cf019bd35d28ddca419c43ca3166cea2f6
                 house.setId(rs.getInt("id"));
                 house.setHouseName(rs.getString("houseName"));
                 house.setAddress(rs.getString("address"));
@@ -128,13 +144,54 @@ public class DAOHouse extends DAO {
                 house.setCreatedDate(rs.getDate("createdDate"));
                 house.setLastModifiedDate(rs.getDate("lastModifiedDate"));
                 house.setImage(rs.getString("image"));
+<<<<<<< HEAD
 
                 houses.add(house);
+=======
+>>>>>>> 330c22cf019bd35d28ddca419c43ca3166cea2f6
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+<<<<<<< HEAD
         return houses;
+=======
+        return house;
+    }
+
+    public int updateHouse(House house) {
+        int n = 0;
+        String sql = "UPDATE [dbo].[house] SET "
+                + "houseName = ?, address = ?, description = ?, distanceToSchool = ?, "
+                + "ownerid = ?, powerPrice = ?, waterPrice = ?, otherServicePrice = ?, "
+                + "fingerPrintLock = ?, camera = ?, parking = ?, "
+                + "lastModifiedDate = ?, image = ? "
+                + "WHERE id = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, house.getHouseName());
+            pre.setString(2, house.getAddress());
+            pre.setString(3, house.getDescription());
+            pre.setFloat(4, house.getDistanceToSchool());
+            pre.setInt(5, house.getOwnerId());
+            pre.setDouble(6, house.getPowerPrice());
+            pre.setDouble(7, house.getWaterPrice());
+            pre.setDouble(8, house.getOtherServicePrice());
+            pre.setInt(9, house.isFingerPrintLock() ? 1 : 0);
+            pre.setInt(10, house.isCamera() ? 1 : 0);
+            pre.setInt(11, house.isParking() ? 1 : 0);
+            pre.setDate(12, new java.sql.Date(house.getLastModifiedDate().getTime()));
+            pre.setString(13, house.getImage());
+            pre.setInt(14, house.getId());
+
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return n;
+>>>>>>> 330c22cf019bd35d28ddca419c43ca3166cea2f6
     }
 }
