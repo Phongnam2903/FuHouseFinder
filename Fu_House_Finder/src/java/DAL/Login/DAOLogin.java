@@ -10,11 +10,11 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DAOLogin extends DBContext {
+public class DAOLogin extends DBContext {           
 
     public Student getUserByGoogleId(String googleUserId) {
         Student stu = null;
-        String sql = "Select * from Student Where googleUserId = ?";
+        String sql = "Select * from [User] Where googleUserId = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, googleUserId);
