@@ -3,18 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/RoomStatuses.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controllers/House/AddHouse.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Room/DAORoom.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/House/DAOHouse.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controller/Room/ListRoom.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controller/Room/AddRoom.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Room/DAORoomStatus.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/DAO.java</file>
-=======
-            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Login/Login_Social/CallbackGoogle.java</file>
->>>>>>> 330c22cf019bd35d28ddca419c43ca3166cea2f6
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/ListHouse.jsp</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/ListRoom.jsp</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/AddRoom.jsp</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/Room.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/RoomStatuses.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controllers/House/AddHouse.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/UpdateHouse.jsp</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Login/Login_Social/CallbackGoogle.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/nbproject/build-impl.xml</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/House/DAOHouse.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Login/DAOLogin.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/AddHouse.jsp</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Room/DAORoomStatus.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/UpdateRoom.jsp</file>
         </group>
     </open-files>
 </project-private>
