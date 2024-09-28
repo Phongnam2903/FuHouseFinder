@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
@@ -16,23 +17,28 @@
             <div class="left-section d-flex flex-column justify-content-center align-items-center w-50 p-5">
                 <img src="${pageContext.request.contextPath}/images/logo/logo_house_finder.jpg" alt="FU House Finder" class="logo-img mb-4">
                 <h1 class="text-orange">FU HOUSE FINDER</h1>
-                <p class="lead">Ứng dụng tìm trọ dành cho sinh viên Đại học FPT</p>
+                <p class="lead">Accommodation search application for FPT students</p>
             </div>
 
             <!-- Right Section - Login Form -->
             <div class="right-section d-flex flex-column justify-content-center align-items-center w-50 p-5">
                 <h2 class="mb-4">Login</h2>
-
+                <!-- Display Error  -->
+                <c:if test="${not empty message}">
+                    <div class="alert alert-danger w-75 mb-3" style="border-radius: 20px">
+                        ${message}
+                    </div>
+                </c:if>
                 <!-- Login Form -->
                 <form action="${pageContext.request.contextPath}/login" method="POST" class="w-75">
                     <!-- Email input -->
                     <div class="form-group mb-3">
-                        <input type="email" name="email" class="form-control form-control-lg" placeholder="Email" required>
+                        <input type="email" name="email" class="form-control form-control-lg" placeholder="Email or Phone Number" required>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-group mb-3">
-                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Mật khẩu" required>
+                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Password " required>
                         <span id="togglePassword" onclick="togglePasswordVisibility()">👁 Show Password️</span>
                     </div>
 
