@@ -83,7 +83,7 @@
                                 </c:if>
                             </td>
                             <td>
-                                <a href="EditRoom?id=${room.id}" class="btn btn-warning" style="margin-right: 20px;">
+                                <a href="UpdateRoom?id=${room.id}" class="btn btn-warning" style="margin-right: 20px;">
                                     <i class="fas fa-tools"></i>
                                 </a>
                                 <a href="javascript:void(0);" onclick="openDeleteModal(${room.id}, '${room.roomNumber}');" class="btn btn-danger">

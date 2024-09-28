@@ -107,6 +107,60 @@ public class DAORoom extends DAO {
         }
         
     }
+    
+    //Update phongf
+    public int updateRoom(Room room) {
+        String query = "UPDATE [dbo].[room]\n" +
+"   SET [roomNumber] = ?\n" +
+"      ,[floorNumber] = ?\n" +
+"      ,[houseId] = ?\n" +
+"      ,[description] = ?\n" +
+"      ,[image] = ?\n" +
+"      ,[price] = ?\n" +
+"      ,[area] = ?\n" +
+"      ,[liveInHouseOwner] = ?\n" +
+"      ,[fridge] = ?\n" +
+"      ,[bed] = ?\n" +
+"      ,[desk] = ?\n" +
+"      ,[kitchen] = ?\n" +
+"      ,[closedToilet] = ?\n" +
+"      ,[washingMachine] = ?\n" +
+"      ,[createdDate] = ?\n" +
+"      ,[lastModifiedDate] = ?\n" +
+"      ,[statusID] = ?\n" +
+"      ,[roomTypeID] = ?\n" +
+"      ,[deleted] = ?\n" +
+" WHERE id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, room.getRoomNumber());
+            ps.setInt(2, room.getFloorNumber());
+            ps.setInt(3, room.getHouseId());
+            ps.setString(4, room.getDescription());
+            ps.setString(5, room.getImage());
+            ps.setDouble(6, room.getPrice());
+            ps.setFloat(7, room.getArea());
+            ps.setBoolean(8, room.isLiveInHouseOwner());
+            ps.setBoolean(9, room.isFridge());
+            ps.setBoolean(10, room.isBed());
+            ps.setBoolean(11, room.isDesk());
+            ps.setBoolean(12, room.isKitchen());
+            ps.setBoolean(13, room.isClosedToilet());
+            ps.setBoolean(14, room.isWashingMachine());
+            ps.setDate(15, new java.sql.Date(room.getCreatedDate().getTime()));
+            ps.setDate(16, new java.sql.Date(room.getLastModifiedDate().getTime()));
+            ps.setInt(17, room.getStatusId());
+            ps.setInt(18, room.getRoomTypeId());
+            ps.setBoolean(19, room.isDeleted());
+            ps.setInt(20, room.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 1;
+    }
+    
 
     //Thêm phòng
     public int addRoom(Room room) {
