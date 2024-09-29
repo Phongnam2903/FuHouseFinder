@@ -21,11 +21,11 @@
                 cursor: pointer; /* Con trỏ chuột biến thành pointer khi hover */
             }
             .modal-header {
-                background-color: #ff8c00; /* Màu cam */
+                background-color: #f44336;
                 color: white;
             }
             .modal-footer .btn-danger {
-                background-color: #ff8c00; /* Nút xóa màu cam */
+                background-color: #f44336;
                 border-color: #ff8c00;
             }
         </style>

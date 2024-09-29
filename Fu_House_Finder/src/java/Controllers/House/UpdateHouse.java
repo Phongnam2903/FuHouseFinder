@@ -5,12 +5,18 @@ import Models.House;
 import Validations.UploadFile;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 public class UpdateHouse extends HttpServlet {
 
     @Override
@@ -22,12 +28,20 @@ public class UpdateHouse extends HttpServlet {
             DAOHouse daoHouse = new DAOHouse();
             House house = daoHouse.getHouseById(houseId);
 
-            if (house != null) {
-                request.setAttribute("house", house);
-                request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
-            } else {
+            if (house == null) {
                 response.sendRedirect("ListHouse");
+                return;
             }
+
+            // Lấy danh sách ảnh từ database và tách thành mảng
+            String[] imageList = house.getImage().split(",");
+
+            // Gán thông tin vào request attribute để hiển thị trong form
+            request.setAttribute("house", house);
+            request.setAttribute("imageList", imageList);
+
+            // Điều hướng đến trang cập nhật
+            request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("ListHouse");
@@ -55,9 +69,6 @@ public class UpdateHouse extends HttpServlet {
             UploadFile uploadFile = new UploadFile();
             List<String> imageFiles = uploadFile.fileUpload(request, response);
 
-            // Xử lý chuỗi hình ảnh (nếu có thay đổi)
-            String images = String.join(",", imageFiles);
-
             // Tạo đối tượng House và cập nhật thông tin
             DAOHouse daoHouse = new DAOHouse();
             House house = daoHouse.getHouseById(houseId);
@@ -75,8 +86,13 @@ public class UpdateHouse extends HttpServlet {
                 house.setLastModifiedDate(new Date());
 
                 // Cập nhật hình ảnh nếu người dùng đã upload mới
-                if (!images.isEmpty()) {
-                    house.setImage(images);
+                if (!imageFiles.isEmpty()) {
+                    // Nếu có hình ảnh mới được tải lên, cập nhật chúng
+                    String newImages = String.join(",", imageFiles);
+                    house.setImage(newImages);
+                } else {
+                    // Không có hình ảnh mới, giữ nguyên hình ảnh cũ
+                    house.setImage(house.getImage());
                 }
 
                 // Cập nhật nhà trọ trong database
@@ -92,7 +108,9 @@ public class UpdateHouse extends HttpServlet {
 
                 // Quay lại form với thông báo
                 request.setAttribute("house", house);
-                request.getRequestDispatcher("Views/HouseOwner/AddHouse.jsp").forward(request, response);
+                String[] imageList = house.getImage().split(",");
+                request.setAttribute("imageList", imageList);
+                request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
             } else {
                 response.sendRedirect("ListHouse");
             }
