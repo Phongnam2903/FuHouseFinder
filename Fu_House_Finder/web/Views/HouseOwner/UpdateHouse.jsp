@@ -39,7 +39,7 @@
                             <div class="mb-3">
                                 <label for="houseName" class="form-label">Tên nhà trọ</label>
                                 <input type="text" class="form-control" id="houseName" name="houseName"
-                                       value="${house.houseName}">
+                                       value="${house.houseName}" placeholder="Nhập tên trọ">
                             </div>
                             <div class="mb-3">
                                 <label for="address" class="form-label">Địa chỉ</label>
@@ -53,11 +53,38 @@
                             </div>
                             <div class="mb-3">
                                 <label for="waterPrice" class="form-label">Giá nước trên tháng (VND)</label>
-                                <input type="number" class="form-control" id="waterPrice" name="waterPrice" placeholder="Nhập giá tiền nước">
+                                <input type="number" class="form-control" id="waterPrice" name="waterPrice"
+                                       value="${house.waterPrice != null ? house.waterPrice : ''}" placeholder="Nhập giá tiền nước">
                             </div>
                             <div class="mb-3">
                                 <label for="servicePrice" class="form-label">Giá tiền dịch vụ trên tháng (VND)</label>
-                                <input type="number" class="form-control" id="servicePrice" name="servicePrice" placeholder="Nhập giá dịch vụ">
+                                <input type="number" class="form-control" id="servicePrice" name="servicePrice" 
+                                       value="${house.otherServicePrice != null ? house.otherServicePrice : ''}" placeholder="Nhập giá dịch vụ">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tiện ích</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="fingerPrintLock" name="fingerPrintLock" ${house.fingerPrintLock ? 'checked' : ''}>
+                                    <label class="form-check-label" for="fingerPrintLock">Khóa vân tay</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="camera" name="camera" ${house.camera ? 'checked' : ''}>
+                                    <label class="form-check-label" for="camera">Camera giám sát</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="parking" name="parking" ${house.parking ? 'checked' : ''}>
+                                    <label class="form-check-label" for="parking">Chỗ để xe</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="distance" class="form-label">Khoảng cách đến trường (km)</label>
+                                <input type="number" class="form-control" id="distance" name="distance" 
+                                       value="${house.distanceToSchool != null ? house.distanceToSchool : ''}" placeholder="Nhập khoảng cách">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Thông tin mô tả</label>
+                                <textarea class="form-control" id="description" name="description" rows="7" 
+                                          placeholder="Nhập thông tin mô tả">${house.description != null ? house.description : ''}</textarea>
                             </div>
                         </div>
                     </div>
@@ -67,38 +94,32 @@
                         <div class="form-section">
                             <div class="mb-3">
                                 <label for="image1" class="form-label">Ảnh nhà (1)</label>
+                                <c:if test="${not empty imageList[0]}">
+                                    <br/>
+                                    <img class="mb-3" src="${pageContext.request.contextPath}/images/${imageList[0]}" alt="Hình ảnh 1" width="650">
+                                    <p class="mb-4">Thay đổi ảnh</p>
+                                </c:if>
                                 <input type="file" class="form-control" id="image1" name="image1" accept="image/*">
                             </div>
+
                             <div class="mb-3">
                                 <label for="image2" class="form-label">Ảnh nhà (2)</label>
+                                <c:if test="${not empty imageList[1]}">
+                                    <br/>
+                                    <img class="mb-3" src="${pageContext.request.contextPath}/images/${imageList[1]}" alt="Hình ảnh 2" width="650">
+                                    <p class="mb-4">Thay đổi ảnh</p>
+                                </c:if>
                                 <input type="file" class="form-control" id="image2" name="image2" accept="image/*">
                             </div>
+
                             <div class="mb-3">
                                 <label for="image3" class="form-label">Ảnh nhà (3)</label>
+                                <c:if test="${not empty imageList[2]}">
+                                    <br/>
+                                    <img class="mb-3" src="${pageContext.request.contextPath}/images/${imageList[2]}" alt="Hình ảnh 3" width="650">
+                                    <p class="mb-4">Thay đổi ảnh</p>
+                                </c:if>
                                 <input type="file" class="form-control" id="image3" name="image3" accept="image/*">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Tiện ích</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" id="fingerPrintLock" name="fingerPrintLock">
-                                    <label class="form-check-label" for="fingerPrintLock">Khóa vân tay</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" id="camera" name="camera">
-                                    <label class="form-check-label" for="camera">Camera giám sát</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" id="parking" name="parking">
-                                    <label class="form-check-label" for="parking">Chỗ để xe</label>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="distance" class="form-label">Khoảng cách đến trường (km)</label>
-                                <input type="text" class="form-control" id="distance" name="distance" placeholder="Nhập khoảng cách">
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Thông tin mô tả</label>
-                                <textarea class="form-control" id="description" name="description" rows="7" placeholder="Nhập thông tin mô tả"></textarea>
                             </div>
                         </div>
                     </div>

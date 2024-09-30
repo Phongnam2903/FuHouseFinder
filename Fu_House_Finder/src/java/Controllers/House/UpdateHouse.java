@@ -5,12 +5,18 @@ import Models.House;
 import Validations.UploadFile;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 public class UpdateHouse extends HttpServlet {
 
     @Override
@@ -22,12 +28,17 @@ public class UpdateHouse extends HttpServlet {
             DAOHouse daoHouse = new DAOHouse();
             House house = daoHouse.getHouseById(houseId);
 
-            if (house != null) {
-                request.setAttribute("house", house);
-                request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
-            } else {
+            if (house == null) {
                 response.sendRedirect("ListHouse");
+                return;
             }
+
+            String[] imageList = house.getImage().split(",");
+
+            request.setAttribute("house", house);
+            request.setAttribute("imageList", imageList);
+
+            request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("ListHouse");
@@ -38,7 +49,6 @@ public class UpdateHouse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Lấy các thông tin chỉnh sửa từ form
             int houseId = Integer.parseInt(request.getParameter("houseId"));
             String houseName = request.getParameter("houseName");
             String address = request.getParameter("address");
@@ -51,14 +61,9 @@ public class UpdateHouse extends HttpServlet {
             boolean camera = request.getParameter("camera") != null;
             boolean parking = request.getParameter("parking") != null;
 
-            // Xử lý upload file nếu có
             UploadFile uploadFile = new UploadFile();
             List<String> imageFiles = uploadFile.fileUpload(request, response);
 
-            // Xử lý chuỗi hình ảnh (nếu có thay đổi)
-            String images = String.join(",", imageFiles);
-
-            // Tạo đối tượng House và cập nhật thông tin
             DAOHouse daoHouse = new DAOHouse();
             House house = daoHouse.getHouseById(houseId);
             if (house != null) {
@@ -74,12 +79,19 @@ public class UpdateHouse extends HttpServlet {
                 house.setParking(parking);
                 house.setLastModifiedDate(new Date());
 
-                // Cập nhật hình ảnh nếu người dùng đã upload mới
-                if (!images.isEmpty()) {
-                    house.setImage(images);
+                String[] currentImages = house.getImage() != null ? house.getImage().split(",") : new String[3];
+
+                // Nếu có hình ảnh mới upload, cập nhật từng ảnh tương ứng, giữ lại ảnh cũ nếu không có ảnh mới
+                for (int i = 0; i < imageFiles.size(); i++) {
+                    if (i < imageFiles.size() && !imageFiles.get(i).isEmpty()) {
+                        currentImages[i] = imageFiles.get(i);
+                    }
                 }
 
-                // Cập nhật nhà trọ trong database
+                // Tạo lại chuỗi hình ảnh sau khi cập nhật
+                String updatedImages = String.join(",", currentImages);
+                house.setImage(updatedImages);
+
                 int result = daoHouse.updateHouse(house);
 
                 if (result > 0) {
@@ -90,9 +102,9 @@ public class UpdateHouse extends HttpServlet {
                     request.setAttribute("alertClass", "alert-danger");
                 }
 
-                // Quay lại form với thông báo
                 request.setAttribute("house", house);
-                request.getRequestDispatcher("Views/HouseOwner/AddHouse.jsp").forward(request, response);
+                request.setAttribute("imageList", currentImages);
+                request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
             } else {
                 response.sendRedirect("ListHouse");
             }

@@ -37,15 +37,15 @@
                         <div class="form-section">
                             <div class="mb-3">
                                 <label for="houseName" class="form-label">Tên nhà trọ</label>
-                                <input type="text" class="form-control" id="houseName" name="houseName" placeholder="Nhập tên nhà trọ">
+                                <input type="text" class="form-control" id="houseName" name="houseName" placeholder="Nhập tên nhà trọ" required>
                             </div>
                             <div class="mb-3">
                                 <label for="address" class="form-label">Địa chỉ</label>
-                                <input type="text" class="form-control" id="address" name="address" placeholder="Nhập địa chỉ">
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Nhập địa chỉ" required>
                             </div>
                             <div class="mb-3">
                                 <label for="powerPrice" class="form-label">Giá tiền điện trên tháng (VND)</label>
-                                <input type="number" class="form-control" id="powerPrice" name="powerPrice" placeholder="Nhập giá tiền điện">
+                                <input type="number" class="form-control" id="powerPrice" name="powerPrice" placeholder="Nhập giá tiền điện" required>
                             </div>
                             <div class="mb-3">
                                 <label for="waterPrice" class="form-label">Giá nước trên tháng (VND)</label>
