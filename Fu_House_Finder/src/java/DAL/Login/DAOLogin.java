@@ -87,7 +87,7 @@ public class DAOLogin extends DBContext {
     }
 
     public User loginUser(String email, String password) {
-        String sql = "SELECT * FROM [User] WHERE email = ? AND password = ?";
+        String sql = "SELECT * FROM [User] WHERE Email = ? AND Password = ?";
         User student = null;
 
         try {
@@ -115,6 +115,26 @@ public class DAOLogin extends DBContext {
         return md.digest(password.getBytes());
     }
 
+    
+    
+    //test khi chưa có sign up
+    public void saveUserPassword(String fullname, String email, String password, int sid) {
+        String sql = "INSERT INTO [User] (FullName, Email, Password, StatusID) VALUES (? ,?, ?, ?)";
+        try {
+            // Hash mật khẩu sử dụng SHA-256
+            byte[] hashedPasswordBytes = hashPasswordToBytes(password);
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, fullname);
+            statement.setString(2, email);
+            statement.setBytes(3, hashedPasswordBytes);
+            statement.setInt(4, sid);
+            statement.executeUpdate();
+        } catch (SQLException | NoSuchAlgorithmException ex) {
+            Logger.getLogger(DAOLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public static void main(String[] args) {
         DAOLogin login = new DAOLogin();
 //        String testEmail = "phongnnhe176274@fpt.edu.vn";
@@ -127,11 +147,13 @@ public class DAOLogin extends DBContext {
 //        } else {
 //            System.out.println("Login Failed!");
 //        }
-        String googleUserId = "114468492892790826988";
-        String name = "Phong Nguyễn Nam";
-        String email = "xuxumanh1@gmail.com";
+//        String googleUserId = "114468492892790826988";
+//        String name = "Phong Nguyễn Nam";
+//        String email = "xuxumanh1@gmail.com";
+//
+//        login.saveUser(googleUserId, name, email);
 
-        login.saveUser(googleUserId, name, email);
+        login.saveUserPassword("Trần Đại Dương", "duongtdhe172344@fpt.edu.vn", "duong03", 1);
         System.out.println("Test saveUser completed.");
     }
 }

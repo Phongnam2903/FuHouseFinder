@@ -2,6 +2,7 @@ package Controllers.House;
 
 import DAL.House.DAOHouse;
 import Models.House;
+import Models.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -25,19 +26,19 @@ public class ListHouse extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/ListHouse");
             return;
         }
-
-        //fix cứng
-        int ownerId = 7;
-
-        if (request.getParameter("ownerId") != null) {
-            ownerId = Integer.parseInt(request.getParameter("ownerId"));
+        
+        User owner = (User) request.getSession().getAttribute("account");
+        
+        
+        
+        if (owner == null) {
+            response.sendRedirect("login");
+            return;
         }
+        
+        int ownerId = owner.getId();
+        
 
-        List<House> houseList = daoHouse.getHousesByOwnerId(ownerId);
-
-        request.setAttribute("houseList", houseList);
-
-        //alo
         request.getRequestDispatcher("/Views/HouseOwner/ListHouse.jsp").forward(request, response);
     }
 
