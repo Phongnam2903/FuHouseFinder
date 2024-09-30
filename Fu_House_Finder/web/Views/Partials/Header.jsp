@@ -1,3 +1,11 @@
+<%-- 
+    Document   : Header
+    Created on : Sep 14, 2024, 8:08:15 PM
+    Author     : xuxum
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,17 +16,17 @@
         <!-- Header -->
         <div class="header">
             <div class="header-logo">
-                <img src="../../images/logo/logo_house_finder.jpg" alt="FU House Finder">
-                <h1 class="text-center">Find FPT Student Accommodation</h1>
+                <img src="${pageContext.request.contextPath}/images/logo/logo_house_finder.jpg" alt="FU House Finder">
+                <h1 style="justify-content: "center">Find FPT Student Accommodation</h1>
             </div>
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                    Admin
+                    Hello, <c:out value="${sessionScope.user.username}" />!
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Logout</a></li>
+                    <li><a class="dropdown-item" href="logout">Logout</a></li>
                 </ul>
             </div>
         </div>

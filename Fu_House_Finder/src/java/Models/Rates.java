@@ -10,19 +10,17 @@ public class Rates {
     private int userID;
     private int houseID;
     private Date createdDate;
-    private Date lastModifiedDate;
 
     public Rates() {
     }
 
-    public Rates(int rateID, int Star, int commentID, int userID, int houseID, Date createdDate, Date lastModifiedDate) {
+    public Rates(int rateID, int Star, int commentID, int userID, int houseID, Date createdDate) {
         this.rateID = rateID;
         this.Star = Star;
         this.commentID = commentID;
         this.userID = userID;
         this.houseID = houseID;
         this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
     }
 
     public int getRateID() {
@@ -73,17 +71,9 @@ public class Rates {
         this.createdDate = createdDate;
     }
 
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
     @Override
     public String toString() {
-        return "Rates{" + "rateID=" + rateID + ", Star=" + Star + ", commentID=" + commentID + ", userID=" + userID + ", houseID=" + houseID + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + '}';
+        return "Rates{" + "rateID=" + rateID + ", Star=" + Star + ", commentID=" + commentID + ", userID=" + userID + ", houseID=" + houseID + ", createdDate=" + createdDate + '}';
     }
 
 }

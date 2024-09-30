@@ -9,24 +9,24 @@ public class Feedback {
     private String description;
     private String status;
     private String reply;
-    private Date senttime;
-    private Date repliedtime;
-    private Date createddate;
-    private int renterid;
+    private Date sentTime;
+    private Date repliedTime;
+    private Date createdDate;
+    private int renterId;
 
     public Feedback() {
     }
 
-    public Feedback(int id, String title, String description, String status, String reply, Date senttime, Date repliedtime, Date createddate, int renterid) {
+    public Feedback(int id, String title, String description, String status, String reply, Date sentTime, Date repliedTime, Date createdDate, int renterId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
         this.reply = reply;
-        this.senttime = senttime;
-        this.repliedtime = repliedtime;
-        this.createddate = createddate;
-        this.renterid = renterid;
+        this.sentTime = sentTime;
+        this.repliedTime = repliedTime;
+        this.createdDate = createdDate;
+        this.renterId = renterId;
     }
 
     public int getId() {
@@ -69,41 +69,41 @@ public class Feedback {
         this.reply = reply;
     }
 
-    public Date getSenttime() {
-        return senttime;
+    public Date getSentTime() {
+        return sentTime;
     }
 
-    public void setSenttime(Date senttime) {
-        this.senttime = senttime;
+    public void setSentTime(Date sentTime) {
+        this.sentTime = sentTime;
     }
 
-    public Date getRepliedtime() {
-        return repliedtime;
+    public Date getRepliedTime() {
+        return repliedTime;
     }
 
-    public void setRepliedtime(Date repliedtime) {
-        this.repliedtime = repliedtime;
+    public void setRepliedTime(Date repliedTime) {
+        this.repliedTime = repliedTime;
     }
 
-    public Date getCreateddate() {
-        return createddate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateddate(Date createddate) {
-        this.createddate = createddate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public int getRenterid() {
-        return renterid;
+    public int getRenterId() {
+        return renterId;
     }
 
-    public void setRenterid(int renterid) {
-        this.renterid = renterid;
+    public void setRenterId(int renterId) {
+        this.renterId = renterId;
     }
 
     @Override
     public String toString() {
-        return "Feedback{" + "id=" + id + ", title=" + title + ", description=" + description + ", status=" + status + ", reply=" + reply + ", senttime=" + senttime + ", repliedtime=" + repliedtime + ", createddate=" + createddate + ", renterid=" + renterid + '}';
+        return "Feedback{" + "id=" + id + ", title=" + title + ", description=" + description + ", status=" + status + ", reply=" + reply + ", sentTime=" + sentTime + ", repliedTime=" + repliedTime + ", createdDate=" + createdDate + ", renterId=" + renterId + '}';
     }
 
 }
