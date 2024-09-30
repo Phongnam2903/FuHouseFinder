@@ -19,7 +19,14 @@
         <%@include file="../Partials/HeaderAdmin.jsp" %>
         <!-- Navigation -->
         <%@include file="../Partials/Navbar.jsp" %>
-
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="viewAccountList">List Account</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Create New Account</li>
+            </ol>
+        </nav>
         <!-- Main Content -->
         <div class="create-account">
             <h2>Create Account For Staff</h2>

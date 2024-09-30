@@ -1,5 +1,5 @@
 <%-- 
-    Document   : AdminCreateAccount
+    Document   : AdminUpdateAccount
     Created on : Sep 14, 2024, 10:01:17 PM
     Author     : xuxum
 --%>
@@ -40,10 +40,10 @@
                     <input type="email" name="email" id="email" class="form-control" value="${student.email}" required>
                 </div>
 
-                <!-- Address -->
+                <!-- Phone Number -->
                 <div class="col-md-6">
-                    <label for="address" class="form-label">Phone Number</label>
-                    <input type="text" name="address" id="address" class="form-control" value="${student.phone}" required>
+                    <label for="phone" class="form-label">Phone Number:</label>
+                    <input type="text" name="phone" id="phone" class="form-control" value="${student.phone}" required>
                 </div>
 
                 <!-- Status -->
@@ -51,9 +51,9 @@
                     <label for="status" class="form-label">Status:</label>
                     <select name="status" id="status" class="form-select" required>
                         <option value="1" ${student.getStatusID() == 1 ? 'selected' : ''}>Active</option>
-                        <option value="2" ${student.getStatusID() == 2 ? 'selected' : ''}>InActive</option>
+                        <option value="2" ${student.getStatusID() == 2 ? 'selected' : ''}>Inactive</option>
                         <option value="3" ${student.getStatusID() == 3 ? 'selected' : ''}>Ban</option>
-                        <option value="4" ${student.getStatusID() == 4 ? 'selected' : ''}>UnBan</option>
+                        <option value="4" ${student.getStatusID() == 4 ? 'selected' : ''}>Unban</option>
                     </select>
                 </div>
 

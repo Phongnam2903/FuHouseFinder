@@ -74,7 +74,7 @@
                                         d="M12.854.146a.5.5 0 0 1 .638.057l2.5 2.5a.5.5 0 0 1-.057.638l-10 10a.5.5 0 0 1-.233.13l-5 1.5a.5.5 0 0 1-.632-.632l1.5-5a.5.5 0 0 1 .13-.233l10-10zm1.415 3.207L11.207 1.793 2 11v2h2l8.854-8.854zM2.5 12.5v1h1l.5-.5H2.5z" />
                                     </svg>
                                 </a>
-                                <a href="${pageContext.request.contextPath}/deleteAccount?id=${acc.id}" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?')" title="Xóa">
+                                <a href="${pageContext.request.contextPath}/deleteAccount?id=${acc.id}" onclick="return confirm('Are you sure you want to delete this account?')" title="Xóa">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-trash"
                                          viewBox="0 0 16 16">
                                     <path
