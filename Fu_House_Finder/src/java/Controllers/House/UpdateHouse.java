@@ -33,14 +33,11 @@ public class UpdateHouse extends HttpServlet {
                 return;
             }
 
-            // Lấy danh sách ảnh từ database và tách thành mảng
             String[] imageList = house.getImage().split(",");
 
-            // Gán thông tin vào request attribute để hiển thị trong form
             request.setAttribute("house", house);
             request.setAttribute("imageList", imageList);
 
-            // Điều hướng đến trang cập nhật
             request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,7 +49,6 @@ public class UpdateHouse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Lấy các thông tin chỉnh sửa từ form
             int houseId = Integer.parseInt(request.getParameter("houseId"));
             String houseName = request.getParameter("houseName");
             String address = request.getParameter("address");
@@ -65,11 +61,9 @@ public class UpdateHouse extends HttpServlet {
             boolean camera = request.getParameter("camera") != null;
             boolean parking = request.getParameter("parking") != null;
 
-            // Xử lý upload file nếu có
             UploadFile uploadFile = new UploadFile();
             List<String> imageFiles = uploadFile.fileUpload(request, response);
 
-            // Tạo đối tượng House và cập nhật thông tin
             DAOHouse daoHouse = new DAOHouse();
             House house = daoHouse.getHouseById(houseId);
             if (house != null) {
@@ -85,13 +79,12 @@ public class UpdateHouse extends HttpServlet {
                 house.setParking(parking);
                 house.setLastModifiedDate(new Date());
 
-                // Xử lý hình ảnh: Giữ lại hình ảnh cũ nếu không có hình ảnh mới
                 String[] currentImages = house.getImage() != null ? house.getImage().split(",") : new String[3];
 
                 // Nếu có hình ảnh mới upload, cập nhật từng ảnh tương ứng, giữ lại ảnh cũ nếu không có ảnh mới
                 for (int i = 0; i < imageFiles.size(); i++) {
                     if (i < imageFiles.size() && !imageFiles.get(i).isEmpty()) {
-                        currentImages[i] = imageFiles.get(i); // Cập nhật ảnh mới
+                        currentImages[i] = imageFiles.get(i);
                     }
                 }
 
@@ -99,7 +92,6 @@ public class UpdateHouse extends HttpServlet {
                 String updatedImages = String.join(",", currentImages);
                 house.setImage(updatedImages);
 
-                // Cập nhật nhà trọ trong database
                 int result = daoHouse.updateHouse(house);
 
                 if (result > 0) {
@@ -110,7 +102,6 @@ public class UpdateHouse extends HttpServlet {
                     request.setAttribute("alertClass", "alert-danger");
                 }
 
-                // Quay lại form với thông báo
                 request.setAttribute("house", house);
                 request.setAttribute("imageList", currentImages);
                 request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);

@@ -25,7 +25,7 @@ public class UploadFile {
             throws ServletException, IOException {
         // Get the real path to the "build/web" directory
         String realPath = request.getServletContext().getRealPath("");
-        // Navigate to the "web/uploadFiles" directory
+        // Navigate to the "web/images" directory
         Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("web/images");
         UPLOAD_DIRECTORY = uploadPath.toString();
         if (!Files.exists(uploadPath)) {
