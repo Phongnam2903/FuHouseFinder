@@ -1,37 +1,37 @@
-@ -0,0 +1,158 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Danh sách phòng trọ</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .table {
-            border-collapse: collapse;
-        }
-        .table th, .table td {
-            border-bottom: 2px solid #dee2e6;
-        }
-        .table tr:hover {
-            background-color: #f8f9fa;
-            cursor: pointer;
-        }
-        .modal-header {
-            background-color: #ff8c00;
-            color: white;
-        }
-        .modal-footer .btn-danger {
-            background-color: #ff8c00;
-            border-color: #ff8c00;
-        }
-    </style>
-</head>
-<body>
-    <%@include file="../Partials/Header.jsp" %>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Thêm phòng trọ</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link href="${pageContext.request.contextPath}/css/adminAcc.css" rel="stylesheet" type="text/css"/>
+        <style>
+            .table {
+                border-collapse: collapse; /* Để bỏ kẻ dọc */
+            }
+            .table th, .table td {
+                border-bottom: 2px solid #dee2e6; /* Chỉ kẻ ngang */
+            }
+            .table tr:hover {
+                background-color: #f8f9fa; /* Màu nền khi hover */
+                cursor: pointer; /* Con trỏ chuột biến thành pointer khi hover */
+            }
+            .modal-header {
+                background-color: #ff8c00; /* Màu cam */
+                color: white;
+            }
+            .modal-footer .btn-danger {
+                background-color: #ff8c00; /* Nút xóa màu cam */
+                border-color: #ff8c00;
+            }
+        </style>
+    </head>
+    <body>
+        <%@include file="../Partials/Header.jsp" %>
 <!--Màn hình thêm phòng-->
 <div class="container mt-4">    
     <h2 class="text-center mb-4">Thêm phòng trọ</h2>

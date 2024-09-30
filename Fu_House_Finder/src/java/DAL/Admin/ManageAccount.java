@@ -1,7 +1,7 @@
 package DAL.Admin;
 
 import DAL.DBContext;
-import Models.Student;
+import Models.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,19 +13,16 @@ import java.util.logging.Logger;
 
 public class ManageAccount extends DBContext {
 
-    public Student getAccountById(int id) {
-        Student student = null;
-        String sql = "SELECT * FROM Student WHERE id = ?";
-
+    public User getAccountById(int id) {
+        User student = null;
+        String sql = "SELECT * FROM [User] WHERE id = ?";
         try {
             // Chuẩn bị câu lệnh truy vấn
             PreparedStatement statement = connection.prepareStatement(sql);
             // Thiết lập giá trị ID cho câu truy vấn
             statement.setInt(1, id);
-
             // Thực thi truy vấn
             ResultSet rs = statement.executeQuery();
-
             // Kiểm tra nếu có kết quả trả về
             if (rs.next()) {
                 // Lấy các giá trị từ kết quả truy vấn
@@ -41,37 +38,36 @@ public class ManageAccount extends DBContext {
                 int roleID = rs.getInt(11);
                 String avatar = rs.getString(12);
                 Date createdDate = rs.getDate(13);
-
-                // Tạo đối tượng Student với các giá trị vừa lấy
-                student = new Student(id, facebookUserid, googleUserid,
+                int roomHistoriesID = rs.getInt(14);
+                // Tạo đối tượng User với các giá trị vừa lấy
+                student = new User(id, facebookUserid, googleUserid,
                         username, password, email, phone,
                         dateOfBirth, address, StatusID, roleID,
-                        avatar, createdDate);
+                        avatar, createdDate, roomHistoriesID);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        // Trả về đối tượng Student hoặc null nếu không tìm thấy
+        // Trả về đối tượng User hoặc null nếu không tìm thấy
         return student;
     }
 
-    public int updateAccount(Student student) {
-        String sql = """
-                     UPDATE [dbo].[Student]
-                        SET [facebookUserId] = ?
-                           ,[googleUserId] = ?
-                           ,[username] = ?
-                           ,[password] = ?
-                           ,[email] = ?
-                           ,[phone] =?
-                           ,[dateofbirth] = ?
-                           ,[address] = ?
-                           ,[statusID] = ?
-                           ,[roleid] = ?
-                           ,[avatar] = ?
-                           ,[createdDate] = ?
-                      WHERE id = ?""";
+    public int updateAccount(User student) {
+        String sql = "UPDATE [dbo].[User]\n"
+                + "   SET [FacebookUserId] = ?,>\n"
+                + "      ,[GoogleUserId] = ?\n"
+                + "      ,[FullName] = ?\n"
+                + "      ,[Password] = ?\n"
+                + "      ,[Email] = ?\n"
+                + "      ,[PhoneNumber] = ?\n"
+                + "      ,[DateOfBirth] = ?\n"
+                + "      ,[Address] = ?\n"
+                + "      ,[StatusID] = ?\n"
+                + "      ,[Roleid] = ?\n"
+                + "      ,[Avatar] = ?\n"
+                + "      ,[CreatedDate] = ?\n"
+                + "      ,[RoomHistoriesID] = ?\n"
+                + " WHERE id = ?";
         int rowsUpdated = 0;
         PreparedStatement prestate = null;
         try {
@@ -99,7 +95,7 @@ public class ManageAccount extends DBContext {
     }
 
     public boolean deleteAccountById(int id) {
-        String sql = "DELETE FROM Student WHERE id = ?";
+        String sql = "DELETE FROM [User] WHERE id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
@@ -111,24 +107,36 @@ public class ManageAccount extends DBContext {
         }
     }
 
-    public int insertAccount(Student student) {
+    public int insertAccount(User student) {
         int n = 0;
-        String sql = """
-                     INSERT INTO [dbo].[Student]
-                                ([facebookUserId]
-                                ,[googleUserId]
-                                ,[username]
-                                ,[password]
-                                ,[email]
-                                ,[phone]
-                                ,[dateofbirth]
-                                ,[address]
-                                ,[statusID]
-                                ,[roleid]
-                                ,[avatar]
-                                ,[createdDate])
-                          VALUES
-                                (?,?,?,?,?,?,?,?,?,?,?,?)""";
+        String sql = "INSERT INTO [dbo].[User]\n"
+                + "           ([FacebookUserId]\n"
+                + "           ,[GoogleUserId]\n"
+                + "           ,[FullName]\n"
+                + "           ,[Password]\n"
+                + "           ,[Email]\n"
+                + "           ,[PhoneNumber]\n"
+                + "           ,[DateOfBirth]\n"
+                + "           ,[Address]\n"
+                + "           ,[StatusID]\n"
+                + "           ,[Roleid]\n"
+                + "           ,[Avatar]\n"
+                + "           ,[CreatedDate]\n"
+                + "           ,[RoomHistoriesID])\n"
+                + "     VALUES\n"
+                + "           (<FacebookUserId, nvarchar(300),>\n"
+                + "           ,<GoogleUserId, nvarchar(300),>\n"
+                + "           ,<FullName, nvarchar(50),>\n"
+                + "           ,<Password, nvarchar(255),>\n"
+                + "           ,<Email, nvarchar(100),>\n"
+                + "           ,<PhoneNumber, nvarchar(20),>\n"
+                + "           ,<DateOfBirth, date,>\n"
+                + "           ,<Address, nvarchar(255),>\n"
+                + "           ,<StatusID, int,>\n"
+                + "           ,<Roleid, int,>\n"
+                + "           ,<Avatar, nvarchar(255),>\n"
+                + "           ,<CreatedDate, datetime,>\n"
+                + "           ,<RoomHistoriesID, int,>)";
 
         PreparedStatement prestate = null;
         try {
@@ -157,6 +165,7 @@ public class ManageAccount extends DBContext {
             prestate.setInt(10, student.getRoleID());
             prestate.setString(11, student.getAvatar());
             prestate.setDate(12, new java.sql.Date(student.getCreatedDate().getTime()));
+            prestate.setInt(13, student.getRoomHistoriesID());
 
             // Thực hiện lệnh insert
             n = prestate.executeUpdate();
@@ -177,7 +186,7 @@ public class ManageAccount extends DBContext {
     }
 
     public int getAccountCount() {
-        String sql = "SELECT COUNT(*) FROM Student";
+        String sql = "SELECT COUNT(*) FROM [User]";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
@@ -190,10 +199,10 @@ public class ManageAccount extends DBContext {
         return 0;
     }
 
-    public List<Student> getAccountsByPage(int page, int pageSize) {
-        List<Student> accounts = new ArrayList<>();
+    public List<User> getAccountsByPage(int page, int pageSize) {
+        List<User> accounts = new ArrayList<>();
         String sql = """
-                     select * from Student where roleid = 4 order by id offset ?
+                     select * from [User] where roleid = 4 order by id offset ?
                      rows fetch next ? rows only""";
 
         try {
@@ -214,12 +223,10 @@ public class ManageAccount extends DBContext {
                 int StatusID = rs.getInt(10);
                 int roleID = rs.getInt(11);
                 String avatar = rs.getString(12);
-
                 Date createdDate = rs.getDate(13);
-                Student stu = new Student(id, facebookUserid, googleUserid,
-                        username, password, email,
-                        phone, dateOfBirth, address, StatusID,
-                        roleID, avatar, createdDate);
+                int roomHistoriesID = rs.getInt(14);
+                User stu = new User(id, facebookUserid, googleUserid, username, password, email, phone,
+                        dateOfBirth, address, StatusID, roleID, avatar, createdDate, roomHistoriesID);
                 accounts.add(stu);
             }
         } catch (SQLException ex) {
@@ -230,8 +237,8 @@ public class ManageAccount extends DBContext {
 
     public static void main(String[] args) {
         ManageAccount managerAcc = new ManageAccount();
-        // Tạo đối tượng Student với các thông tin mẫu
-//        Student student = new Student();
+        // Tạo đối tượng User với các thông tin mẫu
+//        User student = new User();
 //        student.setUsername("Nguyen Van A");
 //        student.setPassword("123");
 //        student.setEmail("phongnnhe176274@fpt.edu.vn");
@@ -263,9 +270,9 @@ public class ManageAccount extends DBContext {
         System.out.println("== Get Accounts by Page Test ==");
         int page = 1;
         int pageSize = 5;
-        List<Student> accounts = managerAcc.getAccountsByPage(page, pageSize);
+        List<User> accounts = managerAcc.getAccountsByPage(page, pageSize);
         System.out.println("Accounts on Page" + page + ":");
-        for (Student account : accounts) {
+        for (User account : accounts) {
             System.out.println("ID: " + account.getId() + ",Username: " + account.getUsername() + ",StatusID: " + account.getStatusID());
         }
     }

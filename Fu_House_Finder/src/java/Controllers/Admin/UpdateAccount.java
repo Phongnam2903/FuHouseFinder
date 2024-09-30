@@ -1,7 +1,7 @@
 package Controllers.Admin;
 
 import DAL.Admin.ManageAccount;
-import Models.Student;
+import Models.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,7 +25,7 @@ public class UpdateAccount extends HttpServlet {
 
         // Fetch the account details using the ManageAccount class
         ManageAccount manager = new ManageAccount();
-        Student student = manager.getAccountById(id);
+        User student = manager.getAccountById(id);
 
         // Set the student object in the request scope so that it can be displayed in the form
         request.setAttribute("student", student);
@@ -46,8 +46,8 @@ public class UpdateAccount extends HttpServlet {
         String address = request.getParameter("address");
         int roleID = Integer.parseInt(request.getParameter("role"));
 
-        // Create a Student object with the updated information
-        Student student = new Student();
+        // Create a User object with the updated information
+        User student = new User();
         student.setId(id);
         student.setUsername(username);
         student.setEmail(email);

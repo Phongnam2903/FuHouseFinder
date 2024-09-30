@@ -1,7 +1,7 @@
 package Controllers.Admin;
 
 import DAL.Admin.ManageAccount;
-import Models.Student;
+import Models.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -27,7 +27,7 @@ public class AdminProfile extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Student admin = (Student) request.getSession().getAttribute("account");
+        User admin = (User) request.getSession().getAttribute("account");
         request.setAttribute("admin", admin);
         request.getRequestDispatcher("Views/Admin/AdminProfile.jsp").forward(request, response);
     }
@@ -73,7 +73,7 @@ public class AdminProfile extends HttpServlet {
         }
 
         // Save other information to the database, including Date of Birth
-        Student admin = (Student) request.getSession().getAttribute("account");
+        User admin = (User) request.getSession().getAttribute("account");
         admin.setUsername(username);
         admin.setEmail(email);
         admin.setPhone(phone);

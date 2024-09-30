@@ -25,14 +25,11 @@ public class Room {
     private int roomTypeId;
     private boolean deleted;
 
+    // Constructor
     public Room() {
     }
 
-    // Constructor
-    public Room(int id, int roomNumber, int floorNumber, int houseId, String description, String image, 
-            double price, float area, boolean liveInHouseOwner, boolean fridge, boolean bed, boolean desk,
-            boolean kitchen, boolean closedToilet, boolean washingMachine, Date createdDate, Date lastModifiedDate,
-            int statusId, int roomTypeId, boolean deleted) {
+    public Room(int id, int roomNumber, int floorNumber, int houseId, String description, String image, double price, float area, boolean liveInHouseOwner, boolean fridge, boolean bed, boolean desk, boolean kitchen, boolean closedToilet, boolean washingMachine, Date createdDate, Date lastModifiedDate, int statusId, int roomTypeId, boolean deleted) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.floorNumber = floorNumber;
@@ -55,7 +52,6 @@ public class Room {
         this.deleted = deleted;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -103,7 +99,6 @@ public class Room {
     public void setImage(String image) {
         this.image = image;
     }
-
 
     public double getPrice() {
         return price;
@@ -219,15 +214,6 @@ public class Room {
 
     @Override
     public String toString() {
-        return "Room [id=" + id + ", roomNumber=" + roomNumber + ", floorNumber=" + floorNumber + ", houseId=" + houseId
-                + ", description=" + description + ", image=" + image + ", price=" + price
-                + ", area=" + area + ", liveInHouseOwner=" + liveInHouseOwner + ", fridge=" + fridge + ", bed=" + bed
-                + ", desk=" + desk + ", kitchen=" + kitchen + ", closedToilet=" + closedToilet + ", washingMachine="
-                + washingMachine + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate
-                + ", statusId=" + statusId + ", roomTypeId=" + roomTypeId + ", deleted=" + deleted + "]";
-    }
-
-    public boolean getDeleted() {
-        return deleted;
+        return "Room{" + "id=" + id + ", roomNumber=" + roomNumber + ", floorNumber=" + floorNumber + ", houseId=" + houseId + ", description=" + description + ", image=" + image + ", price=" + price + ", area=" + area + ", liveInHouseOwner=" + liveInHouseOwner + ", fridge=" + fridge + ", bed=" + bed + ", desk=" + desk + ", kitchen=" + kitchen + ", closedToilet=" + closedToilet + ", washingMachine=" + washingMachine + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + ", statusId=" + statusId + ", roomTypeId=" + roomTypeId + ", deleted=" + deleted + '}';
     }
 }

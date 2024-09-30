@@ -5,7 +5,7 @@
 package Controllers.Login.Login_User;
 
 import DAL.Login.DAOLogin;
-import Models.Student;
+import Models.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -55,14 +55,14 @@ public class Login_User extends HttpServlet {
                 request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
             }
             try {
-                Student account = login.loginUser(email, password);
+                User account = login.loginUser(email, password);
                 if (account != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("account", account);
                     if (account.getRoleID() == 1) {
                         response.sendRedirect("viewAccountList");
                     } else {
-                        response.sendRedirect("staff");
+                        response.sendRedirect("ListHouse");
                     }
                 } else {
                     request.setAttribute("message", "Email or Password is not correct!");

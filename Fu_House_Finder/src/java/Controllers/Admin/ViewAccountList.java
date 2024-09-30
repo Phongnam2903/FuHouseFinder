@@ -1,7 +1,7 @@
 package Controllers.Admin;
 
 import DAL.Admin.ManageAccount;
-import Models.Student;
+import Models.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -29,7 +29,7 @@ public class ViewAccountList extends HttpServlet {
         int totalAccount = account.getAccountCount();
         int totalPages = (int) Math.ceil((double) totalAccount / pageSize);
         //get list account from current page
-        List<Student> listAcc = account.getAccountsByPage(page, pageSize);
+        List<User> listAcc = account.getAccountsByPage(page, pageSize);
         request.setAttribute("listAcc", listAcc);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPage", totalPages);

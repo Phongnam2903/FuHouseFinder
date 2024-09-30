@@ -1,7 +1,7 @@
 package Controllers.Admin;
 
 import DAL.Admin.ManageAccount;
-import Models.Student;
+import Models.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -40,7 +40,7 @@ public class CreateAccount extends HttpServlet {
         } else if (!Pattern.matches(EMAIL_REGEX, email)) {
             message = "Invalid email format";
         } else {
-            Student student = new Student();
+            User student = new User();
             student.setUsername(username);
             student.setEmail(email);
             student.setPassword(password);

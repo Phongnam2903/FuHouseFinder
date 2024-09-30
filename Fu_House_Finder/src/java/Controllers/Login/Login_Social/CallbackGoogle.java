@@ -5,7 +5,7 @@
 package Controllers.Login.Login_Social;
 
 import DAL.Login.DAOLogin;
-import Models.Student;
+import Models.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -58,7 +58,7 @@ public class CallbackGoogle extends HttpServlet {
         //lưu thông tin vào database
         //Check user is exist
         DAOLogin daoLogin = new DAOLogin();
-        Student student = daoLogin.getUserByGoogleId(googleUserId);
+        User student = daoLogin.getUserByGoogleId(googleUserId);
 
         if (student == null) {
             //Nếu người dùng chưa tồn tại, lưu vào database với các thuộc tính cần thiết

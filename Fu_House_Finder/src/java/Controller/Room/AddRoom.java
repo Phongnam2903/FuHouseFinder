@@ -19,6 +19,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,7 +75,7 @@ public class AddRoom extends HttpServlet {
         List<RoomStatuses> roomStatuses = dbRoomStatus.getRoomStatus();
 
         List<House> house = dbHouse.getHouses();
-        
+
         request.setAttribute("roomTypeList", roomTypes);
         request.setAttribute("roomStatusList", roomStatuses);
         request.setAttribute("houseList", house);
@@ -99,12 +100,17 @@ public class AddRoom extends HttpServlet {
         float area = Float.parseFloat(request.getParameter("area"));
         int roomTypeID = Integer.parseInt(request.getParameter("roomTypeId"));
         int statusID = Integer.parseInt(request.getParameter("statusId"));
-        boolean fridge = request.getParameter(request.getParameter("fridge")) != null;
-        boolean kitchen = request.getParameter(request.getParameter("kitchen")) != null;
-        boolean washingMachine = request.getParameter(request.getParameter("washingMachine")) != null;
-        boolean bed = request.getParameter(request.getParameter("bed")) != null;
-        boolean liveInHouseOwner = request.getParameter(request.getParameter("liveInHouseOwner")) != null;
-        boolean closedToilet = request.getParameter(request.getParameter("closedToilet")) != null;
+         String[] facilities = request.getParameterValues("facilities");
+        List<String> faciliList = new ArrayList<>();
+        for (String facility : facilities) {
+            faciliList.add(facility);
+        }
+        boolean fridge = faciliList.contains("fridge");
+        boolean kitchen = faciliList.contains("kitchen");
+        boolean washingMachine = faciliList.contains("washingMachine");
+        boolean bed = faciliList.contains("bed");
+        boolean liveInHouseOwner = faciliList.contains("liveInHouseOwner");
+        boolean closedToilet = faciliList.contains("closedToilet");
         int houseId = Integer.parseInt(request.getParameter("houseId"));
         String image = "";
 
