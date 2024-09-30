@@ -53,11 +53,29 @@ public class DAOHouse extends DAO {
         }
         return n;
     }
+    
+    public int getTotalHousesByOwnerId(int ownerId) {
+        int totalHouses = 0;
+        String sql = "SELECT COUNT(*) AS Total FROM [dbo].[House] WHERE Ownerid = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, ownerId);
+
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                totalHouses = rs.getInt("Total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return totalHouses;
+    }
 
     public List<House> getHousesByOwnerId(int ownerId, int pageNumber, int pageSize) {
         List<House> houses = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[House] WHERE Ownerid = ? order by ID"
-                + "offset ? rows fetch next ? rows only";
+        String sql = "SELECT * FROM [dbo].[House] WHERE Ownerid = ? ORDER BY ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -141,8 +159,8 @@ public class DAOHouse extends DAO {
 
         return house;
     }
-    
-            public List<House> getHouses() {
+
+    public List<House> getHouses() {
         List<House> houses = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[House]";
 
@@ -176,7 +194,6 @@ public class DAOHouse extends DAO {
 
         return houses;
     }
-    
 
     public int updateHouse(House house) {
         int n = 0;
@@ -211,4 +228,6 @@ public class DAOHouse extends DAO {
 
         return n;
     }
+    
+    
 }
