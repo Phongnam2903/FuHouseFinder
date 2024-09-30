@@ -85,15 +85,19 @@ public class UpdateHouse extends HttpServlet {
                 house.setParking(parking);
                 house.setLastModifiedDate(new Date());
 
-                // Cập nhật hình ảnh nếu người dùng đã upload mới
-                if (!imageFiles.isEmpty()) {
-                    // Nếu có hình ảnh mới được tải lên, cập nhật chúng
-                    String newImages = String.join(",", imageFiles);
-                    house.setImage(newImages);
-                } else {
-                    // Không có hình ảnh mới, giữ nguyên hình ảnh cũ
-                    house.setImage(house.getImage());
+                // Xử lý hình ảnh: Giữ lại hình ảnh cũ nếu không có hình ảnh mới
+                String[] currentImages = house.getImage() != null ? house.getImage().split(",") : new String[3];
+
+                // Nếu có hình ảnh mới upload, cập nhật từng ảnh tương ứng, giữ lại ảnh cũ nếu không có ảnh mới
+                for (int i = 0; i < imageFiles.size(); i++) {
+                    if (i < imageFiles.size() && !imageFiles.get(i).isEmpty()) {
+                        currentImages[i] = imageFiles.get(i); // Cập nhật ảnh mới
+                    }
                 }
+
+                // Tạo lại chuỗi hình ảnh sau khi cập nhật
+                String updatedImages = String.join(",", currentImages);
+                house.setImage(updatedImages);
 
                 // Cập nhật nhà trọ trong database
                 int result = daoHouse.updateHouse(house);
@@ -108,8 +112,7 @@ public class UpdateHouse extends HttpServlet {
 
                 // Quay lại form với thông báo
                 request.setAttribute("house", house);
-                String[] imageList = house.getImage().split(",");
-                request.setAttribute("imageList", imageList);
+                request.setAttribute("imageList", currentImages);
                 request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
             } else {
                 response.sendRedirect("ListHouse");
