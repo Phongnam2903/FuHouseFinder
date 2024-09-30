@@ -26,6 +26,7 @@ public class ListHouse extends HttpServlet {
             return;
         }
 
+        //fix cứng
         int ownerId = 7;
 
         if (request.getParameter("ownerId") != null) {
@@ -36,6 +37,7 @@ public class ListHouse extends HttpServlet {
 
         request.setAttribute("houseList", houseList);
 
+        //alo
         request.getRequestDispatcher("/Views/HouseOwner/ListHouse.jsp").forward(request, response);
     }
 
