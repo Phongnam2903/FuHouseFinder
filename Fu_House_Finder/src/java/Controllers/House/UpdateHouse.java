@@ -76,7 +76,7 @@ public class UpdateHouse extends HttpServlet {
             if (houseName.isEmpty() || address.isEmpty() || distanceStr.isEmpty()
                     || powerPriceStr.isEmpty() || waterPriceStr.isEmpty()) {
 
-                request.setAttribute("message", "Các trường có dấu * không được để trống hoặc chỉ chứa khoảng trắng!");
+                request.setAttribute("message", "Fields marked with * cannot be blank or contain only spaces!");
                 request.setAttribute("alertClass", "alert-danger");
 
                 setRequestAttributes(request, houseName, address, description, distanceStr,
@@ -94,7 +94,7 @@ public class UpdateHouse extends HttpServlet {
                 waterPrice = Double.parseDouble(waterPriceStr);
                 servicePrice = Double.parseDouble(servicePriceStr);
             } catch (NumberFormatException e) {
-                request.setAttribute("message", "Khoảng cách, giá điện, nước, dịch vụ phải là số hợp lệ!");
+                request.setAttribute("message", "Distance, power, water, and service prices must be valid numbers!");
                 request.setAttribute("alertClass", "alert-danger");
 
                 setRequestAttributes(request, houseName, address, description, distanceStr,
@@ -105,7 +105,7 @@ public class UpdateHouse extends HttpServlet {
             }
 
             if (distanceToSchool < 0 || powerPrice < 0 || waterPrice < 0 || servicePrice < 0) {
-                request.setAttribute("message", "Khoảng cách, giá tiền điện, nước, dịch vụ không được là số âm!");
+                request.setAttribute("message", "Distance, power, water, and service prices cannot be negative numbers!");
                 request.setAttribute("alertClass", "alert-danger");
 
                 setRequestAttributes(request, houseName, address, description, distanceStr,
@@ -160,10 +160,10 @@ public class UpdateHouse extends HttpServlet {
             int result = daoHouse.updateHouse(house);
 
             if (result > 0) {
-                request.setAttribute("message", "Cập nhật nhà trọ thành công!");
+                request.setAttribute("message", "Update House Successfully!");
                 request.setAttribute("alertClass", "alert-success");
             } else {
-                request.setAttribute("message", "Cập nhật nhà trọ thất bại!");
+                request.setAttribute("message", "Fail To Update House!");
                 request.setAttribute("alertClass", "alert-danger");
             }
 

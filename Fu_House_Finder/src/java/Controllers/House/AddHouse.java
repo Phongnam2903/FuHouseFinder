@@ -53,19 +53,10 @@ public class AddHouse extends HttpServlet {
             if (houseName.isEmpty() || address.isEmpty() || distanceStr.isEmpty()
                     || powerPriceStr.isEmpty() || waterPriceStr.isEmpty()) {
 
-                request.setAttribute("message", "Các trường có dấu * không được để trống hoặc chỉ chứa khoảng trắng!");
+                request.setAttribute("message", "Fields marked with * cannot be blank or contain only spaces!");
                 request.setAttribute("alertClass", "alert-danger");
 
-                request.setAttribute("houseName", houseName);
-                request.setAttribute("address", address);
-                request.setAttribute("description", description);
-                request.setAttribute("distance", distanceStr);
-                request.setAttribute("powerPrice", powerPriceStr);
-                request.setAttribute("waterPrice", waterPriceStr);
-                request.setAttribute("servicePrice", servicePriceStr);
-                request.setAttribute("fingerPrintLock", fingerPrintLock);
-                request.setAttribute("camera", camera);
-                request.setAttribute("parking", parking);
+                setRequestAttributes(request, houseName, address, description, distanceStr, powerPriceStr, waterPriceStr, servicePriceStr, fingerPrintLock, camera, parking);
 
                 request.getRequestDispatcher("Views/HouseOwner/AddHouse.jsp").forward(request, response);
                 return;
@@ -79,38 +70,20 @@ public class AddHouse extends HttpServlet {
                 waterPrice = Double.parseDouble(waterPriceStr);
                 servicePrice = Double.parseDouble(servicePriceStr);
             } catch (NumberFormatException e) {
-                request.setAttribute("message", "Khoảng cách, giá điện, nước, dịch vụ phải là số hợp lệ!");
+                request.setAttribute("message", "Distance, power, water, and service prices must be valid numbers!");
                 request.setAttribute("alertClass", "alert-danger");
 
-                request.setAttribute("houseName", houseName);
-                request.setAttribute("address", address);
-                request.setAttribute("description", description);
-                request.setAttribute("distance", distanceStr);
-                request.setAttribute("powerPrice", powerPriceStr);
-                request.setAttribute("waterPrice", waterPriceStr);
-                request.setAttribute("servicePrice", servicePriceStr);
-                request.setAttribute("fingerPrintLock", fingerPrintLock);
-                request.setAttribute("camera", camera);
-                request.setAttribute("parking", parking);
+                setRequestAttributes(request, houseName, address, description, distanceStr, powerPriceStr, waterPriceStr, servicePriceStr, fingerPrintLock, camera, parking);
 
                 request.getRequestDispatcher("Views/HouseOwner/AddHouse.jsp").forward(request, response);
                 return;
             }
 
             if (distanceToSchool < 0 || powerPrice < 0 || waterPrice < 0 || servicePrice < 0) {
-                request.setAttribute("message", "Khoảng cách, giá tiền, điện, nước không được là số âm!");
+                request.setAttribute("message", "Distance, power, water, and service prices cannot be negative numbers!");
                 request.setAttribute("alertClass", "alert-danger");
 
-                request.setAttribute("houseName", houseName);
-                request.setAttribute("address", address);
-                request.setAttribute("description", description);
-                request.setAttribute("distance", distanceStr);
-                request.setAttribute("powerPrice", powerPriceStr);
-                request.setAttribute("waterPrice", waterPriceStr);
-                request.setAttribute("servicePrice", servicePriceStr);
-                request.setAttribute("fingerPrintLock", fingerPrintLock);
-                request.setAttribute("camera", camera);
-                request.setAttribute("parking", parking);
+                setRequestAttributes(request, houseName, address, description, distanceStr, powerPriceStr, waterPriceStr, servicePriceStr, fingerPrintLock, camera, parking);
 
                 request.getRequestDispatcher("Views/HouseOwner/AddHouse.jsp").forward(request, response);
                 return;
@@ -120,19 +93,10 @@ public class AddHouse extends HttpServlet {
             List<String> imageFiles = uploadFile.fileUpload(request, response);
 
             if (imageFiles.isEmpty()) {
-                request.setAttribute("message", "Phải có ít nhất một ảnh nhà!");
+                request.setAttribute("message", "Must have at least one house photo!");
                 request.setAttribute("alertClass", "alert-danger");
 
-                request.setAttribute("houseName", houseName);
-                request.setAttribute("address", address);
-                request.setAttribute("description", description);
-                request.setAttribute("distance", distanceStr);
-                request.setAttribute("powerPrice", powerPriceStr);
-                request.setAttribute("waterPrice", waterPriceStr);
-                request.setAttribute("servicePrice", servicePriceStr);
-                request.setAttribute("fingerPrintLock", fingerPrintLock);
-                request.setAttribute("camera", camera);
-                request.setAttribute("parking", parking);
+                setRequestAttributes(request, houseName, address, description, distanceStr, powerPriceStr, waterPriceStr, servicePriceStr, fingerPrintLock, camera, parking);
 
                 request.getRequestDispatcher("Views/HouseOwner/AddHouse.jsp").forward(request, response);
                 return;
@@ -160,10 +124,10 @@ public class AddHouse extends HttpServlet {
             int result = daoHouse.addHouse(house);
 
             if (result > 0) {
-                request.setAttribute("message", "Thêm nhà trọ thành công!");
+                request.setAttribute("message", "Add House Successfully!");
                 request.setAttribute("alertClass", "alert-success");
             } else {
-                request.setAttribute("message", "Thêm nhà trọ thất bại!");
+                request.setAttribute("message", "Fail To Add House!");
                 request.setAttribute("alertClass", "alert-danger");
             }
 
@@ -175,6 +139,22 @@ public class AddHouse extends HttpServlet {
             request.setAttribute("alertClass", "alert-danger");
             request.getRequestDispatcher("Views/HouseOwner/AddHouse.jsp").forward(request, response);
         }
+    }
+
+    private void setRequestAttributes(HttpServletRequest request, String houseName, String address,
+            String description, String distanceStr, String powerPriceStr,
+            String waterPriceStr, String servicePriceStr, boolean fingerPrintLock,
+            boolean camera, boolean parking) {
+        request.setAttribute("houseName", houseName);
+        request.setAttribute("address", address);
+        request.setAttribute("description", description);
+        request.setAttribute("distance", distanceStr);
+        request.setAttribute("powerPrice", powerPriceStr);
+        request.setAttribute("waterPrice", waterPriceStr);
+        request.setAttribute("servicePrice", servicePriceStr);
+        request.setAttribute("fingerPrintLock", fingerPrintLock);
+        request.setAttribute("camera", camera);
+        request.setAttribute("parking", parking);
     }
 
     @Override
