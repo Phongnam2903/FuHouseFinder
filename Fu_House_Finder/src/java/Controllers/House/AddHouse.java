@@ -51,7 +51,7 @@ public class AddHouse extends HttpServlet {
             boolean parking = request.getParameter("parking") != null;
 
             if (houseName.isEmpty() || address.isEmpty() || distanceStr.isEmpty()
-                    || powerPriceStr.isEmpty() || waterPriceStr.isEmpty() || servicePriceStr.isEmpty()) {
+                    || powerPriceStr.isEmpty() || waterPriceStr.isEmpty()) {
 
                 request.setAttribute("message", "Các trường có dấu * không được để trống hoặc chỉ chứa khoảng trắng!");
                 request.setAttribute("alertClass", "alert-danger");
