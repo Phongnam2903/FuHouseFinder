@@ -28,6 +28,10 @@
                     ${message}
                 </div>
             </c:if>
+            
+            <div class="mb-4">
+                <a href="ListHouse" class="btn btn-secondary">< Danh sách nhà trọ</a>
+            </div>
 
             <form action="${pageContext.request.contextPath}/UpdateHouse" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="houseId" value="${house.id}"/>

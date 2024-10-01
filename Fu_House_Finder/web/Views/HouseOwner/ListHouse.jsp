@@ -9,26 +9,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="${pageContext.request.contextPath}/css/adminAcc.css" rel="stylesheet" type="text/css"/>
-        <style>
-            .table {
-                border-collapse: collapse; /* Để bỏ kẻ dọc */
-            }
-            .table th, .table td {
-                border-bottom: 2px solid #dee2e6; /* Chỉ kẻ ngang */
-            }
-            .table tr:hover {
-                background-color: #f8f9fa; /* Màu nền khi hover */
-                cursor: pointer; /* Con trỏ chuột biến thành pointer khi hover */
-            }
-            .modal-header {
-                background-color: #f44336;
-                color: white;
-            }
-            .modal-footer .btn-danger {
-                background-color: #f44336;
-                border-color: #ff8c00;
-            }
-        </style>
+        <link href="../../css/house/cssHouse.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <%@include file="../Partials/Header.jsp" %>
@@ -37,6 +18,13 @@
             <h2 class="text-center mb-4">Danh sách nhà trọ</h2>
             <div class="mb-4">
                 <a href="AddHouse" class="btn btn-secondary">+ Thêm Trọ Mới</a>
+            </div>
+
+            <div class="d-flex justify-content-end mb-4">
+                <form action="${pageContext.request.contextPath}/ListHouse" method="get" class="input-group" style="max-width: 400px;"> <!-- Thay đổi max-width tùy theo nhu cầu -->
+                    <input type="text" name="search" class="form-control" placeholder="Nhập tên nhà trọ để tìm kiếm" aria-label="Tìm theo tên nhà trọ" />
+                    <button class="btn btn-secondary" type="submit">Tìm kiếm</button>
+                </form>
             </div>
 
             <c:if test="${not empty houseList}">
@@ -53,7 +41,7 @@
                     <tbody>
                         <c:forEach var="house" items="${houseList}" varStatus="status">
                             <tr>
-                                <td>${status.index + 1}</td>
+                                <td>${status.index + 1 + (currentPage - 1) * itemsPerPage}</td>
                                 <td>${house.houseName}</td>
                                 <td>
                                     chưa thêm
@@ -90,6 +78,53 @@
                         </c:forEach>
                     </tbody>
                 </table>
+                <div class="pagination-container">
+                    <ul class="pagination justify-content-end">
+                        <!-- Nút Previous -->
+                        <c:if test="${currentPage > 1}">
+                            <li class="page-item">
+                                <a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${currentPage - 1}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo; Previous</span>
+                                </a>
+                            </li>
+                        </c:if>
+                        <c:if test="${currentPage == 1}">
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo; Previous</span>
+                                </span>
+                            </li>
+                        </c:if>
+
+                        <!-- Các số trang -->
+                        <c:forEach var="i" begin="1" end="${totalPages}">
+                            <c:choose>
+                                <c:when test="${i == currentPage}">
+                                    <li class="page-item active"><span class="page-link">${i}</span></li>
+                                    </c:when>
+                                    <c:otherwise>
+                                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${i}">${i}</a></li>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+
+                        <!-- Nút Next -->
+                        <c:if test="${currentPage < totalPages}">
+                            <li class="page-item">
+                                <a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${currentPage + 1}" aria-label="Next">
+                                    <span aria-hidden="true">Next &raquo;</span>
+                                </a>
+                            </li>
+                        </c:if>
+                        <c:if test="${currentPage == totalPages}">
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">Next &raquo;</span>
+                                </span>
+                            </li>
+                        </c:if>
+                    </ul>
+                </div>
             </c:if>
 
             <c:if test="${empty houseList}">
@@ -116,7 +151,7 @@
                 </div>
             </div>
         </div>
-        
+
         <%@include file="../Partials/Footer.jsp" %>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

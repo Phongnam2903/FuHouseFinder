@@ -2,6 +2,7 @@ package Controllers.House;
 
 import DAL.House.DAOHouse;
 import Models.House;
+import Models.User;
 import Validations.UploadFile;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -29,6 +30,15 @@ public class AddHouse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            User owner = (User) request.getSession().getAttribute("account");
+            
+            if (owner == null) {
+                response.sendRedirect("login");
+                return;
+            }
+            
+            int ownerId = owner.getId();
+            
             String houseName = request.getParameter("houseName");
             String address = request.getParameter("address");
             String description = request.getParameter("description");
@@ -57,7 +67,7 @@ public class AddHouse extends HttpServlet {
             house.setFingerPrintLock(fingerPrintLock);
             house.setCamera(camera);
             house.setParking(parking);
-            house.setOwnerId(7);
+            house.setOwnerId(ownerId);
             house.setCreatedDate(new Date());
             house.setLastModifiedDate(new Date());
             house.setImage(images);
