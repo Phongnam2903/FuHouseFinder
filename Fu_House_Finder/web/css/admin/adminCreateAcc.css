@@ -35,3 +35,15 @@
     box-shadow: none;
     border-color: #f44336;
 }
+.alert {
+    border: 2px solid #dc3545; /* Viền đỏ cho thông báo lỗi */
+    opacity: 1;
+    max-height: 200px;
+    transition: opacity 0.5s ease-out, max-height 0.5s ease-out;
+    overflow: hidden;
+}
+
+.alert.fade-out {
+    opacity: 0;
+    max-height: 0;
+}

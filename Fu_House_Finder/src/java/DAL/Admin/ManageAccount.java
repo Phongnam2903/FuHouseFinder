@@ -2,6 +2,8 @@ package DAL.Admin;
 
 import DAL.DBContext;
 import Models.User;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -160,11 +162,17 @@ public class ManageAccount extends DBContext {
                 throw new SQLException("Database connection is not available.");
             }
 
+            // Hash the password using SHA-256 (assuming hashPasswordToBytes returns byte[])
+            byte[] hashedPassword = hashPasswordToBytes(student.getPassword());
+
+            // Create a string of '*' with the same length as the original password
+            String maskedPassword = "*".repeat(student.getPassword().length());
+
             prestate = connection.prepareStatement(sql);
             prestate.setString(1, student.getFacebookUserid());
             prestate.setString(2, student.getGoogleUserid());
             prestate.setString(3, student.getUsername());
-            prestate.setString(4, student.getPassword());
+            prestate.setString(4, maskedPassword);  // Use masked password here
             prestate.setString(5, student.getEmail());
             prestate.setString(6, student.getPhone());
 
@@ -198,6 +206,17 @@ public class ManageAccount extends DBContext {
             }
         }
         return n;
+    }
+
+    private byte[] hashPasswordToBytes(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            return digest.digest(password.getBytes());
+        } catch (NoSuchAlgorithmException e) {
+            // Handle exception
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public int getAccountCount() {
@@ -253,29 +272,27 @@ public class ManageAccount extends DBContext {
     public static void main(String[] args) {
         ManageAccount managerAcc = new ManageAccount();
         // Tạo đối tượng User với các thông tin mẫu
-//        User student = new User();
-//        student.setUsername("Nguyen Van A");
-//        student.setPassword("123");
-//        student.setEmail("phongnnhe176274@fpt.edu.vn");
-//
-//        // Sử dụng java.util.Date cho ngày sinh
-//        student.setCreatedDate(new Date()); // Đặt ngày sinh là ngày hiện tại
-//
-//        student.setStatusID(1); // Trạng thái hoạt động
-//        student.setRoleID(4);
-//
-//        student.setPosition("Admissions Department Officer.");
-//
-//        // Gọi phương thức insertAccount
-//        ManageAccount createAccount = new ManageAccount();
-//        int result = createAccount.insertAccount(student);
-//
-//        // Kiểm tra kết quả
-//        if (result > 0) {
-//            System.out.println("Tạo tài khoản thành công!");
-//        } else {
-//            System.out.println("Tạo tài khoản thất bại!");
-//        }
+        User student = new User();
+        student.setUsername("Nguyen Van A");
+        student.setPassword("admin");
+        student.setEmail("abc@fpt.edu.vn");
+
+        // Sử dụng java.util.Date cho ngày sinh
+        student.setCreatedDate(new Date()); // Đặt ngày sinh là ngày hiện tại
+
+        student.setStatusID(1); // Trạng thái hoạt động
+        student.setRoleID(4);
+
+        // Gọi phương thức insertAccount
+        ManageAccount createAccount = new ManageAccount();
+        int result = createAccount.insertAccount(student);
+
+        // Kiểm tra kết quả
+        if (result > 0) {
+            System.out.println("Tạo tài khoản thành công!");
+        } else {
+            System.out.println("Tạo tài khoản thất bại!");
+        }
 
         //test getAccountCount
 //        System.out.println("==Get Account Count Test ==");
@@ -290,17 +307,5 @@ public class ManageAccount extends DBContext {
 //        for (User account : accounts) {
 //            System.out.println("ID: " + account.getId() + ",Username: " + account.getUsername() + ",StatusID: " + account.getStatusID());
 //        }
-        User stu = new User();
-        stu.setId(26);
-        stu.setUsername("TEST");
-        stu.setEmail("hr12@gmail.com");
-        stu.setPhone("0989876789");
-        stu.setStatusID(1);
-        int rs = managerAcc.updateAccount(stu);
-        if (rs > 0) {
-            System.out.println("done");
-        } else {
-            System.out.println("faile");
-        }
     }
 }

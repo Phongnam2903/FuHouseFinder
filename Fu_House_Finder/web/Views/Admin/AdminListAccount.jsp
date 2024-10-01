@@ -35,7 +35,7 @@
                         <i class="fas fa-cog me-2"></i>Cài Đặt
                     </a>
                     <a href="logout" class="list-group-item list-group-item-action bg-dark text-white">
-                        <i class="fas fa-sign-out-alt me-2"></i>Đăng Xuất
+                        <i class="fas fa-sign-out-alt me-2"></i>Log Out
                     </a> 
                 </div>
             </div>
@@ -52,6 +52,13 @@
                         </button>
 
                     </div>
+                </nav>
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="mt-3">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="adminDashboard">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">List Account</li>
+                    </ol>
                 </nav>
                 <h2 class="text-center">List Staff's Account</h2>
                 <div class="d-flex justify-content-between mb-3">
