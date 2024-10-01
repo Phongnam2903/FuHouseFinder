@@ -27,6 +27,23 @@ public class ListHouse extends HttpServlet {
             return;
         }
         
+        
+        //house detail
+        String houseIdStr = request.getParameter("houseId");
+        
+        if (houseIdStr != null) {
+            int houseId = Integer.parseInt(houseIdStr);
+            House houseDetail = daoHouse.getHouseById(houseId);
+            
+            if (houseDetail != null) {
+                String[] imageList = houseDetail.getImage().split(",");
+                request.setAttribute("house", houseDetail);
+                request.setAttribute("imageList", imageList);
+                request.getRequestDispatcher("/Views/HouseOwner/ViewHouseDetail.jsp").forward(request, response);
+                return;
+            }
+        }
+        
         User owner = (User) request.getSession().getAttribute("account");
 
         if (owner == null) {
@@ -50,9 +67,18 @@ public class ListHouse extends HttpServlet {
             }
         }
         
-        List<House> houseList = daoHouse.getHousesByOwnerId(ownerId, pageNumber, pageSize);
+        String search = request.getParameter("search");
+        List<House> houseList;
+        int totalHouses;
         
-        int totalHouses = daoHouse.getTotalHousesByOwnerId(ownerId);
+        if (search != null && !search.isEmpty()) {
+            houseList = daoHouse.searchHouses(ownerId, search, pageNumber, pageSize);
+            totalHouses = daoHouse.getTotalHouseBySearch(ownerId, search);
+        } else {
+            houseList = daoHouse.getHousesByOwnerId(ownerId, pageNumber, pageSize);
+            totalHouses = daoHouse.getTotalHousesByOwnerId(ownerId);
+        }
+        
         int totalPages = (int) Math.ceil((double) totalHouses / pageSize);
         
         if (totalPages < 1) {
@@ -63,6 +89,7 @@ public class ListHouse extends HttpServlet {
         request.setAttribute("houseList", houseList);
         request.setAttribute("currentPage", pageNumber);
         request.setAttribute("totalPages", totalPages);
+        request.setAttribute("search", search);
         
         request.getRequestDispatcher("/Views/HouseOwner/ListHouse.jsp").forward(request, response);
     }
