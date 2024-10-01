@@ -71,7 +71,7 @@ public class Login_User extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("account", account);
                     if (account.getRoleID() == 1) {
-                        response.sendRedirect("viewAccountList");
+                        response.sendRedirect("adminDashboard");
                     } else {
                         response.sendRedirect("ListHouse");
                     }
@@ -79,8 +79,7 @@ public class Login_User extends HttpServlet {
                     request.setAttribute("loginError", "Email or Password is incorrect!");
                     request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (ServletException | IOException e) {
                 request.setAttribute("exceptionError", "An error occurred. Please try again.");
                 request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
             }

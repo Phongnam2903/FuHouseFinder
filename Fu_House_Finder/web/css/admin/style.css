@@ -1,0 +1,73 @@
+/* Đảm bảo html và body chiếm đầy không gian */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Bố trí Flex cho wrapper */
+#wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+/* Đặt sidebar với chiều rộng cố định và chiều cao đầy đủ */
+#sidebar-wrapper {
+    min-width: 250px;
+    max-width: 250px;
+    background-color: #343a40; /* Màu nền sidebar */
+    color: white;
+    height: 100vh; /* Chiều cao bằng viewport */
+    position: fixed; /* Đảm bảo sidebar cố định khi cuộn */
+    left: 0;
+    top: 0;
+    overflow-y: auto; /* Cuộn dọc nếu nội dung quá dài */
+    transition: margin-left 0.3s ease;
+}
+
+/* Đặt nội dung trang chiếm phần còn lại và đẩy sang phải để tránh bị sidebar che */
+#page-content-wrapper {
+    margin-left: 250px; /* Bằng với chiều rộng sidebar */
+    width: 100%;
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+}
+
+/* Khi sidebar bị ẩn */
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -250px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: -250px;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+    #page-content-wrapper {
+        margin-left: 0;
+    }
+}
+
+.sidebar-heading {
+    color: white;
+}
+
+/* Thêm hiệu ứng chuyển tiếp */
+#sidebar-wrapper {
+    transition: margin 0.3s ease;
+}
+
+#page-content-wrapper {
+    transition: margin 0.3s ease;
+}

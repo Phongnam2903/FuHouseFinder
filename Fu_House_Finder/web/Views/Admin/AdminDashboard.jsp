@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Create Account</title>
+        <title>Admin Dashboard</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome -->
@@ -38,6 +38,8 @@
                     </a>
                 </div>
             </div>
+
+            <!-- Page Content -->
             <div id="page-content-wrapper">
                 <!-- Navigation Bar trên Page Content -->
                 <nav class="navbar navbar-expand-lg navbar-dark bg-light border-bottom">
@@ -51,70 +53,62 @@
 
                     </div>
                 </nav>
-                <!-- Breadcrumb -->
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="adminDashboard">Home</a></li>
-                        <li class="breadcrumb-item"><a href="viewAccountList">List Account</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Create New Account</li>
-                    </ol>
-                </nav>
-                <!-- Main Content -->
-                <div class="create-account">
-                    <h2>Create Account For Staff</h2>
-                    <form action="${pageContext.request.contextPath}/createAccount" method="post">
-                        <% 
-                        String message = (String) request.getAttribute("message");
-                        if (message != null) {
-                        %>
-                        <div class="alert" style="color: red">
-                            <%= message %>
-                        </div>
-                        <script>
-                            alert('<%= message %>');
-                        </script>
-                        <% 
-                            }
-                        %>  
-                        <!-- Full Name -->
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter FullName" required>
-                        </div>
 
-                        <!-- Email -->
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
-                        </div>
+                <div class="container-fluid mt-4">
+                    <h1 class="text-dark">Welcome to the admin page!</h1>
 
-                        <!-- Phone Number -->
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number</label>
-                            <input type="phone" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" required>
+                    <!-- Các thẻ thống kê -->
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card text-white bg-warning mb-3">
+                                <div class="card-header"><i class="fas fa-users me-2"></i> Người Dùng</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">150</h5>
+                                    <p class="card-text">Tổng số người dùng.</p>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Password -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password"
-                                   placeholder="Enter Password" required>
+                        <div class="col-md-4">
+                            <div class="card text-white bg-warning mb-3">
+                                <div class="card-header"><i class="fas fa-box me-2"></i> Sản Phẩm</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">75</h5>
+                                    <p class="card-text">Tổng số sản phẩm.</p>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Confirm Password -->
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Re-enter Password</label>
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                                   placeholder="Re-enter Password" required>
+                        <div class="col-md-4">
+                            <div class="card text-white bg-warning mb-3">
+                                <div class="card-header"><i class="fas fa-chart-line me-2"></i> Doanh Thu</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">$12,345</h5>
+                                    <p class="card-text">Tổng doanh thu tháng này.</p>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
-                        <!-- Submit Button -->
-                        <button type="submit" class="btn btn-primary w-100">Create Account</button>
-                    </form>
+                    <!-- Thêm các thành phần quản trị khác như biểu đồ, bảng, v.v. -->
+
+                    <!-- Ví dụ: Biểu đồ Doanh Thu -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-warning text-dark">
+                                    <i class="fas fa-chart-pie me-2"></i>Thống Kê Doanh Thu
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="revenueChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <!-- Bootstrap JS -->
+
+        <!-- Bootstrap JS và phụ thuộc -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
         <!-- Font Awesome JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>

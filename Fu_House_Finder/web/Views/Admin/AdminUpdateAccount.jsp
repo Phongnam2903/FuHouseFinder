@@ -18,7 +18,7 @@
     </head>
     <body>
         <!-- Header -->
-        <%@include file="../Partials/HeaderAdmin.jsp" %>
+        <%@include file="../Partials/Admin/HeaderAdmin.jsp" %>
         <!-- Navigation -->
         <%@include file="../Partials/Navbar.jsp" %>
 
