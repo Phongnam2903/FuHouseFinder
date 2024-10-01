@@ -8,7 +8,7 @@
         <title>Add New House</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/adminAcc.css" rel="stylesheet" type="text/css"/>
-        <link href="../../css/house/cssHouse.css" rel="stylesheet" type="text/css"/>
+        <link href="${pageContext.request.contextPath}/css/house/cssHouse.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <%@include file="../Partials/Header.jsp" %>
@@ -43,12 +43,12 @@
                                        value="${address != null ? address : ''}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="powerPrice" class="form-label">Giá tiền điện trên tháng (VND) <span class="text-danger">*</span></label>
+                                <label for="powerPrice" class="form-label">Monthly Power Price (VND) <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" id="powerPrice" name="powerPrice" placeholder="Enter power price" 
                                        value="${powerPrice != null ? powerPrice : ''}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="waterPrice" class="form-label">Monthly Power Price (VND) <span class="text-danger">*</span></label>
+                                <label for="waterPrice" class="form-label">Monthly Water Price (VND) <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" id="waterPrice" name="waterPrice" placeholder="Enter water price" 
                                        value="${waterPrice != null ? waterPrice : ''}" required>
                             </div>

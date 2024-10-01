@@ -71,14 +71,18 @@
                                     <a href="UpdateHouse?id=${house.id}" class="btn btn-warning" style="margin-right: 20px;">
                                         <i class="fas fa-tools"></i>
                                     </a>
-                                    <a href="javascript:void(0);" onclick="openDeleteModal(${house.id}, '${house.houseName}');" class="btn btn-danger">
+                                    <a href="javascript:void(0);" onclick="openDeleteModal(${house.id}, '${house.houseName}');" class="btn btn-danger" style="margin-right: 20px;">
                                         <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                    <a href="ListHouse?houseId=${house.id}" class="btn btn-info">
+                                        <i class="fas fa-eye"></i>
                                     </a>
                                 </td>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
+
                 <div class="pagination-container">
                     <ul class="pagination justify-content-end">
                         <!-- Nút Previous -->
@@ -97,17 +101,45 @@
                             </li>
                         </c:if>
 
-                        <!-- Các số trang -->
-                        <c:forEach var="i" begin="1" end="${totalPages}">
-                            <c:choose>
-                                <c:when test="${i == currentPage}">
-                                    <li class="page-item active"><span class="page-link">${i}</span></li>
-                                    </c:when>
-                                    <c:otherwise>
-                                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${i}">${i}</a></li>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
+                        <!-- Hiển thị các số trang -->
+                        <c:choose>
+                            <c:when test="${totalPages <= 5}">
+                                <!-- Nếu tổng số trang <= 5, hiển thị tất cả -->
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <li class="page-item active"><span class="page-link">${i}</span></li>
+                                            </c:when>
+                                            <c:otherwise>
+                                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${i}">${i}</a></li>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                <!-- Nếu tổng số trang > 5, hiển thị các trang đầu, cuối và dấu "..." -->
+                                <c:if test="${currentPage > 3}">
+                                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=1">1</a></li>
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                    </c:if>
+
+                                <c:forEach var="i" begin="${(currentPage - 2 < 1) ? 1 : currentPage - 2}" end="${(currentPage + 2 > totalPages) ? totalPages : currentPage + 2}">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <li class="page-item active"><span class="page-link">${i}</span></li>
+                                            </c:when>
+                                            <c:otherwise>
+                                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${i}">${i}</a></li>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+
+                                <c:if test="${currentPage < totalPages - 2}">
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${totalPages}">${totalPages}</a></li>
+                                    </c:if>
+                                </c:otherwise>
+                            </c:choose>
 
                         <!-- Nút Next -->
                         <c:if test="${currentPage < totalPages}">

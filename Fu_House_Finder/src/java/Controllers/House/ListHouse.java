@@ -27,6 +27,23 @@ public class ListHouse extends HttpServlet {
             return;
         }
         
+        
+        //house detail
+        String houseIdStr = request.getParameter("houseId");
+        
+        if (houseIdStr != null) {
+            int houseId = Integer.parseInt(houseIdStr);
+            House houseDetail = daoHouse.getHouseById(houseId);
+            
+            if (houseDetail != null) {
+                String[] imageList = houseDetail.getImage().split(",");
+                request.setAttribute("house", houseDetail);
+                request.setAttribute("imageList", imageList);
+                request.getRequestDispatcher("/Views/HouseOwner/ViewHouseDetail.jsp").forward(request, response);
+                return;
+            }
+        }
+        
         User owner = (User) request.getSession().getAttribute("account");
 
         if (owner == null) {

@@ -2,6 +2,7 @@ package DAL.House;
 
 import DAL.DAO;
 import Models.House;
+import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
@@ -43,8 +44,8 @@ public class DAOHouse extends DAO {
             pre.setInt(9, (house.isFingerPrintLock() ? 1 : 0));
             pre.setInt(10, (house.isCamera() ? 1 : 0));
             pre.setInt(11, (house.isParking() ? 1 : 0));
-            pre.setDate(12, new java.sql.Date(house.getCreatedDate().getTime()));
-            pre.setDate(13, new java.sql.Date(house.getLastModifiedDate().getTime()));
+            pre.setTimestamp(12, new Timestamp(house.getCreatedDate().getTime()));
+            pre.setTimestamp(13, new Timestamp(house.getLastModifiedDate().getTime()));
             pre.setString(14, house.getImage());
 
             n = pre.executeUpdate();
@@ -75,7 +76,7 @@ public class DAOHouse extends DAO {
 
     public List<House> getHousesByOwnerId(int ownerId, int pageNumber, int pageSize) {
         List<House> houses = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[House] WHERE Ownerid = ? ORDER BY ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM [dbo].[House] WHERE Ownerid = ? ORDER BY ID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -230,7 +231,7 @@ public class DAOHouse extends DAO {
 
     public List<House> searchHouses(int ownerId, String search, int pageNumber, int pageSize) {
         List<House> houses = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[House] WHERE Ownerid = ? AND HouseName LIKE ? ORDER BY HouseName OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM [dbo].[House] WHERE Ownerid = ? AND HouseName LIKE ? ORDER BY ID DESC, HouseName OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, ownerId);

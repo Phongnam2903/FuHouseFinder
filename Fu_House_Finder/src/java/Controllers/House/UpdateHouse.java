@@ -9,7 +9,7 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @MultipartConfig(
@@ -77,7 +77,7 @@ public class UpdateHouse extends HttpServlet {
                 house.setFingerPrintLock(fingerPrintLock);
                 house.setCamera(camera);
                 house.setParking(parking);
-                house.setLastModifiedDate(new Date());
+                house.setLastModifiedDate(new Timestamp(System.currentTimeMillis()));
 
                 String[] currentImages = house.getImage() != null ? house.getImage().split(",") : new String[3];
 
