@@ -50,9 +50,18 @@ public class ListHouse extends HttpServlet {
             }
         }
         
-        List<House> houseList = daoHouse.getHousesByOwnerId(ownerId, pageNumber, pageSize);
+        String search = request.getParameter("search");
+        List<House> houseList;
+        int totalHouses;
         
-        int totalHouses = daoHouse.getTotalHousesByOwnerId(ownerId);
+        if (search != null && !search.isEmpty()) {
+            houseList = daoHouse.searchHouses(ownerId, search, pageNumber, pageSize);
+            totalHouses = daoHouse.getTotalHouseBySearch(ownerId, search);
+        } else {
+            houseList = daoHouse.getHousesByOwnerId(ownerId, pageNumber, pageSize);
+            totalHouses = daoHouse.getTotalHousesByOwnerId(ownerId);
+        }
+        
         int totalPages = (int) Math.ceil((double) totalHouses / pageSize);
         
         if (totalPages < 1) {
@@ -63,6 +72,7 @@ public class ListHouse extends HttpServlet {
         request.setAttribute("houseList", houseList);
         request.setAttribute("currentPage", pageNumber);
         request.setAttribute("totalPages", totalPages);
+        request.setAttribute("search", search);
         
         request.getRequestDispatcher("/Views/HouseOwner/ListHouse.jsp").forward(request, response);
     }

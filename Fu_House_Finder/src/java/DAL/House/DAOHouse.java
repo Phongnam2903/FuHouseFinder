@@ -53,7 +53,7 @@ public class DAOHouse extends DAO {
         }
         return n;
     }
-    
+
     public int getTotalHousesByOwnerId(int ownerId) {
         int totalHouses = 0;
         String sql = "SELECT COUNT(*) AS Total FROM [dbo].[House] WHERE Ownerid = ?";
@@ -80,8 +80,7 @@ public class DAOHouse extends DAO {
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, ownerId);
-            int offset = (pageNumber - 1) * pageSize;
-            pre.setInt(2, offset);
+            pre.setInt(2, (pageNumber - 1) * pageSize);
             pre.setInt(3, pageSize);
             ResultSet rs = pre.executeQuery();
 
@@ -228,6 +227,62 @@ public class DAOHouse extends DAO {
 
         return n;
     }
-    
-    
+
+    public List<House> searchHouses(int ownerId, String search, int pageNumber, int pageSize) {
+        List<House> houses = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[House] WHERE Ownerid = ? AND HouseName LIKE ? ORDER BY HouseName OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, ownerId);
+            pre.setString(2, "%" + search + "%");
+            pre.setInt(3, (pageNumber - 1) * pageSize);
+            pre.setInt(4, pageSize);
+
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                House house = new House();
+                house.setId(rs.getInt("ID"));
+                house.setHouseName(rs.getString("HouseName"));
+                house.setAddress(rs.getString("Address"));
+                house.setDescription(rs.getString("Description"));
+                house.setDistanceToSchool(rs.getFloat("DistanceToSchool"));
+                house.setOwnerId(rs.getInt("Ownerid"));
+                house.setPowerPrice(rs.getDouble("PowerPrice"));
+                house.setWaterPrice(rs.getDouble("WaterPrice"));
+                house.setOtherServicePrice(rs.getDouble("OtherServicePrice"));
+                house.setFingerPrintLock(rs.getInt("FingerPrintLock") == 1);
+                house.setCamera(rs.getInt("Camera") == 1);
+                house.setParking(rs.getInt("Parking") == 1);
+                house.setCreatedDate(rs.getDate("CreatedDate"));
+                house.setLastModifiedDate(rs.getDate("LastModifiedDate"));
+                house.setImage(rs.getString("Image"));
+
+                houses.add(house);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return houses;
+    }
+
+    public int getTotalHouseBySearch(int ownerId, String search) {
+        int totalHouses = 0;
+        String sql = "SELECT COUNT(*) AS Total FROM [dbo].[House] WHERE Ownerid = ? AND HouseName LIKE ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, ownerId);
+            pre.setString(2, "%" + search + "%");
+
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                totalHouses = rs.getInt("Total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return totalHouses;
+    }
 }
