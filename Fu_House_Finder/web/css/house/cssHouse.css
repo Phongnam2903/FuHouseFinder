@@ -21,5 +21,11 @@
     justify-content: flex-end; /* Căn về phía bên phải */
     margin-top: 20px; /* Khoảng cách từ phần nội dung trên */
 }
+.form-section {
+    margin-bottom: 30px;
+}
+.form-label {
+    font-weight: bold;
+}
 
 
