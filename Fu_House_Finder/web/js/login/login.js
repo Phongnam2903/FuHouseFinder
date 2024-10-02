@@ -1,20 +1,18 @@
-
 function togglePasswordVisibility() {
-    var passwordInput = document.getElementById('pass');
-    var togglePassword = document.getElementById('togglePassword');
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        togglePassword.textContent = '🙈 Hide Password️';
+    const passwordInput = document.querySelector('input[name="password"]');
+    const toggleIcon = document.getElementById('togglePassword');
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.textContent = "🙈 Hide Password️";
+
+        // Đặt thời gian 3 giây để tự động chuyển về chế độ ẩn mật khẩu
+        setTimeout(() => {
+            passwordInput.type = "password";
+            toggleIcon.textContent = "👁 Show Password️";
+        }, 3000); // 3 giây (3000 ms)
     } else {
-        passwordInput.type = 'password';
-        togglePassword.textContent = '👁 Show Password️️';
+        passwordInput.type = "password";
+        toggleIcon.textContent = "👁 Show Password️";
     }
 }
-
-// Hide alert after 3 seconds
-setTimeout(function () {
-    var alert = document.getElementById('alert');
-    if (alert) {
-        alert.classList.add('hidden');
-    }
-}, 3000);

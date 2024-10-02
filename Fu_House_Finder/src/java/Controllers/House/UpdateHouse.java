@@ -2,15 +2,24 @@ package Controllers.House;
 
 import DAL.House.DAOHouse;
 import Models.House;
+import Models.User;
 import Validations.UploadFile;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 public class UpdateHouse extends HttpServlet {
 
     @Override
@@ -22,12 +31,17 @@ public class UpdateHouse extends HttpServlet {
             DAOHouse daoHouse = new DAOHouse();
             House house = daoHouse.getHouseById(houseId);
 
-            if (house != null) {
-                request.setAttribute("house", house);
-                request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
-            } else {
+            if (house == null) {
                 response.sendRedirect("ListHouse");
+                return;
             }
+
+            String[] imageList = house.getImage().split(",");
+
+            request.setAttribute("house", house);
+            request.setAttribute("imageList", imageList);
+
+            request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("ListHouse");
@@ -38,69 +52,145 @@ public class UpdateHouse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Lấy các thông tin chỉnh sửa từ form
-            int houseId = Integer.parseInt(request.getParameter("houseId"));
-            String houseName = request.getParameter("houseName");
-            String address = request.getParameter("address");
-            String description = request.getParameter("description");
-            float distanceToSchool = Float.parseFloat(request.getParameter("distance"));
-            double powerPrice = Double.parseDouble(request.getParameter("powerPrice"));
-            double waterPrice = Double.parseDouble(request.getParameter("waterPrice"));
-            double servicePrice = Double.parseDouble(request.getParameter("servicePrice"));
+            User owner = (User) request.getSession().getAttribute("account");
+
+            if (owner == null) {
+                response.sendRedirect("login");
+                return;
+            }
+
+            int ownerId = owner.getId();
+
+            int houseId = Integer.parseInt(request.getParameter("houseId").trim());
+            String houseName = request.getParameter("houseName").trim();
+            String address = request.getParameter("address").trim();
+            String description = request.getParameter("description").trim();
+            String distanceStr = request.getParameter("distance").trim();
+            String powerPriceStr = request.getParameter("powerPrice").trim();
+            String waterPriceStr = request.getParameter("waterPrice").trim();
+            String servicePriceStr = request.getParameter("servicePrice").trim();
             boolean fingerPrintLock = request.getParameter("fingerPrintLock") != null;
             boolean camera = request.getParameter("camera") != null;
             boolean parking = request.getParameter("parking") != null;
 
-            // Xử lý upload file nếu có
+            if (houseName.isEmpty() || address.isEmpty() || distanceStr.isEmpty()
+                    || powerPriceStr.isEmpty() || waterPriceStr.isEmpty()) {
+
+                request.setAttribute("message", "Fields marked with * cannot be blank or contain only spaces!");
+                request.setAttribute("alertClass", "alert-danger");
+
+                setRequestAttributes(request, houseName, address, description, distanceStr,
+                        powerPriceStr, waterPriceStr, servicePriceStr, fingerPrintLock, camera, parking);
+
+                request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
+                return;
+            }
+
+            float distanceToSchool;
+            double powerPrice, waterPrice, servicePrice;
+            try {
+                distanceToSchool = Float.parseFloat(distanceStr);
+                powerPrice = Double.parseDouble(powerPriceStr);
+                waterPrice = Double.parseDouble(waterPriceStr);
+                servicePrice = Double.parseDouble(servicePriceStr);
+            } catch (NumberFormatException e) {
+                request.setAttribute("message", "Distance, power, water, and service prices must be valid numbers!");
+                request.setAttribute("alertClass", "alert-danger");
+
+                setRequestAttributes(request, houseName, address, description, distanceStr,
+                        powerPriceStr, waterPriceStr, servicePriceStr, fingerPrintLock, camera, parking);
+
+                request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
+                return;
+            }
+
+            if (distanceToSchool < 0 || powerPrice < 0 || waterPrice < 0 || servicePrice < 0) {
+                request.setAttribute("message", "Distance, power, water, and service prices cannot be negative numbers!");
+                request.setAttribute("alertClass", "alert-danger");
+
+                setRequestAttributes(request, houseName, address, description, distanceStr,
+                        powerPriceStr, waterPriceStr, servicePriceStr, fingerPrintLock, camera, parking);
+
+                request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
+                return;
+            }
+
             UploadFile uploadFile = new UploadFile();
+            String existingImages = request.getParameter("existingImages");
+            String[] imageFileIndexes = request.getParameterValues("imageFileIndexes");
             List<String> imageFiles = uploadFile.fileUpload(request, response);
 
-            // Xử lý chuỗi hình ảnh (nếu có thay đổi)
-            String images = String.join(",", imageFiles);
+            String images;
+            if (!imageFiles.isEmpty()) {
+                List<String> allImages = new ArrayList<>(Arrays.asList(existingImages.split(",")));
+                for (int i = 0; i < imageFiles.size(); i++) {
+                    int indexToUpdate = Integer.parseInt(imageFileIndexes[i]);
 
-            // Tạo đối tượng House và cập nhật thông tin
-            DAOHouse daoHouse = new DAOHouse();
-            House house = daoHouse.getHouseById(houseId);
-            if (house != null) {
-                house.setHouseName(houseName);
-                house.setAddress(address);
-                house.setDescription(description);
-                house.setDistanceToSchool(distanceToSchool);
-                house.setPowerPrice(powerPrice);
-                house.setWaterPrice(waterPrice);
-                house.setOtherServicePrice(servicePrice);
-                house.setFingerPrintLock(fingerPrintLock);
-                house.setCamera(camera);
-                house.setParking(parking);
-                house.setLastModifiedDate(new Date());
-
-                // Cập nhật hình ảnh nếu người dùng đã upload mới
-                if (!images.isEmpty()) {
-                    house.setImage(images);
+                    if (indexToUpdate < allImages.size()) {
+                        allImages.set(indexToUpdate, imageFiles.get(i));
+                    } else {
+                        allImages.add(imageFiles.get(i));
+                    }
                 }
 
-                // Cập nhật nhà trọ trong database
-                int result = daoHouse.updateHouse(house);
-
-                if (result > 0) {
-                    request.setAttribute("message", "Cập nhật nhà trọ thành công!");
-                    request.setAttribute("alertClass", "alert-success");
-                } else {
-                    request.setAttribute("message", "Cập nhật nhà trọ thất bại!");
-                    request.setAttribute("alertClass", "alert-danger");
-                }
-
-                // Quay lại form với thông báo
-                request.setAttribute("house", house);
-                request.getRequestDispatcher("Views/HouseOwner/AddHouse.jsp").forward(request, response);
+                // Kết hợp các ảnh thành chuỗi
+                images = String.join(",", allImages);
             } else {
-                response.sendRedirect("ListHouse");
+                images = existingImages;
             }
+
+            // Cập nhật nhà trọ
+            House house = new House();
+            house.setId(houseId);
+            house.setHouseName(houseName);
+            house.setAddress(address);
+            house.setDescription(description);
+            house.setDistanceToSchool(distanceToSchool);
+            house.setPowerPrice(powerPrice);
+            house.setWaterPrice(waterPrice);
+            house.setOtherServicePrice(servicePrice);
+            house.setFingerPrintLock(fingerPrintLock);
+            house.setCamera(camera);
+            house.setParking(parking);
+            house.setOwnerId(ownerId);
+            house.setLastModifiedDate(new Date());
+            house.setImage(images);
+
+            DAOHouse daoHouse = new DAOHouse();
+            int result = daoHouse.updateHouse(house);
+
+            if (result > 0) {
+                request.setAttribute("message", "Update House Successfully!");
+                request.setAttribute("alertClass", "alert-success");
+            } else {
+                request.setAttribute("message", "Fail To Update House!");
+                request.setAttribute("alertClass", "alert-danger");
+            }
+
+            request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("ListHouse");
+            request.setAttribute("message", "Đã xảy ra lỗi, vui lòng thử lại!");
+            request.setAttribute("alertClass", "alert-danger");
+            request.getRequestDispatcher("Views/HouseOwner/UpdateHouse.jsp").forward(request, response);
         }
+    }
+
+    private void setRequestAttributes(HttpServletRequest request, String houseName, String address,
+            String description, String distanceStr, String powerPriceStr,
+            String waterPriceStr, String servicePriceStr, boolean fingerPrintLock,
+            boolean camera, boolean parking) {
+        request.setAttribute("houseName", houseName);
+        request.setAttribute("address", address);
+        request.setAttribute("description", description);
+        request.setAttribute("distance", distanceStr);
+        request.setAttribute("powerPrice", powerPriceStr);
+        request.setAttribute("waterPrice", waterPriceStr);
+        request.setAttribute("servicePrice", servicePriceStr);
+        request.setAttribute("fingerPrintLock", fingerPrintLock);
+        request.setAttribute("camera", camera);
+        request.setAttribute("parking", parking);
     }
 
     @Override

@@ -19,13 +19,14 @@ public class UploadFile {
 
     public List<String> fileUpload(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UPLOAD_DIRECTORY = request.getServletContext().getRealPath("") + File.separator + "uploadFiles";
-        Path uploadPath = Paths.get(UPLOAD_DIRECTORY);
+        // Get the real path to the "build/web" directory
+        String realPath = request.getServletContext().getRealPath("");
+        // Navigate to the "web/images" directory
+        Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("web/images");
+        UPLOAD_DIRECTORY = uploadPath.toString();
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
-        UPLOAD_DIRECTORY = uploadPath.toString();
-
         List<String> uploadedFileNames = new ArrayList<>();
 
         try {
@@ -46,7 +47,7 @@ public class UploadFile {
         } catch (ServletException | IOException e) {
             System.out.println("===========================");
             System.out.println("Error at upload file: " + e.getMessage());
-            e.getStackTrace();
+            e.printStackTrace(); // Changed from e.getStackTrace() to e.printStackTrace() for proper error logging
         }
         return uploadedFileNames;
     }
@@ -64,8 +65,7 @@ public class UploadFile {
         String contentDisp = part.getHeader("content-disposition");
         String[] items = contentDisp.split(";");
         for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                // Lấy tên tập tin ban đầu
+            if (s.trim().startsWith("filename")) {// Lấy tên tập tin ban đầu
                 String originalFileName = s.substring(s.indexOf("=") + 2, s.length() - 1);
                 // Tạo một chuỗi duy nhất (UUID) để thêm vào tên tập tin
                 String uniqueID = UUID.randomUUID().toString();

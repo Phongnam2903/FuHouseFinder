@@ -123,20 +123,7 @@ public class ManageAccount extends DBContext {
                 + "           ,[Avatar]\n"
                 + "           ,[CreatedDate]\n"
                 + "           ,[RoomHistoriesID])\n"
-                + "     VALUES\n"
-                + "           (<FacebookUserId, nvarchar(300),>\n"
-                + "           ,<GoogleUserId, nvarchar(300),>\n"
-                + "           ,<FullName, nvarchar(50),>\n"
-                + "           ,<Password, nvarchar(255),>\n"
-                + "           ,<Email, nvarchar(100),>\n"
-                + "           ,<PhoneNumber, nvarchar(20),>\n"
-                + "           ,<DateOfBirth, date,>\n"
-                + "           ,<Address, nvarchar(255),>\n"
-                + "           ,<StatusID, int,>\n"
-                + "           ,<Roleid, int,>\n"
-                + "           ,<Avatar, nvarchar(255),>\n"
-                + "           ,<CreatedDate, datetime,>\n"
-                + "           ,<RoomHistoriesID, int,>)";
+                + "     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         PreparedStatement prestate = null;
         try {

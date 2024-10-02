@@ -35,25 +35,36 @@ public class Login_User extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String submit = request.getParameter("submit");
-        //check that button submit is not empty
+
         if (submit != null) {
-            //Check that email isn't empty
+            boolean hasError = false;
+
+            // Clear previous error messages
+            request.removeAttribute("emailError");
+            request.removeAttribute("passwordError");
+            request.removeAttribute("emailFormatError");
+            request.removeAttribute("loginError");
+
+            // Validate Email
             if (email == null || email.trim().isEmpty()) {
-                request.setAttribute("message", "Email can't be empty");
-                request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
-                return;
+                request.setAttribute("emailError", "Email can't be empty");
+                hasError = true;
+            } else if (!email.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+                request.setAttribute("emailFormatError", "Invalid email format! Please check your email.");
+                hasError = true;
             }
-            //Check that password isn't empty
+
+            // Validate Password
             if (password == null || password.trim().isEmpty()) {
-                request.setAttribute("message", "Password can't be empty");
+                request.setAttribute("passwordError", "Password can't be empty");
+                hasError = true;
+            }
+
+            if (hasError) {
                 request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
                 return;
             }
-            //check format email
-            if (!email.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
-                request.setAttribute("message", "Invalid email format!. Please check email again");
-                request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
-            }
+
             try {
                 User account = login.loginUser(email, password);
                 if (account != null) {
@@ -65,13 +76,13 @@ public class Login_User extends HttpServlet {
                         response.sendRedirect("ListHouse");
                     }
                 } else {
-                    request.setAttribute("message", "Email or Password is not correct!");
+                    request.setAttribute("loginError", "Email or Password is incorrect!");
                     request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                request.setAttribute("mess", "An error occurred. Please try again.");
-                request.getRequestDispatcher("Views/Login/login.jsp").forward(request, response);
+                request.setAttribute("exceptionError", "An error occurred. Please try again.");
+                request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
             }
         }
     }

@@ -1,0 +1,21 @@
+body {
+    background-color: #f8f9fa; /* Màu nền nhẹ cho toàn bộ trang */
+}
+
+.container {
+    border-radius: 8px; /* Bo góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    padding: 20px; /* Padding cho phần nội dung */
+    margin-top: 20px; /* Khoảng cách từ trên */
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold; /* In đậm cho các label */
+}
+
+img {
+    border-radius: 8px; /* Bo góc cho hình ảnh */
+    max-width: 100%; /* Chiều rộng tối đa cho hình ảnh */
+    height: auto; /* Chiều cao tự động */
+}

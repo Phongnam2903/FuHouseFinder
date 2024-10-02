@@ -5,55 +5,44 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Danh sách nhà trọ</title>
+        <title>House List</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="${pageContext.request.contextPath}/css/adminAcc.css" rel="stylesheet" type="text/css"/>
-        <style>
-            .table {
-                border-collapse: collapse; /* Để bỏ kẻ dọc */
-            }
-            .table th, .table td {
-                border-bottom: 2px solid #dee2e6; /* Chỉ kẻ ngang */
-            }
-            .table tr:hover {
-                background-color: #f8f9fa; /* Màu nền khi hover */
-                cursor: pointer; /* Con trỏ chuột biến thành pointer khi hover */
-            }
-            .modal-header {
-                background-color: #ff8c00; /* Màu cam */
-                color: white;
-            }
-            .modal-footer .btn-danger {
-                background-color: #ff8c00; /* Nút xóa màu cam */
-                border-color: #ff8c00;
-            }
-        </style>
+        <link href="${pageContext.request.contextPath}/css/house/cssHouse.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <%@include file="../Partials/Header.jsp" %>
 
         <div class="container mt-4">
-            <h2 class="text-center mb-4">Danh sách nhà trọ</h2>
+            <h2 class="text-center mb-4">House List</h2>
             <div class="mb-4">
-                <a href="AddHouse" class="btn btn-secondary">+ Thêm Trọ Mới</a>
+                <a href="AddHouse" class="btn btn-secondary">+ Add New House</a>
+            </div>
+
+            <div class="d-flex justify-content-end mb-4">
+                <form action="${pageContext.request.contextPath}/ListHouse" method="get" class="input-group" style="max-width: 400px;">
+                    <input type="text" name="search" class="form-control" placeholder="Enter house name to search" 
+                           aria-label="Enter house name to search" value="${search != null ? search : ''}" />
+                    <button class="btn btn-secondary" type="submit">Search</button>
+                </form>
             </div>
 
             <c:if test="${not empty houseList}">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">STT</th>
-                            <th scope="col">Tên nhà trọ</th>
-                            <th scope="col">Tiền chưa cho thuê</th>
-                            <th scope="col">Tiện ích</th>
-                            <th scope="col">Tùy chọn</th>
+                            <th scope="col">No.</th>
+                            <th scope="col">House Name</th>
+                            <th scope="col">Unrented Price</th>
+                            <th scope="col">Utilities</th>
+                            <th scope="col">Options</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach var="house" items="${houseList}" varStatus="status">
                             <tr>
-                                <td>${status.index + 1}</td>
+                                <td>${status.index + 1 + (currentPage - 1) * itemsPerPage}</td>
                                 <td>${house.houseName}</td>
                                 <td>
                                     chưa thêm
@@ -62,19 +51,19 @@
                                     <c:choose>
                                         <c:when test="${house.fingerPrintLock || house.camera || house.parking}">
                                             <c:if test="${house.fingerPrintLock}">
-                                                <i class="fas fa-fingerprint" title="Khóa vân tay" style="font-size: 2rem;
+                                                <i class="fas fa-fingerprint" title="Fingerprint Lock" style="font-size: 2rem;
                                                    margin-right: 20px;"></i>
                                             </c:if>
                                             <c:if test="${house.camera}">
-                                                <i class="fas fa-video" title="Camera giám sát" style="font-size: 2rem;
+                                                <i class="fas fa-video" title="Security camera" style="font-size: 2rem;
                                                    margin-right: 20px;"></i>
                                             </c:if>
                                             <c:if test="${house.parking}">
-                                                <i class="fas fa-parking" title="Chỗ để xe" style="font-size: 2rem;"  ></i>
+                                                <i class="fas fa-parking" title="Parking" style="font-size: 2rem;"  ></i>
                                             </c:if>
                                         </c:when>
                                         <c:otherwise>
-                                            <i class="fas fa-ban" title="Không có tiện ích" style="font-size: 2rem;"></i>
+                                            <p>No utilities available</p>
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
@@ -82,19 +71,98 @@
                                     <a href="UpdateHouse?id=${house.id}" class="btn btn-warning" style="margin-right: 20px;">
                                         <i class="fas fa-tools"></i>
                                     </a>
-                                    <a href="javascript:void(0);" onclick="openDeleteModal(${house.id}, '${house.houseName}');" class="btn btn-danger">
+                                    <a href="javascript:void(0);" onclick="openDeleteModal(${house.id}, '${house.houseName}');" class="btn btn-danger" style="margin-right: 20px;">
                                         <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                    <a href="ListHouse?houseId=${house.id}" class="btn btn-info">
+                                        <i class="fas fa-eye"></i>
                                     </a>
                                 </td>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
+
+                <div class="pagination-container">
+                    <ul class="pagination justify-content-end">
+                        <!-- Nút Previous -->
+                        <c:if test="${currentPage > 1}">
+                            <li class="page-item">
+                                <a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${currentPage - 1}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo; Previous</span>
+                                </a>
+                            </li>
+                        </c:if>
+                        <c:if test="${currentPage == 1}">
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo; Previous</span>
+                                </span>
+                            </li>
+                        </c:if>
+
+                        <!-- Hiển thị các số trang -->
+                        <c:choose>
+                            <c:when test="${totalPages <= 5}">
+                                <!-- Nếu tổng số trang <= 5, hiển thị tất cả -->
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <li class="page-item active"><span class="page-link">${i}</span></li>
+                                            </c:when>
+                                            <c:otherwise>
+                                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${i}">${i}</a></li>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                <!-- Nếu tổng số trang > 5, hiển thị các trang đầu, cuối và dấu "..." -->
+                                <c:if test="${currentPage > 3}">
+                                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=1">1</a></li>
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                    </c:if>
+
+                                <c:forEach var="i" begin="${(currentPage - 2 < 1) ? 1 : currentPage - 2}" end="${(currentPage + 2 > totalPages) ? totalPages : currentPage + 2}">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <li class="page-item active"><span class="page-link">${i}</span></li>
+                                            </c:when>
+                                            <c:otherwise>
+                                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${i}">${i}</a></li>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+
+                                <c:if test="${currentPage < totalPages - 2}">
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                    <li class="page-item"><a class="page-link" href="${pageContext.request.context.path}/ListHouse?page=${totalPages}">${totalPages}</a></li>
+                                    </c:if>
+                                </c:otherwise>
+                            </c:choose>
+
+                        <!-- Nút Next -->
+                        <c:if test="${currentPage < totalPages}">
+                            <li class="page-item">
+                                <a class="page-link" href="${pageContext.request.contextPath}/ListHouse?page=${currentPage + 1}" aria-label="Next">
+                                    <span aria-hidden="true">Next &raquo;</span>
+                                </a>
+                            </li>
+                        </c:if>
+                        <c:if test="${currentPage == totalPages}">
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">Next &raquo;</span>
+                                </span>
+                            </li>
+                        </c:if>
+                    </ul>
+                </div>
             </c:if>
 
             <c:if test="${empty houseList}">
                 <div class="alert alert-info text-center">
-                    Không có nhà trọ nào được tìm thấy.
+                    No houses of landlord found.
                 </div>
             </c:if>
         </div>
@@ -104,19 +172,19 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa nhà trọ</h5>
+                        <h5 class="modal-title" id="deleteModalLabel">Confirm House Deletion</h5>
                     </div>
                     <div class="modal-body">
-                        Bạn có chắc chắn muốn xóa nhà trọ <span id="houseNameToDelete"></span> không?
+                        Are you sure you want to delete the house <span id="houseNameToDelete"></span>?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Xóa</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Delete</a>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <%@include file="../Partials/Footer.jsp" %>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

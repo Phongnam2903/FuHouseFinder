@@ -4,7 +4,7 @@
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>FU House Finder - Login</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
@@ -23,23 +23,37 @@
             <!-- Right Section - Login Form -->
             <div class="right-section d-flex flex-column justify-content-center align-items-center w-50 p-5">
                 <h2 class="mb-4">Login</h2>
-                <!-- Display Error  -->
-                <c:if test="${not empty message}">
+                <!-- Display General Error Messages -->
+                <c:if test="${not empty loginError}">
                     <div class="alert alert-danger w-75 mb-3" style="border-radius: 20px">
-                        ${message}
+                        ${loginError}
+                    </div>
+                </c:if>
+                <c:if test="${not empty exceptionError}">
+                    <div class="alert alert-danger w-75 mb-3" style="border-radius: 20px">
+                        ${exceptionError}
                     </div>
                 </c:if>
                 <!-- Login Form -->
                 <form action="${pageContext.request.contextPath}/login" method="POST" class="w-75">
                     <!-- Email input -->
                     <div class="form-group mb-3">
-                        <input type="email" name="email" class="form-control form-control-lg" placeholder="Email or Phone Number" required>
+                        <input type="email" name="email" class="form-control form-control-lg" placeholder="Email or Phone Number" value="${param.email}" required>
+                        <c:if test="${not empty emailError}">
+                            <div class="error-message">${emailError}</div>
+                        </c:if>
+                        <c:if test="${not empty emailFormatError}">
+                            <div class="error-message">${emailFormatError}</div>
+                        </c:if>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-group mb-3">
-                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Password " required>
+                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" required>
                         <span id="togglePassword" onclick="togglePasswordVisibility()">👁 Show Password️</span>
+                        <c:if test="${not empty passwordError}">
+                            <div class="error-message">${passwordError}</div>
+                        </c:if>
                     </div>
 
                     <!-- Login button -->
@@ -58,6 +72,6 @@
 
             </div>
         </div>
-
+        <script src="${pageContext.request.contextPath}/js/login/login.js" type="text/javascript"></script>
     </body>
 </html>

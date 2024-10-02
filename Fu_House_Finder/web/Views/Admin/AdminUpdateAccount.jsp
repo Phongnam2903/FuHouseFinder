@@ -42,8 +42,8 @@
 
                 <!-- Address -->
                 <div class="col-md-6">
-                    <label for="address" class="form-label">Address:</label>
-                    <input type="text" name="address" id="address" class="form-control" value="${student.address}" required>
+                    <label for="address" class="form-label">Phone Number</label>
+                    <input type="text" name="address" id="address" class="form-control" value="${student.phone}" required>
                 </div>
 
                 <!-- Status -->
