@@ -55,73 +55,40 @@ public class ManageAccount extends DBContext {
     }
 
     public int updateAccount(User student) {
-        String sql = "UPDATE [dbo].[User] SET "
-                + "[FacebookUserId] = ?, "
-                + "[GoogleUserId] = ?, "
-                + "[FullName] = ?, "
-                + "[Password] = ?, "
-                + "[Email] = ?, "
-                + "[PhoneNumber] = ?, "
-                + "[DateOfBirth] = ?, "
-                + "[Address] = ?, "
-                + "[StatusID] = ?, "
-                + "[Roleid] = ?, "
-                + "[Avatar] = ?, "
-                + "[CreatedDate] = ?, "
-                + "[RoomHistoriesID] = ? "
-                + "WHERE id = ?";
-
-        int rowsUpdated = 0;
-        PreparedStatement prestate = null;
+        int n = 0;
+        String sql = "UPDATE [dbo].[User]"
+                + "   SET [FacebookUserId] = ?,[GoogleUserId] = ?,[FullName] = ?,[Email] = ?,[PhoneNumber] =?,[DateOfBirth] = ?,[Address] =?,"
+                + "[StatusID] =?,[Roleid] = ?,[Avatar] = ?,[CreatedDate] = ?,[RoomHistoriesID] = ? WHERE ID = ?";
 
         try {
-            prestate = connection.prepareStatement(sql);
-            // Thiết lập các tham số theo đúng thứ tự trong câu lệnh SQL
-            prestate.setString(1, student.getFacebookUserid());
-            prestate.setString(2, student.getGoogleUserid());
-            prestate.setString(3, student.getUsername());
-            prestate.setString(4, student.getPassword());
-            prestate.setString(5, student.getEmail());
-            prestate.setString(6, student.getPhone());
-
-            // Chuyển đổi java.util.Date sang java.sql.Date cho DateOfBirth
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, student.getFacebookUserid());
+            statement.setString(2, student.getGoogleUserid());
+            statement.setString(3, student.getUsername());
+//            statement.setString(4, student.getPassword());
+            statement.setString(4, student.getEmail());
+            statement.setString(5, student.getPhone());
             if (student.getDateOfBirth() != null) {
-                prestate.setDate(7, new java.sql.Date(student.getDateOfBirth().getTime()));
+                statement.setDate(6, new java.sql.Date(student.getDateOfBirth().getTime()));
             } else {
-                prestate.setNull(7, java.sql.Types.DATE);
+                statement.setNull(6, java.sql.Types.DATE);
             }
-
-            prestate.setString(8, student.getAddress());
-            prestate.setInt(9, student.getStatusID());
-            prestate.setInt(10, student.getRoleID());
-            prestate.setString(11, student.getAvatar());
-
-            // Kiểm tra và chuyển đổi CreatedDate
+            statement.setString(7, student.getAddress());
+            statement.setInt(8, student.getStatusID());
+            statement.setInt(9, student.getRoleID());
+            statement.setString(10, student.getAvatar());
             if (student.getCreatedDate() != null) {
-                prestate.setDate(12, new java.sql.Date(student.getCreatedDate().getTime()));
+                statement.setDate(11, new java.sql.Date(student.getCreatedDate().getTime()));
             } else {
-                prestate.setNull(12, java.sql.Types.DATE);
+                statement.setNull(11, java.sql.Types.DATE);
             }
-
-            prestate.setInt(13, student.getRoomHistoriesID());
-
-            // Thiết lập tham số thứ 14 cho WHERE clause
-            prestate.setInt(14, student.getId());
-
-            // Thực thi câu lệnh cập nhật
-            rowsUpdated = prestate.executeUpdate();
+            statement.setInt(12, student.getRoomHistoriesID());
+            statement.setInt(13, student.getId());
+            n = statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (prestate != null) {
-                try {
-                    prestate.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
-        return rowsUpdated;
+        return n;
     }
 
     public boolean deleteAccountById(int id) {
@@ -270,28 +237,27 @@ public class ManageAccount extends DBContext {
     }
 
     public static void main(String[] args) {
-        ManageAccount managerAcc = new ManageAccount();
-        // Tạo đối tượng User với các thông tin mẫu
-        User student = new User();
-        student.setUsername("Nguyen Van A");
-        student.setPassword("admin");
-        student.setEmail("abc@fpt.edu.vn");
+        ManageAccount manageAccount = new ManageAccount();
 
-        // Sử dụng java.util.Date cho ngày sinh
-        student.setCreatedDate(new Date()); // Đặt ngày sinh là ngày hiện tại
+        // Mocking user data for testing
+        User testUser = new User();
+        testUser.setUsername("John Doe");
+        testUser.setEmail("johndoe@example.com");
+        testUser.setPhone("1234567890");
+        testUser.setAddress("123 Main St, City, Country");
+        testUser.setStatusID(1);
+        testUser.setRoleID(4);
+        testUser.setCreatedDate(new Date()); // Assuming account created today
+        testUser.setId(41); // ID of the user to update in the database
 
-        student.setStatusID(1); // Trạng thái hoạt động
-        student.setRoleID(4);
+        // Call updateAccount and get the result
+        int result = manageAccount.updateAccount(testUser);
 
-        // Gọi phương thức insertAccount
-        ManageAccount createAccount = new ManageAccount();
-        int result = createAccount.insertAccount(student);
-
-        // Kiểm tra kết quả
+        // Output the result
         if (result > 0) {
-            System.out.println("Tạo tài khoản thành công!");
+            System.out.println("Account updated successfully!");
         } else {
-            System.out.println("Tạo tài khoản thất bại!");
+            System.out.println("Failed to update account.");
         }
 
         //test getAccountCount
