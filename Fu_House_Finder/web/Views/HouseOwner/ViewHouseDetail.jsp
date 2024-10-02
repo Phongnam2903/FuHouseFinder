@@ -17,8 +17,9 @@
         <div class="container">
             <h2 class="text-center mb-4 mt-4">House Details</h2>
 
-            <div class="mb-4">
+            <div class="d-flex justify-content-between mb-4">
                 <a href="ListHouse" class="btn btn-secondary">< Back to House List</a>
+                <a href="UpdateHouse?id=${house.id}" class="btn btn-secondary">Update House ></a>
             </div>
 
             <div class="row">
