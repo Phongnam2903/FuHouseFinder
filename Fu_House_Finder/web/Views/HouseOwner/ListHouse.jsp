@@ -68,14 +68,14 @@
                                     </c:choose>
                                 </td>
                                 <td>
+                                    <a href="ListHouse?houseId=${house.id}" class="btn btn-info" style="margin-right: 20px;">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <a href="UpdateHouse?id=${house.id}" class="btn btn-warning" style="margin-right: 20px;">
                                         <i class="fas fa-tools"></i>
                                     </a>
-                                    <a href="javascript:void(0);" onclick="openDeleteModal(${house.id}, '${house.houseName}');" class="btn btn-danger" style="margin-right: 20px;">
+                                    <a href="javascript:void(0);" onclick="openDeleteModal(${house.id}, '${house.houseName}');" class="btn btn-danger">
                                         <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                    <a href="ListHouse?houseId=${house.id}" class="btn btn-info">
-                                        <i class="fas fa-eye"></i>
                                     </a>
                                 </td>
                             </tr>
