@@ -103,7 +103,7 @@ body {
 
 .right-section a {
     color: white;
-    text-decoration: underline;
+    text-decoration: none;
 }
 .error-message {
     color: red;
@@ -111,6 +111,27 @@ body {
     margin-top: -10px;
     margin-bottom: 10px;
 }
+
+/* Register Links Styles */
+.register-links {
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
+    margin-top: 1.5rem;
+}
+
+.register-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.register-links a:hover {
+    color: #FF6F3D; /* Màu cam khi hover */
+    text-decoration: underline;
+}
+
 
 /* Responsive */
 @media screen and (max-width: 768px) {

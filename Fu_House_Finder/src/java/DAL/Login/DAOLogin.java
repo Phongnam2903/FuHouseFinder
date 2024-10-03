@@ -87,50 +87,52 @@ public class DAOLogin extends DBContext {
     }
 
     public User loginUser(String email, String password) {
-        String sql = "SELECT * FROM [User] WHERE Email = ? AND Password = ?";
+        String sql = "SELECT * FROM [User] WHERE Email = ?";
         User student = null;
 
         try {
-            // Hash the input password using SHA-256 and convert to binary format
-            byte[] hashedPasswordBytes = hashPasswordToBytes(password);
-
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
-            statement.setBytes(2, hashedPasswordBytes);
             ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
+
+            // Kiểm tra nếu người dùng tồn tại với email đó
+            if (rs.next()) {
+                // Nếu tồn tại, hãy lấy thông tin người dùng
                 student = new User(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getDate(8), rs.getString(9),
-                        rs.getInt(10), rs.getInt(11), rs.getString(12), rs.getDate(13), rs.getInt(14));
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getDate(8),
+                        rs.getString(9), rs.getInt(10), rs.getInt(11), rs.getString(12), rs.getDate(13), rs.getInt(14));
+
+                // Kiểm tra mật khẩu
+                // Nếu mật khẩu đã băm không trùng với dấu * thì xác nhận thành công
+                if (password.length() > 0 && student.getPassword().equals("*".repeat(password.length()))) {
+                    // Đăng nhập thành công
+                    return student;
+                } else {
+                    // Mật khẩu không đúng
+                    student = null;
+                }
             }
-        } catch (SQLException | NoSuchAlgorithmException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(DAOLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return student;
+        return student; // Trả về null nếu không có người dùng hoặc mật khẩu không hợp lệ
     }
 
-    private byte[] hashPasswordToBytes(String password) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        return md.digest(password.getBytes());
-    }
-
-    
-    
     //test khi chưa có sign up
     public void saveUserPassword(String fullname, String email, String password, int sid) {
         String sql = "INSERT INTO [User] (FullName, Email, Password, StatusID) VALUES (? ,?, ?, ?)";
         try {
-            // Hash mật khẩu sử dụng SHA-256
-            byte[] hashedPasswordBytes = hashPasswordToBytes(password);
+            // Tạo chuỗi dấu '*' với độ dài bằng mật khẩu
+            String maskedPassword = "*".repeat(password.length());
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, fullname);
             statement.setString(2, email);
-            statement.setBytes(3, hashedPasswordBytes);
+            statement.setString(3, maskedPassword); // Lưu mật khẩu dưới dạng dấu '*'
             statement.setInt(4, sid);
             statement.executeUpdate();
-        } catch (SQLException | NoSuchAlgorithmException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(DAOLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
