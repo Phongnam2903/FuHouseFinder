@@ -2,6 +2,8 @@ package DAL.Admin;
 
 import DAL.DBContext;
 import Models.User;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,45 +55,40 @@ public class ManageAccount extends DBContext {
     }
 
     public int updateAccount(User student) {
-        String sql = "UPDATE [dbo].[User]\n"
-                + "   SET [FacebookUserId] = ?,>\n"
-                + "      ,[GoogleUserId] = ?\n"
-                + "      ,[FullName] = ?\n"
-                + "      ,[Password] = ?\n"
-                + "      ,[Email] = ?\n"
-                + "      ,[PhoneNumber] = ?\n"
-                + "      ,[DateOfBirth] = ?\n"
-                + "      ,[Address] = ?\n"
-                + "      ,[StatusID] = ?\n"
-                + "      ,[Roleid] = ?\n"
-                + "      ,[Avatar] = ?\n"
-                + "      ,[CreatedDate] = ?\n"
-                + "      ,[RoomHistoriesID] = ?\n"
-                + " WHERE id = ?";
-        int rowsUpdated = 0;
-        PreparedStatement prestate = null;
-        try {
-            prestate = connection.prepareStatement(sql);
-            prestate.setString(1, student.getUsername());
-            prestate.setString(2, student.getEmail());
-            prestate.setString(3, student.getPhone());
-            prestate.setString(4, student.getAddress());
-            prestate.setInt(5, student.getRoleID());
-            prestate.setInt(6, student.getId());
+        int n = 0;
+        String sql = "UPDATE [dbo].[User]"
+                + "   SET [FacebookUserId] = ?,[GoogleUserId] = ?,[FullName] = ?,[Email] = ?,[PhoneNumber] =?,[DateOfBirth] = ?,[Address] =?,"
+                + "[StatusID] =?,[Roleid] = ?,[Avatar] = ?,[CreatedDate] = ?,[RoomHistoriesID] = ? WHERE ID = ?";
 
-            rowsUpdated = prestate.executeUpdate();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, student.getFacebookUserid());
+            statement.setString(2, student.getGoogleUserid());
+            statement.setString(3, student.getUsername());
+//            statement.setString(4, student.getPassword());
+            statement.setString(4, student.getEmail());
+            statement.setString(5, student.getPhone());
+            if (student.getDateOfBirth() != null) {
+                statement.setDate(6, new java.sql.Date(student.getDateOfBirth().getTime()));
+            } else {
+                statement.setNull(6, java.sql.Types.DATE);
+            }
+            statement.setString(7, student.getAddress());
+            statement.setInt(8, student.getStatusID());
+            statement.setInt(9, student.getRoleID());
+            statement.setString(10, student.getAvatar());
+            if (student.getCreatedDate() != null) {
+                statement.setDate(11, new java.sql.Date(student.getCreatedDate().getTime()));
+            } else {
+                statement.setNull(11, java.sql.Types.DATE);
+            }
+            statement.setInt(12, student.getRoomHistoriesID());
+            statement.setInt(13, student.getId());
+            n = statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (prestate != null) {
-                try {
-                    prestate.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
-        return rowsUpdated;
+        return n;
     }
 
     public boolean deleteAccountById(int id) {
@@ -132,11 +129,17 @@ public class ManageAccount extends DBContext {
                 throw new SQLException("Database connection is not available.");
             }
 
+            // Hash the password using SHA-256 (assuming hashPasswordToBytes returns byte[])
+            byte[] hashedPassword = hashPasswordToBytes(student.getPassword());
+
+            // Create a string of '*' with the same length as the original password
+            String maskedPassword = "*".repeat(student.getPassword().length());
+
             prestate = connection.prepareStatement(sql);
             prestate.setString(1, student.getFacebookUserid());
             prestate.setString(2, student.getGoogleUserid());
             prestate.setString(3, student.getUsername());
-            prestate.setString(4, student.getPassword());
+            prestate.setString(4, maskedPassword);  // Use masked password here
             prestate.setString(5, student.getEmail());
             prestate.setString(6, student.getPhone());
 
@@ -170,6 +173,17 @@ public class ManageAccount extends DBContext {
             }
         }
         return n;
+    }
+
+    private byte[] hashPasswordToBytes(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            return digest.digest(password.getBytes());
+        } catch (NoSuchAlgorithmException e) {
+            // Handle exception
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public int getAccountCount() {
@@ -223,44 +237,41 @@ public class ManageAccount extends DBContext {
     }
 
     public static void main(String[] args) {
-        ManageAccount managerAcc = new ManageAccount();
-        // Tạo đối tượng User với các thông tin mẫu
-//        User student = new User();
-//        student.setUsername("Nguyen Van A");
-//        student.setPassword("123");
-//        student.setEmail("phongnnhe176274@fpt.edu.vn");
-//
-//        // Sử dụng java.util.Date cho ngày sinh
-//        student.setCreatedDate(new Date()); // Đặt ngày sinh là ngày hiện tại
-//
-//        student.setStatusID(1); // Trạng thái hoạt động
-//        student.setRoleID(4);
-//
-//        student.setPosition("Admissions Department Officer.");
-//
-//        // Gọi phương thức insertAccount
-//        ManageAccount createAccount = new ManageAccount();
-//        int result = createAccount.insertAccount(student);
-//
-//        // Kiểm tra kết quả
-//        if (result > 0) {
-//            System.out.println("Tạo tài khoản thành công!");
-//        } else {
-//            System.out.println("Tạo tài khoản thất bại!");
-//        }
+        ManageAccount manageAccount = new ManageAccount();
+
+        // Mocking user data for testing
+        User testUser = new User();
+        testUser.setUsername("John Doe");
+        testUser.setEmail("johndoe@example.com");
+        testUser.setPhone("1234567890");
+        testUser.setAddress("123 Main St, City, Country");
+        testUser.setStatusID(1);
+        testUser.setRoleID(4);
+        testUser.setCreatedDate(new Date()); // Assuming account created today
+        testUser.setId(41); // ID of the user to update in the database
+
+        // Call updateAccount and get the result
+        int result = manageAccount.updateAccount(testUser);
+
+        // Output the result
+        if (result > 0) {
+            System.out.println("Account updated successfully!");
+        } else {
+            System.out.println("Failed to update account.");
+        }
 
         //test getAccountCount
 //        System.out.println("==Get Account Count Test ==");
 //        int totalAccounts = managerAcc.getAccountCount();
 //        System.out.println("Total Accounts: " + totalAccounts);
         //test getAccountByPage
-        System.out.println("== Get Accounts by Page Test ==");
-        int page = 1;
-        int pageSize = 5;
-        List<User> accounts = managerAcc.getAccountsByPage(page, pageSize);
-        System.out.println("Accounts on Page" + page + ":");
-        for (User account : accounts) {
-            System.out.println("ID: " + account.getId() + ",Username: " + account.getUsername() + ",StatusID: " + account.getStatusID());
-        }
+//        System.out.println("== Get Accounts by Page Test ==");
+//        int page = 1;
+//        int pageSize = 5;
+//        List<User> accounts = managerAcc.getAccountsByPage(page, pageSize);
+//        System.out.println("Accounts on Page" + page + ":");
+//        for (User account : accounts) {
+//            System.out.println("ID: " + account.getId() + ",Username: " + account.getUsername() + ",StatusID: " + account.getStatusID());
+//        }
     }
 }

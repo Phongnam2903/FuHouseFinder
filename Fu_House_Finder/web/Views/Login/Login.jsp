@@ -65,9 +65,10 @@
                 <a href="https://www.facebook.com/login" class="btn-facebook btn-lg mb-3 w-75"><i class="fab fa-facebook"></i> Login with Facebook</a>
 
                 <!-- Register link -->
-                <div class="d-flex justify-content-between w-75 mt-3">
+                <div class="register-links d-flex justify-content-between w-75 mt-3">
                     <a href="#">Forgot Password</a>
                     <a href="#">Sign Up?</a>
+                    <a href="#">Back</a>
                 </div>
 
             </div>

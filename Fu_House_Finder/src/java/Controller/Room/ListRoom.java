@@ -23,18 +23,18 @@ public class ListRoom extends HttpServlet {
         // Đặt danh sách phòng vào request attribute để hiển thị trên JSP
         request.setAttribute("roomList", roomList);
         // Chuyển hướng đến trang JSP để hiển thị danh sách phòng
+//        request.getRequestDispatcher("/Views/HouseOwner/ListRoom.jsp").forward(request, response);
+        String roomId = request.getParameter("id");
+
+        if (roomId != null) {
+            DAORoom roomDAO = new DAORoom();
+            roomDAO.deleteRoom(Integer.parseInt(roomId));
+            response.sendRedirect("ListRoom");
+        } else {
+        List<Room> rooms = daoRoom.getRooms();
+        request.setAttribute("rooms", rooms);
         request.getRequestDispatcher("/Views/HouseOwner/ListRoom.jsp").forward(request, response);
-                String roomId = request.getParameter("id");
-                
-                if(roomId != null){
-                   DAORoom roomDAO = new DAORoom();
-                   roomDAO.deleteRoom(Integer.parseInt(roomId));
-                   response.sendRedirect("ListRoom");
-                }else{
-                    List<Room> rooms = daoRoom.getRooms();
-                    request.setAttribute("rooms", rooms);
-                    request.getRequestDispatcher("/Views/HouseOwner/ListRoom.jsp").forward(request, response);
-                }
+        }
     }
 
     @Override

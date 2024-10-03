@@ -4,6 +4,10 @@
         <servlet-name>CreateAccount</servlet-name>
         <servlet-class>Controllers.Admin.CreateAccount</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminDashboard</servlet-name>
+        <servlet-class>Controllers.Admin.AdminDashboard</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CreateAccount</servlet-name>
         <url-pattern>/createAccount</url-pattern>
@@ -31,5 +35,9 @@
     <servlet-mapping>
         <servlet-name>UpdateHouse</servlet-name>
         <url-pattern>/UpdateHouse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashboard</servlet-name>
+        <url-pattern>/adminDashboard</url-pattern>
     </servlet-mapping>
 </web-app>
