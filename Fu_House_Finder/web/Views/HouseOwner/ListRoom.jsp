@@ -35,6 +35,30 @@
 
     <div class="container mt-4">
         <h2 class="text-center mb-4">Danh sách phòng trọ</h2>
+                            <!-- Thêm một alert để hiển thị thông báo xóa thành công -->
+        <c:if test="${param.success eq 'true'}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Phòng đã được xóa thành công!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </c:if>
+
+        <!-- Thêm một alert để hiển thị thông báo thêm phòng thành công -->
+        <c:if test="${param.successAdd eq 'true'}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Phòng đã được thêm thành công!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </c:if>
+
+        <!-- Thêm một alert để hiển thị thông báo thêm phòng thành công -->
+        <c:if test="${param.successUpdate eq 'true'}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Phòng đã được sửa thành công!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </c:if>
+
         <div class="mb-4">
             <a href="AddRoom" class="btn btn-secondary">+ Thêm phòng mới</a>
         </div>

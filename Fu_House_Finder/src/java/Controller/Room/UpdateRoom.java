@@ -165,7 +165,7 @@ public class UpdateRoom extends HttpServlet {
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
-        response.sendRedirect("ListRoom");
+    response.sendRedirect("ListRoom?successUpdate=true");
 
         }
 

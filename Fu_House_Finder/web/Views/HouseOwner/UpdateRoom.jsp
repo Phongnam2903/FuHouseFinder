@@ -42,8 +42,8 @@
                 <c:set var="dbRoom" value="${requestScope.room}"/>
                 <!--Text điền tòa nhà-->
                 <div class="mb-3">
-                    <label for="id" class="form-label">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" readonly value="${room.id}" required>
+                    <label for="id" class="form-label"> </label>
+                    <input type="hidden" class="form-control" id="id" name="id" readonly value="${room.id}" required>
                 </div>
                 <div class="mb-3">
                     <label for="roomNumber" class="form-label">Số phòng</label>
