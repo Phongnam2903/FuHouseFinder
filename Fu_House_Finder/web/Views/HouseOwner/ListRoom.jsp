@@ -2,38 +2,63 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Danh sách phòng trọ</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .table {
-            border-collapse: collapse;
-        }
-        .table th, .table td {
-            border-bottom: 2px solid #dee2e6;
-        }
-        .table tr:hover {
-            background-color: #f8f9fa;
-            cursor: pointer;
-        }
-        .modal-header {
-            background-color: #ff8c00;
-            color: white;
-        }
-        .modal-footer .btn-danger {
-            background-color: #ff8c00;
-            border-color: #ff8c00;
-        }
-    </style>
-</head>
-<body>
-    <%@include file="../Partials/Header.jsp" %>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Danh sách phòng trọ</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link href="${pageContext.request.contextPath}/css/adminAcc.css" rel="stylesheet" type="text/css"/>
+        <style>
+            .table {
+                border-collapse: collapse; /* Để bỏ kẻ dọc */
+            }
+            .table th, .table td {
+                border-bottom: 2px solid #dee2e6; /* Chỉ kẻ ngang */
+            }
+            .table tr:hover {
+                background-color: #f8f9fa; /* Màu nền khi hover */
+                cursor: pointer; /* Con trỏ chuột biến thành pointer khi hover */
+            }
+            .modal-header {
+                background-color: #ff8c00; /* Màu cam */
+                color: white;
+            }
+            .modal-footer .btn-danger {
+                background-color: #ff8c00; /* Nút xóa màu cam */
+                border-color: #ff8c00;
+            }
+        </style>
+    </head>
+    <body>
+        <%--<%@include file="../Partials/Header.jsp" %>--%>
 
     <div class="container mt-4">
         <h2 class="text-center mb-4">Danh sách phòng trọ</h2>
+                            <!-- Thêm một alert để hiển thị thông báo xóa thành công -->
+        <c:if test="${param.success eq 'true'}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Phòng đã được xóa thành công!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </c:if>
+
+        <!-- Thêm một alert để hiển thị thông báo thêm phòng thành công -->
+        <c:if test="${param.successAdd eq 'true'}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Phòng đã được thêm thành công!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </c:if>
+
+        <!-- Thêm một alert để hiển thị thông báo thêm phòng thành công -->
+        <c:if test="${param.successUpdate eq 'true'}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Phòng đã được sửa thành công!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </c:if>
+
         <div class="mb-4">
             <a href="AddRoom" class="btn btn-secondary">+ Thêm phòng mới</a>
         </div>
@@ -46,7 +71,7 @@
                         <th scope="col">Tầng</th>
                         <th scope="col">Mô tả</th>
                         <th scope="col">Hình ảnh</th>
-                        <th scope="col">Số người ở</th>
+                        
                         <th scope="col">Giá</th>
                         <th scope="col">Diện tích</th>
                         <th scope="col">Tiện ích</th>

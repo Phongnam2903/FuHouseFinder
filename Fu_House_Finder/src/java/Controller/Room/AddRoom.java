@@ -19,6 +19,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,7 +75,7 @@ public class AddRoom extends HttpServlet {
         List<RoomStatuses> roomStatuses = dbRoomStatus.getRoomStatus();
 
         List<House> house = dbHouse.getHouses();
-        
+
         request.setAttribute("roomTypeList", roomTypes);
         request.setAttribute("roomStatusList", roomStatuses);
         request.setAttribute("houseList", house);
@@ -89,56 +90,154 @@ public class AddRoom extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int roomNumber = Integer.parseInt(request.getParameter("roomNumber"));
-        int floorNumber = Integer.parseInt(request.getParameter("floorNumber"));
-        String description = request.getParameter(request.getParameter("description"));
-        double price = Double.parseDouble(request.getParameter("price"));
-        float area = Float.parseFloat(request.getParameter("area"));
-        int roomTypeID = Integer.parseInt(request.getParameter("roomTypeId"));
-        int statusID = Integer.parseInt(request.getParameter("statusId"));
-        boolean fridge = request.getParameter(request.getParameter("fridge")) != null;
-        boolean kitchen = request.getParameter(request.getParameter("kitchen")) != null;
-        boolean washingMachine = request.getParameter(request.getParameter("washingMachine")) != null;
-        boolean bed = request.getParameter(request.getParameter("bed")) != null;
-        boolean liveInHouseOwner = request.getParameter(request.getParameter("liveInHouseOwner")) != null;
-        boolean closedToilet = request.getParameter(request.getParameter("closedToilet")) != null;
-        int houseId = Integer.parseInt(request.getParameter("houseId"));
-        String image = "";
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String errorMessage = "";
+    boolean isValid = true;
 
-        Room room = new Room();
-        room.setRoomNumber(roomNumber);
-        room.setFloorNumber(floorNumber);
-        room.setDescription(description);
-        room.setPrice(price);
-        room.setArea(area);
-        room.setRoomTypeId(roomTypeID);
-        room.setStatusId(statusID);
-        room.setFridge(fridge);
-        room.setKitchen(kitchen);
-        room.setWashingMachine(washingMachine);
-        room.setBed(bed);
-        room.setLiveInHouseOwner(liveInHouseOwner);
-        room.setClosedToilet(closedToilet);
-        room.setImage(image);
-        room.setHouseId(houseId);
-
-        DAL.Room.DAORoom dAORoom = new DAORoom();
-        int result = dAORoom.addRoom(room);
-        if (result > 0) {
-            request.setAttribute("message", "Thêm phòng trọ thành công!");
-            request.setAttribute("alertClass", "alert-success");
-        } else {
-            request.setAttribute("message", "Thêm phòng trọ thất bại!");
-            request.setAttribute("alertClass", "alert-danger");
-
-        }
-        request.getRequestDispatcher("Views/HouseOwner/AddRoom.jsp").forward(request, response);
-        response.sendRedirect("ListRoom");
-
+    // Extract parameters from the request
+    String roomNumberStr = request.getParameter("roomNumber");
+    String floorNumberStr = request.getParameter("floorNumber");
+    String description = request.getParameter("description");
+    String priceStr = request.getParameter("price");
+    String areaStr = request.getParameter("area");
+    String roomTypeIDStr = request.getParameter("roomTypeId");
+    String statusIDStr = request.getParameter("statusId");
+    String[] facilities = request.getParameterValues("facilities");
+    int houseId = Integer.parseInt(request.getParameter("houseId"));
+    
+    // Validate parameters
+    if (roomNumberStr == null || roomNumberStr.isEmpty()) {
+        errorMessage += "Room number is required.<br>";
+        isValid = false;
     }
+
+    if (floorNumberStr == null || floorNumberStr.isEmpty() || Integer.parseInt(floorNumberStr) <= 0) {
+        errorMessage += "Floor number must be greater than 0.<br>";
+        isValid = false;
+    }
+
+    if (description == null || description.isEmpty()) {
+        errorMessage += "Description is required.<br>";
+        isValid = false;
+    }
+
+    double price = 0;
+    if (priceStr == null || priceStr.isEmpty()) {
+        errorMessage += "Price is required.<br>";
+        isValid = false;
+    } else {
+        try {
+            price = Double.parseDouble(priceStr);
+            if (price < 0) {
+                errorMessage += "Price cannot be negative.<br>";
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            errorMessage += "Invalid price format.<br>";
+            isValid = false;
+        }
+    }
+
+    float area = 0;
+    if (areaStr == null || areaStr.isEmpty()) {
+        errorMessage += "Area is required.<br>";
+        isValid = false;
+    } else {
+        try {
+            area = Float.parseFloat(areaStr);
+            if (area < 0) {
+                errorMessage += "Area cannot be negative.<br>";
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            errorMessage += "Invalid area format.<br>";
+            isValid = false;
+        }
+    }
+
+    int roomTypeID = 0;
+    if (roomTypeIDStr == null || roomTypeIDStr.isEmpty()) {
+        errorMessage += "Room type is required.<br>";
+        isValid = false;
+    } else {
+        try {
+            roomTypeID = Integer.parseInt(roomTypeIDStr);
+        } catch (NumberFormatException e) {
+            errorMessage += "Invalid room type format.<br>";
+            isValid = false;
+        }
+    }
+
+    int statusID = 0;
+    if (statusIDStr == null || statusIDStr.isEmpty()) {
+        errorMessage += "Status is required.<br>";
+        isValid = false;
+    } else {
+        try {
+            statusID = Integer.parseInt(statusIDStr);
+        } catch (NumberFormatException e) {
+            errorMessage += "Invalid status format.<br>";
+            isValid = false;
+        }
+    }
+
+    // If validation fails, set the error message and forward to the JSP
+    if (!isValid) {
+        request.setAttribute("message", errorMessage);
+        request.setAttribute("alertClass", "alert-danger");
+        request.getRequestDispatcher("Views/HouseOwner/AddRoom.jsp").forward(request, response);
+        return;
+    }
+
+    // Proceed with adding the room if validation is successful
+    List<String> faciliList = new ArrayList<>();
+    if (facilities != null) {
+        for (String facility : facilities) {
+            faciliList.add(facility);
+        }
+    }
+
+    boolean fridge = faciliList.contains("fridge");
+    boolean kitchen = faciliList.contains("kitchen");
+    boolean washingMachine = faciliList.contains("washingMachine");
+    boolean bed = faciliList.contains("bed");
+    boolean liveInHouseOwner = faciliList.contains("liveInHouseOwner");
+    boolean closedToilet = faciliList.contains("closedToilet");
+    
+    String image = ""; // Handle image as needed
+
+    Room room = new Room();
+    room.setRoomNumber(Integer.parseInt(roomNumberStr));
+    room.setFloorNumber(Integer.parseInt(floorNumberStr));
+    room.setDescription(description);
+    room.setPrice(price);
+    room.setArea(area);
+    room.setRoomTypeId(roomTypeID);
+    room.setStatusId(statusID);
+    room.setFridge(fridge);
+    room.setKitchen(kitchen);
+    room.setWashingMachine(washingMachine);
+    room.setBed(bed);
+    room.setLiveInHouseOwner(liveInHouseOwner);
+    room.setClosedToilet(closedToilet);
+    room.setImage(image);
+    room.setHouseId(houseId);
+
+    DAORoom dAORoom = new DAORoom();
+    int result = dAORoom.addRoom(room);
+    if (result > 0) {
+        request.setAttribute("message", "Thêm phòng trọ thành công!");
+        request.setAttribute("alertClass", "alert-success");
+    } else {
+        request.setAttribute("message", "Thêm phòng trọ thất bại!");
+        request.setAttribute("alertClass", "alert-danger");
+    }
+    response.sendRedirect("ListRoom?successAdd=true");
+
+}
+
 
     /**
      * Returns a short description of the servlet.

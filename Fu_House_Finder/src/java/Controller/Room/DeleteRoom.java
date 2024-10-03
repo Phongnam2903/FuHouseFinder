@@ -63,7 +63,7 @@ public class DeleteRoom extends HttpServlet {
            id = Integer.parseInt(id_raw);
            DAORoom dbRoom = new DAORoom();
            dbRoom.deleteRoom(id);
-           response.sendRedirect("ListRoom");
+           response.sendRedirect("ListRoom?success=true");
        }catch(NumberFormatException e){
         
        }

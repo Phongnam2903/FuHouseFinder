@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DAOLogin extends DBContext {
+public class DAOLogin extends DBContext {           
 
     public User getUserByGoogleId(String googleUserId) {
         User student = null;
