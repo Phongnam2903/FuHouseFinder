@@ -3,8 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/Room.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/Role.java</file>
+=======
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Admin/CreateAccount.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/Admin/AdminCreateAccount.jsp</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/css/admin/adminCreateAcc.css</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/js/admin/admin.js</file>
+>>>>>>> cda37441e1bd9eeffea05ce1f50e030af310c410
         </group>
     </open-files>
 </project-private>
