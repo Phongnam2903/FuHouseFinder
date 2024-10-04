@@ -24,11 +24,9 @@
                     <div class="container-fluid">
                         <button class="btn btn-outline-success" id="menu-toggle"><i class="fas fa-bars"></i></button>
                         <h2 class="ms-3 text-dark">Dashboard</h2>
-
                         <button class="btn btn-outline-success ms-auto" id="dark-mode-toggle">
                             <i class="fas fa-moon"></i> Nguyễn Nam Phong
                         </button>
-
                     </div>
                 </nav>
                 <!-- Breadcrumb -->
@@ -41,14 +39,17 @@
                 </nav>
                 <!-- Thông Báo Thành Công / Lỗi -->
                 <div class="container">
+                    <!-- Hiển thị Thông báo Thành công -->
                     <c:if test="${not empty successMessage}">
                         <div class="alert alert-success" role="alert">
                             ${successMessage}
                         </div>
                     </c:if>
-                    <c:if test="${not empty errorMessage}">
+                    <!-- Hiển thị Thông báo Lỗi -->
+
+                    <c:if test="${not empty error}">
                         <div class="alert alert-danger" role="alert">
-                            ${errorMessage}
+                            ${error}
                         </div>
                     </c:if>
                 </div>
@@ -56,49 +57,41 @@
                 <div class="container mt-5 mb-5">
                     <h1 class="text-center mb-4">Update Account</h1>
                     <form action="updateAccount" method="post" class="row g-3">
-                        <input type="hidden" name="id" value="${user.id}">
+                        <!-- Truyền lại ID -->
+                        <input type="hidden" name="id" value="${param.id != null ? param.id : user.id}" />
 
-                        <!-- Username -->
                         <div class="col-md-6">
-                            <label for="username" class="form-label">Full Name:</label>
-                            <input type="text" name="username" id="username" class="form-control" value="${user.username}" required>
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" value="${user != null ? user.username : param.username}" >
                         </div>
 
-                        <!-- Email -->
                         <div class="col-md-6">
-                            <label for="email" class="form-label">Email:</label>
-                            <input type="email" name="email" id="email" class="form-control" value="${user.email}" required>
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" value="${user != null ? user.email : param.email}" >
                         </div>
 
-                        <!-- Phone Number -->
                         <div class="col-md-6">
-                            <label for="phone" class="form-label">Phone Number:</label>
-                            <input type="text" name="phone" id="phone" class="form-control" value="${user.phone}" required>
+                            <label for="phone">Phone:</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="${user != null ? user.phone : param.phone}" >
                         </div>
 
-                        <!-- Status -->
                         <div class="col-md-6">
-                            <label for="status" class="form-label">Status:</label>
-                            <select name="status" id="status" class="form-select" required>
-                                <option value="1" <c:if test="${user.statusID == 1}">selected</c:if>>Active</option>
-                                <option value="2" <c:if test="${user.statusID == 2}">selected</c:if>>Inactive</option>
-                                <option value="3" <c:if test="${user.statusID == 3}">selected</c:if>>Ban</option>
-                                <option value="4" <c:if test="${user.statusID == 4}">selected</c:if>>Unban</option>
+                            <label for="address">Address:</label>
+                            <input type="text" class="form-control" id="address" name="address" value="${user != null ? user.address : param.address}">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="status">Status:</label>
+                            <select class="form-control" id="status" name="status">
+                                <option value="1" ${user.statusID == 1 ? "selected" : ""}>Active</option>
+                                <option value="0" ${user.statusID == 0 ? "selected" : ""}>Inactive</option>
                             </select>
                         </div>
 
-                        <!-- Address -->
                         <div class="col-md-6">
-                            <label for="address" class="form-label">Address:</label>
-                            <input type="text" name="address" id="address" class="form-control" value="${user.address}" required>
+                            <label for="dateOfBirth">Date of Birth:</label>
+                            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" value="${user != null ? user.dateOfBirth : param.dateOfBirth}">
                         </div>
-
-                        <!-- Date of Birth -->
-                        <div class="col-md-6">
-                            <label for="dateOfBirth" class="form-label">Date of Birth:</label>
-                            <input type="date" name="dateOfBirth" id="dateOfBirth" class="form-control" value="${user.dateOfBirth}" required>
-                        </div>
-
                         <!-- Submit Button -->
                         <div class="col-12 text-center">
                             <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
