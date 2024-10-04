@@ -1,3 +1,11 @@
+/*
+ * Copyright(C) 2024, Group2-SE1866-KS.
+ * UPDATEACCOUNT.JAVA:
+ *  FU House Finder
+ * Record of change:
+ * DATE            Version             AUTHOR           DESCRIPTION
+ * 2024-09-26       1.0                PhongNN          Update Account for Staff
+ */
 package Controllers.Admin;
 
 import DAL.Admin.ManageAccount;
@@ -24,7 +32,7 @@ public class UpdateAccount extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         if (idParam == null || idParam.isEmpty()) {
-            request.setAttribute("error", "ID không hợp lệ.");
+            request.setAttribute("error", "ID is not available.");
             request.getRequestDispatcher("Views/Admin/AdminUpdateAccount.jsp").forward(request, response);
             return;
         }
@@ -33,22 +41,20 @@ public class UpdateAccount extends HttpServlet {
         try {
             id = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "ID không hợp lệ.");
+            request.setAttribute("error", "ID is not available.");
             request.getRequestDispatcher("Views/Admin/AdminUpdateAccount.jsp").forward(request, response);
             return;
         }
 
-        // Lấy thông tin tài khoản từ cơ sở dữ liệu
+        // Give information account from data
         ManageAccount manager = new ManageAccount();
         User user = manager.getAccountById(id);
 
         if (user == null) {
-            request.setAttribute("error", "Không tìm thấy tài khoản với ID này.");
+            request.setAttribute("error", "Cann't find account with this ID.");
             request.getRequestDispatcher("Views/Admin/AdminUpdateAccount.jsp").forward(request, response);
             return;
         }
-
-        // Đặt đối tượng 'user' vào phạm vi yêu cầu để JSP có thể truy cập
         request.setAttribute("user", user);
         request.getRequestDispatcher("Views/Admin/AdminUpdateAccount.jsp").forward(request, response);
     }
@@ -59,8 +65,8 @@ public class UpdateAccount extends HttpServlet {
 
         String idParam = request.getParameter("id");
         if (idParam == null || idParam.isEmpty()) {
-            request.setAttribute("error", "ID không hợp lệ.");
-            request.getRequestDispatcher("Views/Admin/Error.jsp").forward(request, response);
+            request.setAttribute("error", "ID is not available.");
+            request.getRequestDispatcher("Views/Admin/AdminUpdateAccount.jsp").forward(request, response);
             return;
         }
 
@@ -69,7 +75,7 @@ public class UpdateAccount extends HttpServlet {
             id = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
             request.setAttribute("error", "ID không hợp lệ.");
-            request.getRequestDispatcher("Views/Admin/Error.jsp").forward(request, response);
+            request.getRequestDispatcher("Views/Admin/AdminUpdateAccount.jsp").forward(request, response);
             return;
         }
 
@@ -87,7 +93,7 @@ public class UpdateAccount extends HttpServlet {
                 || phone == null || phone.isEmpty()
                 || statusParam == null || statusParam.isEmpty()) {
             request.setAttribute("error", "Vui lòng điền đầy đủ thông tin.");
-            request.getRequestDispatcher("Views/Admin/Error.jsp").forward(request, response);
+            request.getRequestDispatcher("Views/Admin/AdminUpdateAccount.jsp").forward(request, response);
             return;
         }
 
@@ -96,14 +102,14 @@ public class UpdateAccount extends HttpServlet {
             statusID = Integer.parseInt(statusParam);
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Status không hợp lệ.");
-            request.getRequestDispatcher("Views/Admin/Error.jsp").forward(request, response);
+            request.getRequestDispatcher("Views/Admin/AdminUpdateAccount.jsp").forward(request, response);
             return;
         }
 
         // Parse dateOfBirth string to Date
         Date dateOfBirth = null;
         if (dateOfBirthStr != null && !dateOfBirthStr.isEmpty()) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Assuming the date format is 'yyyy-MM-dd'
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 dateOfBirth = sdf.parse(dateOfBirthStr);
             } catch (ParseException ex) {
@@ -131,7 +137,7 @@ public class UpdateAccount extends HttpServlet {
         } else {
             // Nếu cập nhật thất bại, hiển thị thông báo lỗi
             request.setAttribute("error", "Cập nhật tài khoản thất bại.");
-            request.getRequestDispatcher("Views/Admin/Error.jsp").forward(request, response);
+            request.getRequestDispatcher("Views/Admin/AdminUpdateAccount.jsp").forward(request, response);
         }
     }
 
