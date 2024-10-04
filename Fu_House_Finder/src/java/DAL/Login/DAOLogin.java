@@ -155,7 +155,7 @@ public class DAOLogin extends DBContext {
 //
 //        login.saveUser(googleUserId, name, email);
 
-        login.saveUserPassword("Trần Đại Dương", "duongtdhe172344@fpt.edu.vn", "duong03", 1);
+        login.saveUserPassword("Trần Đại Dương2", "duongtdhe172344@fpt.edu.vn", "duong2", 1);
         System.out.println("Test saveUser completed.");
     }
 }

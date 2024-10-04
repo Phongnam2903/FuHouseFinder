@@ -1,0 +1,14 @@
+.container-fluid-custom {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.form-label {
+    font-weight: bold;
+    margin-bottom: 5px; /* Giúp cách biệt với các phần tử khác */
+}
+.form-control {
+    width: 50%;
+}
+.form-select {
+    width: 50%;
+}

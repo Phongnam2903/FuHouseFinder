@@ -93,7 +93,7 @@ public class CallbackGoogle extends HttpServlet {
 
         // Save user information in the session
         request.getSession().setAttribute("user", student);
-        response.sendRedirect("Views/User/HomePage.jsp"); // Redirect to home page
+        response.sendRedirect("homePage"); // Redirect to home page
     }
 
     /**
