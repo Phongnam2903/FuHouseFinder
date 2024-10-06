@@ -236,42 +236,4 @@ public class ManageAccount extends DBContext {
         return accounts;
     }
 
-    public static void main(String[] args) {
-        ManageAccount manageAccount = new ManageAccount();
-
-        // Mocking user data for testing
-        User testUser = new User();
-        testUser.setUsername("John Doe");
-        testUser.setEmail("johndoe@example.com");
-        testUser.setPhone("1234567890");
-        testUser.setAddress("123 Main St, City, Country");
-        testUser.setStatusID(1);
-        testUser.setRoleID(4);
-        testUser.setCreatedDate(new Date()); // Assuming account created today
-        testUser.setId(41); // ID of the user to update in the database
-
-        // Call updateAccount and get the result
-        int result = manageAccount.updateAccount(testUser);
-
-        // Output the result
-        if (result > 0) {
-            System.out.println("Account updated successfully!");
-        } else {
-            System.out.println("Failed to update account.");
-        }
-
-        //test getAccountCount
-//        System.out.println("==Get Account Count Test ==");
-//        int totalAccounts = managerAcc.getAccountCount();
-//        System.out.println("Total Accounts: " + totalAccounts);
-        //test getAccountByPage
-//        System.out.println("== Get Accounts by Page Test ==");
-//        int page = 1;
-//        int pageSize = 5;
-//        List<User> accounts = managerAcc.getAccountsByPage(page, pageSize);
-//        System.out.println("Accounts on Page" + page + ":");
-//        for (User account : accounts) {
-//            System.out.println("ID: " + account.getId() + ",Username: " + account.getUsername() + ",StatusID: " + account.getStatusID());
-//        }
-    }
 }

@@ -72,7 +72,7 @@ public class CallbackGoogle extends HttpServlet {
         JsonObject jsonObject = parser.parse(tokenResponse).getAsJsonObject();
         String accessToken = jsonObject.get("access_token").getAsString();
 
-        // Step 4: Use the access token to get user information from Google
+        // Use the access token to get user information from Google
         String userInfo = getUserInfo(accessToken);
         JsonObject userJson = parser.parse(userInfo).getAsJsonObject();
 
@@ -87,7 +87,7 @@ public class CallbackGoogle extends HttpServlet {
 
         // If the user doesn't exist, save the user in the database
         if (student == null) {
-            daoLogin.saveUser(googleUserId, name, email);
+            daoLogin.saveUserByGoogle(googleUserId, name, email);
             student = daoLogin.getUserByGoogleId(googleUserId); // Retrieve the saved user
         }
 

@@ -61,11 +61,16 @@ public class Login_User extends HttpServlet {
                 User account = login.loginUser(email, password);
                 if (account != null) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("account", account);
-                    if (account.getRoleID() == 1) {
-                        response.sendRedirect("adminDashboard");
-                    } else {
-                        response.sendRedirect("ListHouse");
+                    session.setAttribute("user", account);
+                    switch (account.getRoleID()) {
+                        case 1 ->
+                            response.sendRedirect("adminDashboard");
+                        case 3 ->
+                            response.sendRedirect("homePage");
+                        case 4 ->
+                            response.sendRedirect("ListHouse");
+                        default -> {
+                        }
                     }
                 } else {
                     request.setAttribute("loginError", "Email or Password is incorrect!");
