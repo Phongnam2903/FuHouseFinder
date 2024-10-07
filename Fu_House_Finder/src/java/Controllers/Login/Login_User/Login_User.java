@@ -64,7 +64,7 @@ public class Login_User extends HttpServlet {
                     session.setAttribute("user", account);
                     switch (account.getRoleID()) {
                         case 1 ->
-                            response.sendRedirect("adminDashboard");
+                            response.sendRedirect("viewAccountList");
                         case 3 ->
                             response.sendRedirect("homePage");
                         case 4 ->
