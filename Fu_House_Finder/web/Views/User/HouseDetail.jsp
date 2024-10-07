@@ -12,7 +12,7 @@
         <!-- Font Awesome -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/adminAcc.css" rel="stylesheet" type="text/css"/>
-        <link href="${pageContext.request.contextPath}/css/HouseDetail.css" rel="stylesheet" type="text/css"/>
+        <link href="${pageContext.request.contextPath}/css/detailHouse.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
 
@@ -64,23 +64,50 @@
                     <div class="card">
                         <div class="card-body">
                             <h3 class="card-title" style="text-align: center;">User Reviews</h3>
-                            <label for="comment" class="form-label">Comment</label>
-                            <p class="card-text">No reviews yet</p>
-                            <form>
+                            <!-- Hiển thị các bình luận trước đó -->
+                            <label for="comment" class="form-label">Comments:</label>
+                            <c:if test="${not empty commentsAndRatings}">
+                                <c:forEach var="item" items="${commentsAndRatings}">
+                                    <div class="card">
+                                        <p class="m-1">${item.userName}: ${item.commentDescription} 
+                                            (<span>
+                                                <c:forEach var="i" begin="1" end="${item.starRating}">
+                                                    <i class="fas fa-star" style="color: gold;"></i>
+                                                </c:forEach>
+                                            </span>) 
+                                    </div>
+                                    <hr>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty commentsAndRatings}">
+                                <p>No reviews yet.</p>
+                            </c:if>
+
+                            <!-- Form nhập đánh giá và bình luận mới -->
+                            <form action="${pageContext.request.contextPath}/houseDetail" method="POST">
+                                <input type="hidden" name="houseId" value="${house.id}" />
+
+                                <!-- Nhập bình luận -->
                                 <div class="mb-3">
                                     <label for="comment" class="form-label">Write a comment</label>
-                                    <textarea class="form-control" id="comment" rows="2"></textarea>
+                                    <textarea class="form-control" id="comment" name="comment" rows="2"></textarea>
                                 </div>
-                                <div class="mb-3">
+
+                                <!-- Chọn sao để đánh giá -->
+                                <div class="mb-3 d-flex">
                                     <label for="rating" class="form-label">Rating</label>
                                     <div class="star-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
+                                        <i class="fa fa-star" data-value="1"></i>
+                                        <i class="fa fa-star" data-value="2"></i>
+                                        <i class="fa fa-star" data-value="3"></i>
+                                        <i class="fa fa-star" data-value="4"></i>
+                                        <i class="fa fa-star" data-value="5"></i>
                                     </div>
+                                    <!-- Input ẩn để lưu giá trị rating đã chọn -->
+                                    <input type="hidden" id="ratingValue" name="ratingValue" value="0">
                                 </div>
+
+                                <!-- Nút gửi -->
                                 <div><button type="submit" class="btn btn-secondary">Post</button></div>
                             </form>
                         </div>
@@ -175,5 +202,34 @@
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // JavaScript để xử lý rating bằng ngôi sao
+            const stars = document.querySelectorAll('.star-rating i');
+            const ratingValue = document.getElementById('ratingValue');
+
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const selectedRating = star.getAttribute('data-value'); // Lấy giá trị sao đã chọn
+                    ratingValue.value = selectedRating; // Ghi giá trị sao đã chọn vào input hidden
+                    resetStars(); // Xóa màu của tất cả các ngôi sao
+                    highlightStars(selectedRating); // Tô màu cho các ngôi sao đã chọn
+                    console.log(`Rated: ${selectedRating} stars`); // In ra console (để kiểm tra nếu cần)
+                });
+            });
+
+            function highlightStars(rating) {
+                stars.forEach(star => {
+                    if (star.getAttribute('data-value') <= rating) {
+                        star.classList.add('selected'); // Tô màu ngôi sao đã chọn
+                    }
+                });
+            }
+
+            function resetStars() {
+                stars.forEach(star => {
+                    star.classList.remove('selected'); // Xóa màu của tất cả các ngôi sao
+                });
+            }
+        </script>
     </body>
 </html>

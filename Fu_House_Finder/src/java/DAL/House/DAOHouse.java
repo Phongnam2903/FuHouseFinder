@@ -15,9 +15,11 @@ public class DAOHouse extends DAO {
 
     public List<House> getHousesWithPrices() {
         List<House> houses = new ArrayList<>();
-        String sql = "SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, Room.Price "
+        String sql = "SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, "
+                + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice "
                 + "FROM House "
-                + "JOIN Room ON House.id = Room.HouseID";
+                + "JOIN Room ON House.ID = Room.HouseID "
+                + "GROUP BY House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -31,7 +33,8 @@ public class DAOHouse extends DAO {
                 house.setDistanceToSchool(rs.getFloat("DistanceToSchool"));
 
                 // Set giá từ bảng Room
-                house.setPrice(rs.getDouble("Price"));
+                house.setMinPrice(rs.getDouble("MinPrice"));
+                house.setMaxPrice(rs.getDouble("MaxPrice"));
                 house.setImage(rs.getString("image"));
                 houses.add(house);
             }

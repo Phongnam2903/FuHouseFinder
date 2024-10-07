@@ -136,8 +136,8 @@ public class DAOLogin extends DBContext {
     }
 
     //test khi chưa có sign up
-    public void saveUserPassword(String fullname, String email, String password, int sid) {
-        String sql = "INSERT INTO [User] (FullName, Email, Password, StatusID) VALUES (? ,?, ?, ?)";
+    public void saveUserPassword(String fullname, String email, String password, int sid, int roleId) {
+        String sql = "INSERT INTO [User] (FullName, Email, Password, StatusID, Roleid) VALUES (? ,?, ?, ?, ?)";
         try {
             // Tạo chuỗi dấu '*' với độ dài bằng mật khẩu
             String maskedPassword = "*".repeat(password.length());
@@ -147,6 +147,7 @@ public class DAOLogin extends DBContext {
             statement.setString(2, email);
             statement.setString(3, maskedPassword); // Lưu mật khẩu dưới dạng dấu '*'
             statement.setInt(4, sid);
+            statement.setInt(5, roleId);
             statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DAOLogin.class.getName()).log(Level.SEVERE, null, ex);
@@ -169,7 +170,7 @@ public class DAOLogin extends DBContext {
         String name = "Phong Nguyễn Nam";
         String email = "xuxumanh1@gmail.com";
 
-        login.saveUserPassword("Phạm Hải Đăng", "dangphhe172554@fpt.edu.vn", "123", 1);
+        login.saveUserPassword("DuongTD", "abche170700fpt.edu.vn", "duong3", 1, 3);
         System.out.println("Test saveUser completed.");
     }
 }
