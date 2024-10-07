@@ -6,7 +6,6 @@
  * DATE                       Version             AUTHOR                       DESCRIPTION
  * 2024-10-03                 1.0                 DuongTD                      Initial implementation of AddHouse servlet
  */
-
 package Controllers.House;
 
 import DAL.House.DAOHouse;
@@ -23,11 +22,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class is responsible for handling requests related to adding a new house to the system.
- * It provides functionality for displaying the add house form and processing house information 
- * from the form submission.
- * 
- * <p>Bugs: None
+ * This class is responsible for handling requests related to adding a new house
+ * to the system. It provides functionality for displaying the add house form
+ * and processing house information from the form submission.
+ *
+ * <p>
+ * Bugs: None
  *
  * @author DuongTD
  */
@@ -39,14 +39,17 @@ import java.util.List;
 public class AddHouse extends HttpServlet {
 
     /**
-     * This method handles GET requests to display the AddHouse page.
-     * It forwards the request to the AddHouse.jsp view where house owners can
+     * This method handles GET requests to display the AddHouse page. It
+     * forwards the request to the AddHouse.jsp view where house owners can
      * input information about their new house.
      *
-     * @param request  the HttpServletRequest object that contains the request made by the client
-     * @param response the HttpServletResponse object that contains the response from the servlet
+     * @param request the HttpServletRequest object that contains the request
+     * made by the client
+     * @param response the HttpServletResponse object that contains the response
+     * from the servlet
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an input or output error occurs while handling the request
+     * @throws IOException if an input or output error occurs while handling the
+     * request
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -56,21 +59,24 @@ public class AddHouse extends HttpServlet {
     }
 
     /**
-     * This method handles POST requests to process the form submission when a house owner
-     * adds a new house. It validates the input, processes image uploads, and stores the house 
-     * information in the database.
+     * This method handles POST requests to process the form submission when a
+     * house owner adds a new house. It validates the input, processes image
+     * uploads, and stores the house information in the database.
      *
-     * @param request  the HttpServletRequest object that contains the request made by the client
-     * @param response the HttpServletResponse object that contains the response from the servlet
+     * @param request the HttpServletRequest object that contains the request
+     * made by the client
+     * @param response the HttpServletResponse object that contains the response
+     * from the servlet
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an input or output error occurs while handling the request
+     * @throws IOException if an input or output error occurs while handling the
+     * request
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             //lấy thông tin chủ trọ từ session
-            User owner = (User) request.getSession().getAttribute("account");
+            User owner = (User) request.getSession().getAttribute("user");
 
             //nếu không tìm thấy chủ trọ thì quay về trang đăng nhập
             if (owner == null) {
@@ -198,19 +204,20 @@ public class AddHouse extends HttpServlet {
     }
 
     /**
-     * Set the request attributes to preserve form input values after a failed submission.
+     * Set the request attributes to preserve form input values after a failed
+     * submission.
      *
-     * @param request          the HttpServletRequest object
-     * @param houseName        the name of the house
-     * @param address          the house address
-     * @param description      the house description
-     * @param distanceStr      the distance to the school as a string
-     * @param powerPriceStr    the power price as a string
-     * @param waterPriceStr    the water price as a string
-     * @param servicePriceStr  the service price as a string
-     * @param fingerPrintLock  whether the house has a fingerprint lock
-     * @param camera           whether the house has a camera
-     * @param parking          whether the house has parking
+     * @param request the HttpServletRequest object
+     * @param houseName the name of the house
+     * @param address the house address
+     * @param description the house description
+     * @param distanceStr the distance to the school as a string
+     * @param powerPriceStr the power price as a string
+     * @param waterPriceStr the water price as a string
+     * @param servicePriceStr the service price as a string
+     * @param fingerPrintLock whether the house has a fingerprint lock
+     * @param camera whether the house has a camera
+     * @param parking whether the house has parking
      */
     private void setRequestAttributes(HttpServletRequest request, String houseName, String address,
             String description, String distanceStr, String powerPriceStr,

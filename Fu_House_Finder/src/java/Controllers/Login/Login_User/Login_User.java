@@ -67,7 +67,7 @@ public class Login_User extends HttpServlet {
                             response.sendRedirect("viewAccountList");
                         case 3 ->
                             response.sendRedirect("homePage");
-                        case 4 ->
+                        case 5 ->
                             response.sendRedirect("ListHouse");
                         default -> {
                         }
