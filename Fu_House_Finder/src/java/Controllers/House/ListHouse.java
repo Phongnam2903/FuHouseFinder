@@ -82,8 +82,8 @@ public class ListHouse extends HttpServlet {
             }
         }
 
-        //lấy thông tin tài khoản chủ nhà từ session
-        User owner = (User) request.getSession().getAttribute("account");
+        //Get information of house owner from session
+        User owner = (User) request.getSession().getAttribute("user");
 
         //chuyển hướng tới trang đăng nhập nếu chủ nhà chưa đăng nhập
         if (owner == null) {

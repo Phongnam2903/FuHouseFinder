@@ -59,6 +59,7 @@ html, body {
     }
 }
 
+/* Kiểu cho tiêu đề sidebar */
 .sidebar-heading {
     color: white;
 }
@@ -70,4 +71,53 @@ html, body {
 
 #page-content-wrapper {
     transition: margin 0.3s ease;
+}
+
+/* Tùy chỉnh các nút */
+.btn-primary {
+    background-color: #007bff; /* Màu nền chính */
+    border-color: #007bff; /* Màu viền chính */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
+    border-color: #0056b3; /* Màu viền khi hover */
+}
+
+/* Định dạng cho bảng */
+.table {
+    margin-top: 20px; /* Khoảng cách trên bảng */
+}
+
+.table th {
+    background-color: #f8f9fa; /* Màu nền cho header */
+    color: #495057; /* Màu chữ cho header */
+}
+
+.table td {
+    vertical-align: middle; /* Giữa hàng */
+}
+
+/* Hiệu ứng cho các nút trong bảng */
+.table-actions a {
+    margin: 0 5px; /* Khoảng cách giữa các nút */
+}
+
+/* Định dạng cho phần breadcrumb */
+.breadcrumb {
+    background-color: transparent; /* Không có màu nền */
+}
+
+/* Định dạng cho các biểu mẫu tìm kiếm và bộ lọc */
+.filter-form {
+    display: flex;
+    align-items: center; /* Giữa hàng dọc */
+}
+
+.filter-form input[type="radio"] {
+    margin-left: 10px; /* Khoảng cách giữa các nút radio */
+}
+
+.input-group {
+    max-width: 300px; /* Đặt chiều rộng tối đa cho ô tìm kiếm */
 }

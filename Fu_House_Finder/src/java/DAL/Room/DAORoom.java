@@ -132,6 +132,68 @@ public class DAORoom extends DAO {
 
         return roomList;
     }
+    
+    public int countRoomsByHouseId(int houseId){
+        String query = "SELECT COUNT(*) FROM Room WHERE deleted = 0 and HouseID = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, houseId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+              return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DAORoom.class.getName()).log(Level.SEVERE, "Error getting rooms by houseId", e);
+        }
+
+        return 0;
+    }
+    
+     public List<Room> getRoomsByHouseIdPaging(int houseId, int pageIndex, int pageSize) {
+        List<Room> roomList = new ArrayList<>();
+        String query = "SELECT * FROM Room WHERE deleted = 0 and HouseID = ? order by CreatedDate desc offset ? rows fetch next ? rows only";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, houseId);
+            ps.setInt(2, (pageIndex-1) * pageSize);
+            ps.setInt(3, pageSize);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Room room = new Room(
+                        rs.getInt("id"),
+                        rs.getInt("roomNumber"),
+                        rs.getInt("floorNumber"),
+                        rs.getInt("houseId"),
+                        rs.getString("description"),
+                        rs.getString("image"),
+                        rs.getDouble("price"),
+                        rs.getFloat("area"),
+                        rs.getBoolean("liveInHouseOwner"),
+                        rs.getBoolean("fridge"),
+                        rs.getBoolean("bed"),
+                        rs.getBoolean("desk"),
+                        rs.getBoolean("kitchen"),
+                        rs.getBoolean("closedToilet"),
+                        rs.getBoolean("washingMachine"),
+                        rs.getDate("createdDate"),
+                        rs.getDate("lastModifiedDate"),
+                        rs.getInt("statusId"),
+                        rs.getInt("roomTypeId"),
+                        rs.getBoolean("deleted")
+                );
+                roomList.add(room);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DAORoom.class.getName()).log(Level.SEVERE, "Error getting rooms by houseId", e);
+        }
+
+        return roomList;
+    }
+
 
     // Xóa phòng theo roomId
     public void deleteRoom(int id) {

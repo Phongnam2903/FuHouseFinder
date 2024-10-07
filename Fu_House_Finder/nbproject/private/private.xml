@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/ky5/FuHouseFinder/Fu_House_Finder/web/Views/Login/Register.jsp</file>
             <file>file:/D:/ky5/FuHouseFinder/Fu_House_Finder/src/java/Validations/DataEncryptionSHA256.java</file>
             <file>file:/D:/ky5/FuHouseFinder/Fu_House_Finder/src/java/DAL/User/UserProcess.java</file>
@@ -10,6 +11,12 @@
             <file>file:/D:/ky5/FuHouseFinder/Fu_House_Finder/src/java/Controllers/User/HomePage.java</file>
             <file>file:/D:/ky5/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Login/Login_User/RegisterController.java</file>
             <file>file:/D:/ky5/FuHouseFinder/Fu_House_Finder/src/java/DAL/DBContext.java</file>
+=======
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/DAL/House/DAOHouse.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/User/HomePage.jsp</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Models/House.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/User/HomePage.java</file>
+>>>>>>> db4a4cf0e56599c10a564ea07fa9b6b18e20bf0f
         </group>
     </open-files>
 </project-private>

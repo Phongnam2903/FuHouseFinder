@@ -27,15 +27,15 @@
                         <h2 class="ms-3 text-dark">Dashboard</h2>
 
                         <button class="btn btn-outline-success ms-auto" id="dark-mode-toggle">
-                            <i class="fas fa-moon"></i> Nguyễn Nam Phong
+                            <a href="admin_profile" style="text-decoration: none; color: #87bbf2">
+                                Hello, <c:out value="${sessionScope.user.username}" />!
+                            </a>  
                         </button>
-
                     </div>
                 </nav>
                 <!-- Breadcrumb -->
                 <nav aria-label="breadcrumb" class="mt-3">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="adminDashboard">Home</a></li>
                         <li class="breadcrumb-item"><a href="viewAccountList">List Account</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Create New Account</li>
                     </ol>
@@ -57,7 +57,6 @@
                                 ${errorPassword}
                             </div>
                         </c:if>
-
 
                         <!-- Full Name -->
                         <div class="mb-3">

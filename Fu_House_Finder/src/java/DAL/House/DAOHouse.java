@@ -13,6 +13,38 @@ import java.util.logging.Logger;
 
 public class DAOHouse extends DAO {
 
+    public List<House> getHousesWithPrices() {
+        List<House> houses = new ArrayList<>();
+        String sql = "SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, "
+                + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice "
+                + "FROM House "
+                + "JOIN Room ON House.ID = Room.HouseID "
+                + "GROUP BY House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery(); // Thực hiện truy vấn
+
+            while (rs.next()) {
+                House house = new House();
+                house.setId(rs.getInt("ID"));
+                house.setHouseName(rs.getString("HouseName"));
+                house.setAddress(rs.getString("Address"));
+                house.setDistanceToSchool(rs.getFloat("DistanceToSchool"));
+
+                // Set giá từ bảng Room
+                house.setMinPrice(rs.getDouble("MinPrice"));
+                house.setMaxPrice(rs.getDouble("MaxPrice"));
+                house.setImage(rs.getString("image"));
+                houses.add(house);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return houses;
+    }
+
     public int addHouse(House house) {
         int n = 0;
         String sql = "INSERT INTO [dbo].[House]\n"
