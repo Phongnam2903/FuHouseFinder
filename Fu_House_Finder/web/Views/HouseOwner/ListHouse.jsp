@@ -43,7 +43,7 @@
                         <c:forEach var="house" items="${houseList}" varStatus="status">
                             <tr>
                                 <td>${status.index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                                <td>${house.houseName}</td>
+                                <td><a href="ListRoom?houseId=${house.id}">${house.houseName}</a></td>
                                 <td>
                                     chưa thêm
                                 </td>
