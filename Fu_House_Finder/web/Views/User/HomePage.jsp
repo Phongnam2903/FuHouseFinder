@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -28,34 +30,6 @@
                             <button type="reset" class="btn btn-link text-white mb-0">Reset Filters</button>
                         </div>
                         <div class="card p-3">
-                            <!--                             Location Filters 
-                                                        <div class="mb-3 d-flex justify-content-between">
-                                                            <label for="location" class="form-label">Facility</label>
-                                                            <select class="form-select" id="location">
-                                                                <option value="">Select Facility</option>
-                                                                <option value="hanoi">FU - Hoa Lac</option>
-                                                            </select>
-                                                        </div>-->
-                            <div class="mb-3 d-flex justify-content-between">
-                                <label for="district" class="form-label">District</label>
-                                <select class="form-select" id="district">
-                                    <option value="">Thach That District</option>
-                                </select>
-                            </div>
-                            <div class="mb-3 d-flex justify-content-between">
-                                <label for="ward" class="form-label">Ward/Commune</label>
-                                <select class="form-select" id="ward">
-                                    <option value="">Lien Quan Town</option>
-                                </select>
-                            </div>
-                            <div class="mb-3 d-flex justify-content-between">
-                                <label for="village" class="form-label">Village/Hamlet</label>
-                                <select class="form-select" id="village">
-                                    <option value="">Dong Cam</option>
-                                </select>
-                            </div>
-
-                            <hr>
                             <!-- Distance Filter -->
                             <div class="mb-3">
                                 <label for="distance" class="form-label">Distance to School</label>
@@ -199,7 +173,7 @@
                                 <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
                             </form>
                         </div>
-                        <div class="col-md-3 mr-5">
+                        <div class="col-md-4">
                             <select class="form-select" id="sortBy">
                                 <option value="">Sort By</option>
                                 <option value="priceAsc">Price: Low to High</option>
@@ -211,16 +185,18 @@
                     <div class="row">
                         <c:forEach var="house" items="${houseList}">
                             <div class="col-md-4 mb-4">
-                                <div class="card">
-                                    <img src="${pageContext.request.contextPath}/images/${house.image}" class="card-img-top" alt="${house.houseName}">
-                                    <div class="card-body">
-                                        <h5 class="card-title"> ${house.houseName}</h5>
-                                        <p class="card-text"><i class="fas fa-money-bill-wave"></i>${house.price} VND</p>
-                                        <p class="card-text"><i class="fas fa-map-marker-alt"></i> ${house.address}</p>
-                                        <p class="card-text"><i class="fas fa-route"></i> ${house.distanceToSchool} km</p>
-                                        <!--                                        <p class="card-text"><i class="fas fa-phone-alt"></i> Contact method pending</p>-->
+                                <a href="${pageContext.request.contextPath}/houseDetail?id=${house.id}" style="text-decoration: none; color: inherit;">
+                                    <div class="card" style="cursor: pointer;">
+                                        <img style="height: 300px; max-width: 100%" src="${pageContext.request.contextPath}/images/${house.image}" class="card-img-top" alt="${house.houseName}">
+
+                                        <div class="card-body">
+                                            <h5 class="card-title"> ${house.houseName}</h5>
+                                            <p class="card-text"><i class="fas fa-money-bill-wave"></i> <fmt:formatNumber value="${house.price}" type="number" minFractionDigits="0" /> VND</p>
+                                            <p class="card-text"><i class="fas fa-map-marker-alt"></i> ${house.address}</p>
+                                            <p class="card-text"><i class="fas fa-route"></i> ${house.distanceToSchool} km</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </c:forEach>
                     </div>

@@ -70,7 +70,7 @@ public class AddHouse extends HttpServlet {
             throws ServletException, IOException {
         try {
             //lấy thông tin chủ trọ từ session
-            User owner = (User) request.getSession().getAttribute("account");
+            User owner = (User) request.getSession().getAttribute("user");
 
             //nếu không tìm thấy chủ trọ thì quay về trang đăng nhập
             if (owner == null) {
