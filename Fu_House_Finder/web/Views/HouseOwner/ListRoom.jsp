@@ -118,6 +118,81 @@
                         </c:forEach>
                     </tbody>
                 </table>
+                <div class="pagination-container">
+                    <ul class="pagination justify-content-end">
+                        <!-- Nút Previous -->
+                        <c:if test="${currentPage > 1}">
+                            <li class="page-item">
+                                <a class="page-link" href="${pageContext.request.contextPath}/ListRoom?page=${currentPage - 1}&houseId=${houseId}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo; Previous</span>
+                                </a>
+                            </li>
+                        </c:if>
+                        <c:if test="${currentPage == 1}">
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo; Previous</span>
+                                </span>
+                            </li>
+                        </c:if>
+
+                        <!-- Hiển thị các số trang -->
+                        <c:choose>
+                            <c:when test="${totalPages <= 5}">
+                                <!-- Nếu tổng số trang <= 5, hiển thị tất cả -->
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <li class="page-item active"><span class="page-link">${i}</span></li>
+                                            </c:when>
+                                            <c:otherwise>
+                                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListRoom?page=${i}">${i}</a></li>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                <!-- Nếu tổng số trang > 5, hiển thị các trang đầu, cuối và dấu "..." -->
+                                <c:if test="${currentPage > 3}">
+                                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListRoom?page=1&houseId=${houseId}">1</a></li>
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                    </c:if>
+
+                                <c:forEach var="i" begin="${(currentPage - 2 < 1) ? 1 : currentPage - 2}" end="${(currentPage + 2 > totalPages) ? totalPages : currentPage + 2}">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <li class="page-item active"><span class="page-link">${i}</span></li>
+                                            </c:when>
+                                            <c:otherwise>
+                                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListRoom?page=${i}&houseId=${houseId}">${i}</a></li>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+
+                                <c:if test="${currentPage < totalPages - 2}">
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/ListRoom?page=${totalPages}&houseId=${houseId}">${totalPages}</a></li>
+                                    </c:if>
+                                </c:otherwise>
+                            </c:choose>
+
+                        <!-- Nút Next -->
+                        <c:if test="${currentPage < totalPages}">
+                            <li class="page-item">
+                                <a class="page-link" href="${pageContext.request.contextPath}/ListRoom?page=${currentPage + 1}&houseId=${houseId}" aria-label="Next">
+                                    <span aria-hidden="true">Next &raquo;</span>
+                                </a>
+                            </li>
+                        </c:if>
+                        <c:if test="${currentPage == totalPages}">
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">Next &raquo;</span>
+                                </span>
+                            </li>
+                        </c:if>
+                    </ul>
+                </div>
             </c:if>
 
             <c:if test="${empty roomList}">
