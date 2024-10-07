@@ -98,7 +98,7 @@ public class UpdateHouse extends HttpServlet {
             throws ServletException, IOException {
         try {
             //lấy thông tin người dùng từ session
-            User owner = (User) request.getSession().getAttribute("account");
+            User owner = (User) request.getSession().getAttribute("user");
 
             //chuyển hướng tới trang đăng nhập nếu chưa đăng nhập
             if (owner == null) {
