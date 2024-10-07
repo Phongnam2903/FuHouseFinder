@@ -63,9 +63,27 @@
                 <h2 class="text-center">List Staff's Account</h2>
                 <div class="d-flex justify-content-between mb-3">
                     <a href="./createAccount" class="btn btn-primary add-account-btn">+ Create New Account</a>
+
+                    <!-- Filter Form -->
+                    <div class="fiter-form input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Filter by Name, Email, Phone" onkeyup="filterTable()" />
+                    </div>
+
+                    <div class="filter-form">
+                        <label>Status:</label>
+                        <div>
+                            <input type="radio" id="statusAll" name="status" value="" checked onclick="filterByStatus()"> All
+                            <input type="radio" id="statusActive" name="status" value="Active" onclick="filterByStatus()"> Active
+                            <input type="radio" id="statusInactive" name="status" value="InActive" onclick="filterByStatus()"> InActive
+                            <input type="radio" id="statusBan" name="status" value="Ban" onclick="filterByStatus()"> Ban
+                            <input type="radio" id="statusUnBan" name="status" value="UnBan" onclick="filterByStatus()"> UnBan
+                        </div>
+                    </div>
+
                 </div>
                 <div class="container-fluid mt-4">
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover" id="accountTable">
                         <thead class="table-light">
                             <tr>
                                 <th>Full Name</th>
@@ -178,6 +196,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
         <!-- Custom JS -->
         <script src="${pageContext.request.contextPath}/js/admin/admin.js"></script>
+        <script src="${pageContext.request.contextPath}/js/admin/filterTable.js" type="text/javascript"></script> 
     </body>
 
 </html>

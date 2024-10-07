@@ -24,7 +24,7 @@
                 <form action="${pageContext.request.contextPath}/ListHouse" method="get" class="input-group" style="max-width: 400px;">
                     <input type="text" name="search" class="form-control" placeholder="Enter house name to search" 
                            aria-label="Enter house name to search" value="${search != null ? search : ''}" />
-                    <button class="btn btn-secondary" type="submit">Search</button>
+                    <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>
 

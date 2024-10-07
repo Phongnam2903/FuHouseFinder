@@ -62,13 +62,13 @@
 
                 <!-- Social Login buttons -->
                 <a href="loginGoogle" class="btn-google btn-lg mb-3 w-75"><i class="fab fa-google"></i> Login with Google</a>
-                <a href="https://www.facebook.com/login" class="btn-facebook btn-lg mb-3 w-75"><i class="fab fa-facebook"></i> Login with Facebook</a>
+                <a href="loginFacebook" class="btn-facebook btn-lg mb-3 w-75"><i class="fab fa-facebook"></i> Login with Facebook</a>
 
                 <!-- Register link -->
                 <div class="register-links d-flex justify-content-between w-75 mt-3">
                     <a href="#">Forgot Password</a>
                     <a href="#">Sign Up?</a>
-                    <a href="#">Back</a>
+                    <a href="homePage">Back</a>
                 </div>
 
             </div>

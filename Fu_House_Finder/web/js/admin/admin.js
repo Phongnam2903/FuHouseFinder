@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 5000); // 5 giây
 });
 
-
 // Biểu đồ Doanh Thu
 document.addEventListener("DOMContentLoaded", function () {
     var ctx = document.getElementById('revenueChart').getContext('2d');
@@ -57,3 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+// Hàm chuyển hướng sau khi hiển thị thông báo
+function redirectAfterDelay(url, delay) {
+    setTimeout(function () {
+        window.location.href = url;
+    }, delay);
+}

@@ -58,7 +58,6 @@
                             </div>
                         </c:if>
 
-
                         <!-- Full Name -->
                         <div class="mb-3">
                             <label for="username" class="form-label">Full Name</label>

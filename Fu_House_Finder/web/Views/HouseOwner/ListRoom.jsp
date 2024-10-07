@@ -31,8 +31,7 @@
         </style>
     </head>
     <body>
-        <%--<%@include file="../Partials/Header.jsp" %>--%>
-
+        <%@include file="../Partials/Header.jsp" %>
         <div class="container mt-4">
             <h2 class="text-center mb-4">Danh sách phòng trọ</h2>
             <!-- Thêm một alert để hiển thị thông báo xóa thành công -->
