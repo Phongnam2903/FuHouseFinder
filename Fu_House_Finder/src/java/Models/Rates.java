@@ -4,47 +4,55 @@ import java.util.Date;
 
 public class Rates {
 
-    private int rateID;
-    private int Star;
-    private int commentID;
+    private int ID;
+    private int star;
     private int userID;
     private int houseID;
     private Date createdDate;
+    private String decription;
+    private String houseOwnerReply;
+    private Date lastModifiedDate;
+    private int lastModifiedBy;
+    private String userName;
 
     public Rates() {
     }
 
-    public Rates(int rateID, int Star, int commentID, int userID, int houseID, Date createdDate) {
-        this.rateID = rateID;
-        this.Star = Star;
-        this.commentID = commentID;
+    public Rates(int ID, int star, int userID, int houseID, Date createdDate, String decription, String houseOwnerReply, Date lastModifiedDate, int lastModifiedBy, String userName) {
+        this.ID = ID;
+        this.star = star;
         this.userID = userID;
         this.houseID = houseID;
         this.createdDate = createdDate;
+        this.decription = decription;
+        this.houseOwnerReply = houseOwnerReply;
+        this.lastModifiedDate = lastModifiedDate;
+        this.lastModifiedBy = lastModifiedBy;
+        this.userName = userName;
     }
 
-    public int getRateID() {
-        return rateID;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setRateID(int rateID) {
-        this.rateID = rateID;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public int getStar() {
-        return Star;
+        return star;
     }
 
-    public void setStar(int Star) {
-        this.Star = Star;
-    }
-
-    public int getCommentID() {
-        return commentID;
-    }
-
-    public void setCommentID(int commentID) {
-        this.commentID = commentID;
+    public void setStar(int star) {
+        this.star = star;
     }
 
     public int getUserID() {
@@ -71,9 +79,35 @@ public class Rates {
         this.createdDate = createdDate;
     }
 
-    @Override
-    public String toString() {
-        return "Rates{" + "rateID=" + rateID + ", Star=" + Star + ", commentID=" + commentID + ", userID=" + userID + ", houseID=" + houseID + ", createdDate=" + createdDate + '}';
+    public String getDecription() {
+        return decription;
     }
 
+    public void setDecription(String decription) {
+        this.decription = decription;
+    }
+
+    public String getHouseOwnerReply() {
+        return houseOwnerReply;
+    }
+
+    public void setHouseOwnerReply(String houseOwnerReply) {
+        this.houseOwnerReply = houseOwnerReply;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public int getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(int lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
 }

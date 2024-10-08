@@ -1,14 +1,10 @@
 package Controllers.User;
 
-import DAL.Comment.DAOComment;
 import DAL.House.DAOHouse;
 import DAL.Rating.DAORate;
-import DAL.UserRateComment.DAOUserRateComment;
-import Models.Comment;
 import Models.House;
 import Models.Rates;
 import Models.User;
-import Models.UserRateComment;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -43,6 +39,9 @@ public class HouseDetail extends HttpServlet {
         int houseId = Integer.parseInt(houseIdParam);
 
         DAOHouse daoHouse = new DAOHouse();
+        DAORate daoRate = new DAORate();
+
+        List<Rates> ratesList = daoRate.getRatesByHouse(houseId);
 
         House house = daoHouse.getHouseById(houseId);
 
@@ -50,11 +49,8 @@ public class HouseDetail extends HttpServlet {
         if (house != null) {
             request.setAttribute("house", house);
             request.setAttribute("images", house.getImage());
-            //lấy comment và rate
-            DAOUserRateComment daoCommentRateUser = new DAOUserRateComment();
-            List<UserRateComment> commentsAndRatings = daoCommentRateUser.getCommentsAndRatingsByHouseId(houseId);
-            request.setAttribute("commentsAndRatings", commentsAndRatings);
-            
+            request.setAttribute("ratesList", ratesList);
+
             request.getRequestDispatcher("/Views/User/HouseDetail.jsp").forward(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "HomePage");
@@ -72,10 +68,10 @@ public class HouseDetail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy thông tin từ form comment và rating
-        String commentText = request.getParameter("comment");
-        String starRating = request.getParameter("ratingValue");
-        String houseIdParam = request.getParameter("houseId");
+        //lấy thông tin từ form comment và rating
+        String commentText = request.getParameter("comment"); // Lấy mô tả đánh giá
+        String starRating = request.getParameter("ratingValue"); // Lấy số sao
+        String houseIdParam = request.getParameter("houseId"); // ID của ngôi nhà
 
         User user = (User) request.getSession().getAttribute("user");  // Lấy user từ session
 
@@ -86,34 +82,53 @@ public class HouseDetail extends HttpServlet {
         }
 
         int userId = user.getId();
-
         int houseId = Integer.parseInt(houseIdParam);
 
-        if (commentText != null && !commentText.trim().isEmpty()) {
-            // Xử lý lưu comment
-            DAOComment daoComment = new DAOComment();
-            Comment comment = new Comment();
-            comment.setDescription(commentText);
-            comment.setCreatedDate(new Date(System.currentTimeMillis()));
-            comment.setUserID(userId);  // Giả sử lấy từ session đăng nhập
-            comment.setHouseID(houseId);
-            comment.setRoomID(4);  // Nếu cần gán phòng, gán RoomID thích hợp, ở đây để 0
-            daoComment.addComment(comment);
-        }
+        DAOHouse daoHouse = new DAOHouse();
+        House house = daoHouse.getHouseById(houseId);
 
-        if (starRating != null && !starRating.isEmpty()) {
-            // Xử lý lưu rate
+        //khởi tạo biến để lưu thông báo và hiển thị lên jsp
+        String errorMessage = null;
+        String successMessage = null;
+
+        //kiểm tra nếu comment không rỗng và user đã nhập đánh giá
+        if ((commentText == null || commentText.trim().isEmpty()) && (starRating == null || starRating.isEmpty() || Integer.parseInt(starRating) <= 0)) {
+            errorMessage = "You need to provide at least one: commnet or rating!";
+        } else {
+            //tạo đối tượng DAO để lưu đánh giá
             DAORate daoRate = new DAORate();
             Rates rate = new Rates();
-            rate.setStar(Integer.parseInt(starRating));
-            rate.setUserID(userId);  // Giả sử lấy từ session đăng nhập
+            rate.setStar(Integer.parseInt(starRating)); //thiết lập số sao
             rate.setHouseID(houseId);
+            rate.setUserID(userId);
             rate.setCreatedDate(new Date(System.currentTimeMillis()));
-            daoRate.addRate(rate);
+            rate.setDecription(commentText);
+
+            //thiết lập HouseOwnerReply thành null vì người dùng chưa đánh giá
+            rate.setHouseOwnerReply(null);
+
+            //thiết lập LastModifiedBy thành ownerId từ đối tượng House
+            rate.setLastModifiedBy(house.getOwnerId());
+            rate.setLastModifiedDate(new Date(System.currentTimeMillis()));
+
+            //lưu đánh giá vào cơ sở dữ liệu
+            int result = daoRate.addRate(rate);
+
+            if (result > 0) {
+                successMessage = "Posted review successfully!";
+            } else {
+                errorMessage = "Failed to add posted review!";
+            }
         }
 
-        // Sau khi thêm comment và rating, tải lại trang chi tiết nhà
-        response.sendRedirect(request.getContextPath() + "/houseDetail?id=" + houseId);
+        //thiết lập thông báo vào yêu cầu trước khi chuyển hướng
+        if (errorMessage != null) {
+            // Gửi thông báo lỗi qua URL với tham số "error"
+            response.sendRedirect(request.getContextPath() + "/houseDetail?id=" + houseId + "&status=error&message=" + errorMessage);
+        } else if (successMessage != null) {
+            // Gửi thông báo thành công qua URL với tham số "success"
+            response.sendRedirect(request.getContextPath() + "/houseDetail?id=" + houseId + "&status=success&message=" + successMessage);
+        }
     }
 
     /**

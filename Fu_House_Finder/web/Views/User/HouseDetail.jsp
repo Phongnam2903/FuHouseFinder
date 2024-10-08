@@ -63,24 +63,45 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
+                            <c:if test="${not empty errorMessage}">
+                                <div class="alert alert-danger" role="alert">
+                                    ${errorMessage}
+                                </div>
+                            </c:if>
+
+                            <c:if test="${not empty successMessage}">
+                                <div class="alert alert-success" role="alert">
+                                    ${successMessage}
+                                </div>
+                            </c:if>
+
                             <h3 class="card-title" style="text-align: center;">User Reviews</h3>
                             <!-- Hiển thị các bình luận trước đó -->
                             <label for="comment" class="form-label">Comments:</label>
-                            <c:if test="${not empty commentsAndRatings}">
-                                <c:forEach var="item" items="${commentsAndRatings}">
-                                    <div class="card">
-                                        <p class="m-1">${item.userName}: ${item.commentDescription} 
-                                            (<span>
-                                                <c:forEach var="i" begin="1" end="${item.starRating}">
-                                                    <i class="fas fa-star" style="color: gold;"></i>
-                                                </c:forEach>
-                                            </span>) 
+                            <c:if test="${not empty ratesList}">
+                                <c:forEach var="rate" items="${ratesList}">
+                                    <div class="card mb-1">
+                                        <p class="m-1">
+                                            ${rate.userName}:
+                                            ${rate.decription}
+                                            <c:if test="${not empty rate.star}">
+                                                <span>
+                                                    <c:forEach var="i" begin="1" end="${rate.star}">
+                                                        <i class="fas fa-star" style="color: gold;"></i>
+                                                    </c:forEach>
+                                                </span>
+                                            </c:if>
+                                        </p>
+                                        <c:if test="${not empty rate.houseOwnerReply}">
+                                            <p class="m-1">-> Owner: ${rate.houseOwnerReply}</p>
+                                        </c:if>
                                     </div>
-                                    <hr>
                                 </c:forEach>
                             </c:if>
-                            <c:if test="${empty commentsAndRatings}">
-                                <p>No reviews yet.</p>
+                            <c:if test="${empty ratesList}">
+                                <div class="card mb-1">
+                                    <p class="m-1">No reviews yet.</p>
+                                </div>
                             </c:if>
 
                             <!-- Form nhập đánh giá và bình luận mới -->
@@ -194,6 +215,14 @@
             </div>
         </div>
 
+        <div id="notificationModal" style="position: fixed; top: 20px; right: 20px; z-index: 9999; width: 300px; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); display: none;">
+            <span class="close-btn" onclick="closeModal()" style="position: absolute; top: 5px; right: 10px; cursor: pointer; font-size: 20px; color: #6c757d;">&#10006;</span>
+            <p id="modalMessage" style="margin: 0; color: #495057;">Your message here</p>
+            <div id="progressBar" style="width: 100%; background-color: #e0e0e0; border-radius: 5px; margin-top: 10px; overflow: hidden;">
+                <div id="progress" style="height: 3px; background-color: #007bff; border-radius: 5px; transition: width 1s linear;"></div>
+            </div>
+        </div>
+
         <!-- Floating Button -->
         <a href="#" class="btn btn-danger btn-lg btn-danger-custom"><i class="fas fa-flag"></i></a>
 
@@ -203,33 +232,78 @@
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            // JavaScript để xử lý rating bằng ngôi sao
-            const stars = document.querySelectorAll('.star-rating i');
-            const ratingValue = document.getElementById('ratingValue');
+                // JavaScript để xử lý rating bằng ngôi sao
+                const stars = document.querySelectorAll('.star-rating i');
+                const ratingValue = document.getElementById('ratingValue');
 
-            stars.forEach(star => {
-                star.addEventListener('click', () => {
-                    const selectedRating = star.getAttribute('data-value'); // Lấy giá trị sao đã chọn
-                    ratingValue.value = selectedRating; // Ghi giá trị sao đã chọn vào input hidden
-                    resetStars(); // Xóa màu của tất cả các ngôi sao
-                    highlightStars(selectedRating); // Tô màu cho các ngôi sao đã chọn
-                    console.log(`Rated: ${selectedRating} stars`); // In ra console (để kiểm tra nếu cần)
-                });
-            });
-
-            function highlightStars(rating) {
                 stars.forEach(star => {
-                    if (star.getAttribute('data-value') <= rating) {
-                        star.classList.add('selected'); // Tô màu ngôi sao đã chọn
-                    }
+                    star.addEventListener('click', () => {
+                        const selectedRating = star.getAttribute('data-value'); // Lấy giá trị sao đã chọn
+                        ratingValue.value = selectedRating; // Ghi giá trị sao đã chọn vào input hidden
+                        resetStars(); // Xóa màu của tất cả các ngôi sao
+                        highlightStars(selectedRating); // Tô màu cho các ngôi sao đã chọn
+                        console.log(`Rated: ${selectedRating} stars`); // In ra console (để kiểm tra nếu cần)
+                    });
                 });
-            }
 
-            function resetStars() {
-                stars.forEach(star => {
-                    star.classList.remove('selected'); // Xóa màu của tất cả các ngôi sao
-                });
-            }
+                function highlightStars(rating) {
+                    stars.forEach(star => {
+                        if (star.getAttribute('data-value') <= rating) {
+                            star.classList.add('selected'); // Tô màu ngôi sao đã chọn
+                        }
+                    });
+                }
+
+                function resetStars() {
+                    stars.forEach(star => {
+                        star.classList.remove('selected'); // Xóa màu của tất cả các ngôi sao
+                    });
+                }
         </script>
+        <script>
+            // Hiển thị modal với thông báo
+            function showModal(message, duration) {
+                // Thiết lập thông điệp cho modal
+                document.getElementById('modalMessage').innerText = message;
+                document.getElementById('notificationModal').style.display = 'block'; // Hiển thị modal
+
+                // Thiết lập thanh tiến trình
+                const progressBar = document.getElementById('progress');
+                const progressBarContainer = document.getElementById('progressBar');
+                let timeLeft = duration / 1000; // Chuyển đổi từ milliseconds sang seconds
+                const totalWidth = progressBarContainer.offsetWidth; // Chiều rộng tối đa của thanh tiến trình
+
+                // Cập nhật thanh tiến trình
+                const interval = setInterval(() => {
+                    timeLeft--;
+                    const newWidth = (timeLeft / (duration / 1000)) * totalWidth; // Tính toán chiều rộng mới
+
+                    progressBar.style.width = newWidth + 'px'; // Cập nhật chiều rộng
+
+                    if (timeLeft <= 0) {
+                        clearInterval(interval); // Dừng interval khi hết thời gian
+                        closeModal(); // Đóng modal khi hết thời gian
+                    }
+                }, 1000); // Cập nhật mỗi giây
+            }
+
+            function closeModal() {
+                const modal = document.getElementById('notificationModal');
+                modal.style.display = 'none'; // Ẩn modal
+                modal.style.opacity = 0; // Đặt độ mờ về 0
+            }
+
+            // Lấy tham số từ URL để hiển thị thông báo (nếu có)
+            window.onload = function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const status = urlParams.get('status');
+                const message = urlParams.get('message');
+
+                if (status && message) {
+                    showModal(message, 7000);
+                }
+            };
+        </script>
+
     </body>
 </html>
