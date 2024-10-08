@@ -69,7 +69,7 @@ public class HouseDetail extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //lấy thông tin từ form comment và rating
-        String commentText = request.getParameter("comment"); // Lấy mô tả đánh giá
+        String commentText = request.getParameter("comment").trim(); // Lấy mô tả đánh giá
         String starRating = request.getParameter("ratingValue"); // Lấy số sao
         String houseIdParam = request.getParameter("houseId"); // ID của ngôi nhà
 
@@ -92,7 +92,7 @@ public class HouseDetail extends HttpServlet {
         String successMessage = null;
 
         //kiểm tra nếu comment không rỗng và user đã nhập đánh giá
-        if ((commentText == null || commentText.trim().isEmpty()) && (starRating == null || starRating.isEmpty() || Integer.parseInt(starRating) <= 0)) {
+        if ((commentText == null || commentText.isEmpty()) && (starRating == null || starRating.isEmpty() || Integer.parseInt(starRating) <= 0)) {
             errorMessage = "You need to provide at least one: commnet or rating!";
         } else {
             //tạo đối tượng DAO để lưu đánh giá

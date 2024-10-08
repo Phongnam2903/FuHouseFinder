@@ -48,7 +48,7 @@ public class DAORate extends DAO {
 
     public List<Rates> getRatesByHouse(int houseId) {
         List<Rates> rateList = new ArrayList<>();
-        String sql = "SELECT r.Star, r.Description, r.CreatedDate, u.FullName, r.HouseOwnerReply "
+        String sql = "SELECT r.ID, r.Star, r.Description, r.CreatedDate, u.FullName, r.HouseOwnerReply "
                 + "FROM [Rates] r "
                 + "JOIN [User] u ON r.UserID = u.ID "
                 + "WHERE r.HouseID = ?";
@@ -59,11 +59,12 @@ public class DAORate extends DAO {
 
             while (rs.next()) {
                 Rates rate = new Rates();
-                rate.setStar(rs.getInt("Star")); // Lấy số sao đánh giá
-                rate.setDecription(rs.getString("Description")); // Lấy mô tả đánh giá
-                rate.setCreatedDate(rs.getDate("CreatedDate")); // Ngày đánh giá
-                rate.setUserName(rs.getString("FullName")); // Tên người dùng
-                rate.setHouseOwnerReply(rs.getString("HouseOwnerReply")); // Phản hồi của chủ nhà nếu có
+                rate.setId(rs.getInt("ID"));
+                rate.setStar(rs.getInt("Star"));
+                rate.setDecription(rs.getString("Description"));
+                rate.setCreatedDate(rs.getDate("CreatedDate"));
+                rate.setUserName(rs.getString("FullName"));
+                rate.setHouseOwnerReply(rs.getString("HouseOwnerReply"));
 
                 // Thêm đối tượng rate vào danh sách
                 rateList.add(rate);
@@ -73,5 +74,21 @@ public class DAORate extends DAO {
         }
 
         return rateList;
+    }
+
+    public boolean updateRateReply(int rateId, String replyText) {
+        String sql = "UPDATE Rates SET HouseOwnerReply = ?, LastModifiedDate = ? WHERE ID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, replyText);
+            pre.setDate(2, new java.sql.Date(System.currentTimeMillis()));
+            pre.setInt(3, rateId);
+
+            int rowsUpdated = pre.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DAORate.class.getName()).log(Level.SEVERE, null, ex);
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
     }
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Rates {
 
-    private int ID;
+    private int id;
     private int star;
     private int userID;
     private int houseID;
@@ -18,8 +18,8 @@ public class Rates {
     public Rates() {
     }
 
-    public Rates(int ID, int star, int userID, int houseID, Date createdDate, String decription, String houseOwnerReply, Date lastModifiedDate, int lastModifiedBy, String userName) {
-        this.ID = ID;
+    public Rates(int id, int star, int userID, int houseID, Date createdDate, String decription, String houseOwnerReply, Date lastModifiedDate, int lastModifiedBy, String userName) {
+        this.id = id;
         this.star = star;
         this.userID = userID;
         this.houseID = houseID;
@@ -31,20 +31,12 @@ public class Rates {
         this.userName = userName;
     }
 
-    public String getUserName() {
-        return userName;
+    public int getId() {
+        return id;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getStar() {
@@ -109,5 +101,13 @@ public class Rates {
 
     public void setLastModifiedBy(int lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

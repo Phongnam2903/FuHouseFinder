@@ -63,24 +63,15 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <c:if test="${not empty errorMessage}">
-                                <div class="alert alert-danger" role="alert">
-                                    ${errorMessage}
-                                </div>
-                            </c:if>
-
-                            <c:if test="${not empty successMessage}">
-                                <div class="alert alert-success" role="alert">
-                                    ${successMessage}
-                                </div>
-                            </c:if>
-
                             <h3 class="card-title" style="text-align: center;">User Reviews</h3>
                             <!-- Hiển thị các bình luận trước đó -->
                             <label for="comment" class="form-label">Comments:</label>
                             <c:if test="${not empty ratesList}">
                                 <c:forEach var="rate" items="${ratesList}">
-                                    <div class="card mb-1">
+                                    <div class="card mb-1" style="position: relative;">
+                                        <span style="position: absolute; top: 5px; right: 10px; font-size: 12px; color: gray;">
+                                            ${rate.createdDate}
+                                        </span>
                                         <p class="m-1">
                                             ${rate.userName}:
                                             ${rate.decription}
@@ -93,7 +84,9 @@
                                             </c:if>
                                         </p>
                                         <c:if test="${not empty rate.houseOwnerReply}">
-                                            <p class="m-1">-> Owner: ${rate.houseOwnerReply}</p>
+                                            <p><i class="fas fa-chevron-right" style="margin-right: 5px;"></i>
+                                                Owner: ${rate.houseOwnerReply}
+                                            </p>
                                         </c:if>
                                     </div>
                                 </c:forEach>
@@ -304,6 +297,5 @@
                 }
             };
         </script>
-
     </body>
 </html>
