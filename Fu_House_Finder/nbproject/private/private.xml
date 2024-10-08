@@ -5,13 +5,10 @@
         <group>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/House.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controllers/User/HouseDetail.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/Rates.java</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/User/HouseDetail.jsp</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Rating/DAORate.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/UserRateComment.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/css/detailHouse.css</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/House/DAOHouse.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/UserRateComment/DAOUserRateComment.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Comment/DAOComment.java</file>
         </group>
     </open-files>
 </project-private>
