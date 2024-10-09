@@ -207,10 +207,103 @@
             </div>
         </section>
 
+        <a href="#" class="btn btn-lg btn-danger-custom" data-bs-toggle="modal" data-bs-target="#orderModal">
+            <i class="fa-solid fa-pen-to-square"></i> Order Accommodation
+        </a>
+
+        <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderModalLabel">Accommodation Request</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="orderForm" action="${pageContext.request.contextPath}/homePage" method="POST">
+                            <input type="hidden" name="userId" value="${user.id}" />
+                            <input type="hidden" name="service" value="sendOrder">
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="desire" class="form-label">What is your desire to find accommodation? <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="desire" rows="3" name="desire" placeholder="Describe your needs" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" form="orderForm" class="btn btn-custom">Submit Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="notificationModal">
+            <span class="close-btn" onclick="closeModal()">&#10006;</span>
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <p id="modalMessage">Your message here</p>
+            <div id="progressBar">
+                <div id="progress"></div>
+            </div>
+        </div>
+
         <!-- Footer -->
         <%@include file="../Partials/Footer.jsp" %>
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+                // Hiển thị modal với thông báo
+                function showModal(message, duration) {
+                    // Thiết lập thông điệp cho modal
+                    document.getElementById('modalMessage').innerText = message;
+                    document.getElementById('notificationModal').style.display = 'block'; // Hiển thị modal
+
+                    // Thiết lập thanh tiến trình
+                    const progressBar = document.getElementById('progress');
+                    const progressBarContainer = document.getElementById('progressBar');
+                    let timeLeft = duration / 1000; // Chuyển đổi từ milliseconds sang seconds
+                    const totalWidth = progressBarContainer.offsetWidth; // Chiều rộng tối đa của thanh tiến trình
+
+                    // Cập nhật thanh tiến trình
+                    const interval = setInterval(() => {
+                        timeLeft--;
+                        const newWidth = (timeLeft / (duration / 1000)) * totalWidth; // Tính toán chiều rộng mới
+
+                        progressBar.style.width = newWidth + 'px'; // Cập nhật chiều rộng
+
+                        if (timeLeft <= 0) {
+                            clearInterval(interval); // Dừng interval khi hết thời gian
+                            closeModal(); // Đóng modal khi hết thời gian
+                        }
+                    }, 1000); // Cập nhật mỗi giây
+                }
+
+                function closeModal() {
+                    const modal = document.getElementById('notificationModal');
+                    modal.style.display = 'none'; // Ẩn modal
+                    modal.style.opacity = 0; // Đặt độ mờ về 0
+                }
+
+                // Lấy tham số từ URL để hiển thị thông báo (nếu có)
+                window.onload = function () {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const status = urlParams.get('status');
+                    const message = urlParams.get('message');
+
+                    if (status && message) {
+                        showModal(message, 7000);
+                    }
+                };
+        </script>
     </body>
 </html>
