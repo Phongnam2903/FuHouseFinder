@@ -75,6 +75,9 @@
                                     <a href="ListHouse?houseId=${house.id}" class="btn btn-info" style="margin-right: 20px;">
                                         <i class="fas fa-eye"></i>
                                     </a>
+                                    <a href="replyReview?id=${house.id}" class="btn btn-secondary" style="margin-right: 20px;">
+                                        <i class="fas fa-comments"></i>
+                                    </a>
                                     <a href="UpdateHouse?id=${house.id}" class="btn btn-warning" style="margin-right: 20px;">
                                         <i class="fas fa-tools"></i>
                                     </a>
