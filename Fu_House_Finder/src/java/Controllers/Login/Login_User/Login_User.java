@@ -12,22 +12,22 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet(name = "Login_User", urlPatterns = {"/login"})
 public class Login_User extends HttpServlet {
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOLogin login = new DAOLogin();
-
+        
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String submit = request.getParameter("submit");
-
+        
         if (submit != null) {
             boolean hasError = false;
 
@@ -51,12 +51,12 @@ public class Login_User extends HttpServlet {
                 request.setAttribute("passwordError", "Password can't be empty");
                 hasError = true;
             }
-
+            
             if (hasError) {
                 request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
                 return;
             }
-
+            
             try {
                 User account = login.loginUser(email, password);
                 if (account != null) {
@@ -67,6 +67,8 @@ public class Login_User extends HttpServlet {
                             response.sendRedirect("viewAccountList");
                         case 3 ->
                             response.sendRedirect("homePage");
+                        case 4 ->
+                            response.sendRedirect("staffDashboard");
                         case 5 ->
                             response.sendRedirect("ListHouse");
                         default -> {
@@ -82,5 +84,5 @@ public class Login_User extends HttpServlet {
             }
         }
     }
-
+    
 }

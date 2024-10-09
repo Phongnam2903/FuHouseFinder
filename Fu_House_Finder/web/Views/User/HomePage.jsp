@@ -191,7 +191,10 @@
 
                                         <div class="card-body">
                                             <h5 class="card-title"> ${house.houseName}</h5>
-                                            <p class="card-text"><i class="fas fa-money-bill-wave"></i> <fmt:formatNumber value="${house.price}" type="number" minFractionDigits="0" /> VND</p>
+                                            <p class="card-text"><i class="fas fa-money-bill-wave"></i>
+                                                <fmt:formatNumber value="${house.minPrice}" type="number" minFractionDigits="0" /> VND - 
+                                                <fmt:formatNumber value="${house.maxPrice}" type="number" minFractionDigits="0" /> VND
+                                            </p>
                                             <p class="card-text"><i class="fas fa-map-marker-alt"></i> ${house.address}</p>
                                             <p class="card-text"><i class="fas fa-route"></i> ${house.distanceToSchool} km</p>
                                         </div>
