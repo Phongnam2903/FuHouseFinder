@@ -7,6 +7,12 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
+                    <file>${file.reference.gson-2.8.5.jar-1}</file>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.SendMailJava-master.zip}</file>
+                </library>
+                <library dirs="200">
                     <file>${file.reference.jakarta.activation-1.2.1.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -39,8 +45,7 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.org-netbeans-modules-java-j2seproject-copylibstask.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
+                    <file>${file.reference.gson-2.8.5.jar-1}</file>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries/>

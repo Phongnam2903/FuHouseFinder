@@ -1,8 +1,14 @@
+.container {
+    max-width: 1700px; /* Hoặc một giá trị khác tùy thuộc vào thiết kế của bạn */
+    margin: 0 auto; /* Căn giữa container trong trình duyệt */
+    padding: 20px; /* Khoảng cách bên trong */
+}
 .table {
     border-collapse: collapse; /* Để bỏ kẻ dọc */
 }
 .table th, .table td {
     border-bottom: 2px solid #dee2e6; /* Chỉ kẻ ngang */
+    text-align: center;
 }
 .table tr:hover {
     background-color: #f8f9fa; /* Màu nền khi hover */

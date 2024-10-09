@@ -6,9 +6,6 @@
     font-weight: bold;
     margin-bottom: 5px; /* Giúp cách biệt với các phần tử khác */
 }
-.form-control {
-    width: 50%;
-}
-.form-select {
+#distance-km #distance-miles #price-min #price-max {
     width: 50%;
 }

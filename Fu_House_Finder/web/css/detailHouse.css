@@ -1,0 +1,27 @@
+.room-info-icon {
+    font-size: 18px;
+    margin-right: 8px;
+}
+.room-info-item {
+    display: flex;
+    align-items: center;
+}
+/* Style cho ngôi sao */
+.star-rating i {
+    font-size: 18px;
+    color: #ddd; /* Màu xám mặc định */
+    cursor: pointer;
+}
+
+/* Khi sao được chọn (màu vàng) */
+.star-rating .selected {
+    color: #f4c542; /* Màu vàng */
+}
+.btn-danger-custom {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+}
+.form-label {
+    font-weight: bold;
+}

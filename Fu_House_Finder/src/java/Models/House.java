@@ -61,6 +61,8 @@ public class House {
         this.maxPrice = maxPrice;
     }
 
+    
+
     public int getId() {
         return id;
     }
