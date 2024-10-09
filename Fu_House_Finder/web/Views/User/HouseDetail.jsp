@@ -208,11 +208,12 @@
             </div>
         </div>
 
-        <div id="notificationModal" style="position: fixed; top: 20px; right: 20px; z-index: 9999; width: 300px; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); display: none;">
-            <span class="close-btn" onclick="closeModal()" style="position: absolute; top: 5px; right: 10px; cursor: pointer; font-size: 20px; color: #6c757d;">&#10006;</span>
-            <p id="modalMessage" style="margin: 0; color: #495057;">Your message here</p>
-            <div id="progressBar" style="width: 100%; background-color: #e0e0e0; border-radius: 5px; margin-top: 10px; overflow: hidden;">
-                <div id="progress" style="height: 3px; background-color: #007bff; border-radius: 5px; transition: width 1s linear;"></div>
+        <div id="notificationModal">
+            <span class="close-btn" onclick="closeModal()">&#10006;</span>
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <p id="modalMessage">Your message here</p>
+            <div id="progressBar">
+                <div id="progress"></div>
             </div>
         </div>
 

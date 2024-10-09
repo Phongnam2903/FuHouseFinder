@@ -68,7 +68,7 @@
                 <div class="register-links d-flex justify-content-between w-75 mt-3">
                     <a href="#">Forgot Password</a>
                     <a href="./register">Sign Up</a>
-                    <a href="#">Back</a>
+                    <a href="homePage">Back</a>
                 </div>
 
             </div>

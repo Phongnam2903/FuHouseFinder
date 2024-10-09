@@ -11,8 +11,13 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: none;
+    text-align: center; /* Căn giữa nội dung */
 }
-
+#notificationModal i.fa-circle-exclamation {
+    font-size: 40px;
+    color: #dc3545;
+    margin-bottom: 10px;
+}
 .close-btn {
     position: absolute;
     top: 5px;

@@ -34,7 +34,7 @@
                         </div>
                     </c:if>
 
-                    Comment:
+                    <h4>Comments:</h4>
                     <div class="card">
                         <c:if test="${not empty ratesList}">
                             <c:forEach var="rate" items="${ratesList}">
@@ -88,6 +88,7 @@
         </div>
         <div id="notificationModal">
             <span class="close-btn" onclick="closeModal()">&#10006;</span>
+            <i class="fa-solid fa-circle-exclamation"></i>
             <p id="modalMessage">Your message here</p>
             <div id="progressBar">
                 <div id="progress"></div>
