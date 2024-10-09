@@ -28,27 +28,27 @@ public class UserProcess extends DAO {
      * @param phone
      * @param password
      */
-public void create(String fname, String lname, String email, String phone, String password) {
-    String sql = "insert into [User] ([FullName], [Email], [PhoneNumber], [Password], [StatusID], [Roleid]) values (?, ?, ?, ?, ?, ?)";
-    try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
-        System.out.println(fname + lname + ", " + email + ", " + phone + ", " + DataEncryptionSHA256.hashPassword(password));
-        ps.setString(1, fname + " " + lname);
-        ps.setString(2, email);
-        ps.setString(3, phone);
-        ps.setString(4, DataEncryptionSHA256.hashPassword(password));
-        ps.setString(5, "1");
-        ps.setString(6, "3");
-        int rowsAffected = ps.executeUpdate(); // Sử dụng executeUpdate
-        if (rowsAffected > 0) {
-            System.out.println("User registered successfully.");
-        } else {
-            System.out.println("User registration failed.");
+    public void create(String fname, String lname, String email, String phone, String password) {
+        String sql = "insert into [User] ([FullName], [Email], [PhoneNumber], [Password], [StatusID], [Roleid]) values (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
+            System.out.println(fname + lname + ", " + email + ", " + phone + ", " + DataEncryptionSHA256.hashPassword(password));
+            ps.setString(1, fname + " " + lname);
+            ps.setString(2, email);
+            ps.setString(3, phone);
+            ps.setString(4, DataEncryptionSHA256.hashPassword(password));
+            ps.setString(5, "1");
+            ps.setString(6, "3");
+            int rowsAffected = ps.executeUpdate(); // Sử dụng executeUpdate
+            if (rowsAffected > 0) {
+                System.out.println("User registered successfully.");
+            } else {
+                System.out.println("User registration failed.");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error: " + e.getMessage());
+            e.printStackTrace();
+            status = e.getMessage();
         }
-    } catch (SQLException e) {
-        System.err.println("SQL error: " + e.getMessage());
-        e.printStackTrace();
-        status = e.getMessage(); 
     }
-}
 
 }

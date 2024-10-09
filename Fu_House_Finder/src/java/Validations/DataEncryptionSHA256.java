@@ -13,11 +13,12 @@ import java.security.NoSuchAlgorithmException;
  * @author Tuan
  */
 public class DataEncryptionSHA256 {
+
     /**
      * data encryption with SHA-256
-     * 
+     *
      * @param password password user
-     * @return a code after transfer 
+     * @return a code after transfer
      */
     public static String hashPassword(String password) {
         try {
@@ -34,9 +35,9 @@ public class DataEncryptionSHA256 {
 
     /**
      * transfer type byte to hex
-     * 
-     * @param hash 
-     * @return 
+     *
+     * @param hash
+     * @return
      */
     private static String bytesToHex(byte[] hash) {
         StringBuilder hexString = new StringBuilder(2 * hash.length);

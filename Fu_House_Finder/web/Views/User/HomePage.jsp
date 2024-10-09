@@ -19,7 +19,7 @@
 
         <!-- Header -->
         <%@include file="../Partials/Header.jsp" %>
-
+        <%@include file="../Partials/Navbar.jsp" %>
         <!-- Main Content -->
         <section class="container-fluid-custom my-4">
             <div class="row">
