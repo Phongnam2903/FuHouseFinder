@@ -57,6 +57,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </c:if>
+            
+            <div class="mb-4">
+                <a href="ListHouse" class="btn btn-secondary">Back</a>
+            </div>
 
             <div class="mb-4">
                 <a href="AddRoom" class="btn btn-secondary">+ Thêm phòng mới</a>
