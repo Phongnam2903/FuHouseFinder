@@ -70,7 +70,7 @@
                                                     <textarea name="replyText" id="reply-${rate.id}" class="form-control" style="height: 30px; width: 300px; border-radius: 5px; padding: 5px;"></textarea>
                                                 </div>
                                                 <div>
-                                                    <button type="submit" class="btn btn-primary">Reply</button>
+                                                    <button type="submit" class="btn btn-success">Reply</button>
                                                     <button type="button" class="btn btn-secondary" onclick="toggleReplyForm(${rate.id});">Cancel</button>
                                                 </div>
                                             </div>

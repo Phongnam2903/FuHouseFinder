@@ -21,11 +21,15 @@ public class House {
     private String image;
     private double minPrice;
     private double maxPrice;
+    private int totalHouse;
+    private double totalPrice;
+    private int totalRooms;
+    private int totalAvailableRooms;
 
     public House() {
     }
 
-    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice) {
+    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice, int totalHouse, double totalPrice, int totalRooms, int totalAvailableRooms) {
         this.id = id;
         this.houseName = houseName;
         this.address = address;
@@ -43,6 +47,42 @@ public class House {
         this.image = image;
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
+        this.totalHouse = totalHouse;
+        this.totalPrice = totalPrice;
+        this.totalRooms = totalRooms;
+        this.totalAvailableRooms = totalAvailableRooms;
+    }
+
+    public int getTotalRooms() {
+        return totalRooms;
+    }
+
+    public void setTotalRooms(int totalRooms) {
+        this.totalRooms = totalRooms;
+    }
+    
+    public int getTotalHouse() {
+        return totalHouse;
+    }
+
+    public void setTotalHouse(int totalHouse) {
+        this.totalHouse = totalHouse;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getTotalAvailableRooms() {
+        return totalAvailableRooms;
+    }
+
+    public void setTotalAvailableRooms(int totalAvailableRooms) {
+        this.totalAvailableRooms = totalAvailableRooms;
     }
 
     public double getMinPrice() {

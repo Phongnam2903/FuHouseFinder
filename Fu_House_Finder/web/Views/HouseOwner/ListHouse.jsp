@@ -1,5 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -15,6 +16,32 @@
         <%@include file="../Partials/Header.jsp" %>
 
         <div class="container mt-4">
+            <div class="row text-center mb-5">
+                <div class="col-md-4">
+                    <div class="card text-black">
+                        <div class="card-body">
+                            <h2 class="number-total">${totalHouses}</h2>
+                            <h5>Houses</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-black">
+                        <div class="card-body">
+                            <h2 class="number-total">${totalRooms}</h2>
+                            <h5>Rooms</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-black">
+                        <div class="card-body">
+                            <h2 class="number-total">${totalAvailableRooms}</h2>
+                            <h5>Available Rooms</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>           
             <h2 class="text-center mb-4">House List</h2>
             <div class="mb-4">
                 <a href="AddHouse" class="btn btn-secondary">+ Add New House</a>
@@ -49,7 +76,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    chưa thêm
+                                    <fmt:formatNumber value="${house.totalPrice}" type="number" minFractionDigits="0" /> VND
                                 </td>
                                 <td>
                                     <c:choose>

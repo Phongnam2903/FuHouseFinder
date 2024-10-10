@@ -227,7 +227,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="phoneNumber" class="form-label">Phone Number <span class="text-danger">*</span></label>
-                                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+                                <input type="number" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
