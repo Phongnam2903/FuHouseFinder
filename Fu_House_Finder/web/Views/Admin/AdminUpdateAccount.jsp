@@ -90,10 +90,6 @@
                             </select>
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="dateOfBirth">Date of Birth:</label>
-                            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" value="${user != null ? user.dateOfBirth : param.dateOfBirth}">
-                        </div>
                         <!-- Submit Button -->
                         <div class="col-12 text-center">
                             <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
