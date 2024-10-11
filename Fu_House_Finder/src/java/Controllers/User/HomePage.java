@@ -24,7 +24,7 @@ public class HomePage extends HttpServlet {
 
         User user = (User) request.getSession().getAttribute("user");
 
-        List<House> houseList = daoHouse.getHousesWithPrices();
+        List<House> houseList = daoHouse.getHousesWithPricesAndStar();
 
         //duyệt danh sách nhà và tách ảnh cho mỗi nhà trọ
         for (House house : houseList) {
@@ -66,17 +66,19 @@ public class HomePage extends HttpServlet {
 
             int userId = Integer.parseInt(userIdParam);
 
-            //kiểm tra lỗi
+            //kiểm tra lỗi null
             if (fullName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || desire.isEmpty()) {
                 errorMessage = "Fields marked with * cannot be blank or contain only spaces!";
                 hasError = true;
             }
 
-            if (!phoneNumber.matches("\\d{11}")) {
-                errorMessage = "Phone number must contain 11 digits!";
+            //kiểm tra định dạng số điện thoại
+            if (!phoneNumber.matches("\\d{10,11}")) {
+                errorMessage = "Phone number must contain between 10 adn 11 digits!";
                 hasError = true;
             }
 
+            //kiểm tra định dạng email
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {  // Kiểm tra định dạng email
                 errorMessage = "Invalid email format!";
                 hasError = true;

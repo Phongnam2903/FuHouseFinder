@@ -18,6 +18,9 @@ public class User {
     private String avatar;
     private Date createdDate;
     private int roomHistoriesID;
+    private int totalHouses;
+    private int totalRooms;
+    private int emptyRooms;
 
     public User() {
     }
@@ -37,6 +40,51 @@ public class User {
         this.avatar = avatar;
         this.createdDate = createdDate;
         this.roomHistoriesID = roomHistoriesID;
+
+    }
+
+    public User(int id, String facebookUserid, String googleUserid, String username, String password, String email, String phone, Date dateOfBirth, String address, int StatusID, int roleID, String avatar, Date createdDate, int roomHistoriesID, int totalHouses, int totalRooms, int emptyRooms) {
+        this.id = id;
+        this.facebookUserid = facebookUserid;
+        this.googleUserid = googleUserid;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.StatusID = StatusID;
+        this.roleID = roleID;
+        this.avatar = avatar;
+        this.createdDate = createdDate;
+        this.roomHistoriesID = roomHistoriesID;
+        this.totalHouses = totalHouses;
+        this.totalRooms = totalRooms;
+        this.emptyRooms = emptyRooms;
+    }
+
+    public int getTotalHouses() {
+        return totalHouses;
+    }
+
+    public void setTotalHouses(int totalHouses) {
+        this.totalHouses = totalHouses;
+    }
+
+    public int getTotalRooms() {
+        return totalRooms;
+    }
+
+    public void setTotalRooms(int totalRooms) {
+        this.totalRooms = totalRooms;
+    }
+
+    public int getEmptyRooms() {
+        return emptyRooms;
+    }
+
+    public void setEmptyRooms(int emptyRooms) {
+        this.emptyRooms = emptyRooms;
     }
 
     public int getId() {
@@ -153,7 +201,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "Student{" + "id=" + id + ", facebookUserid=" + facebookUserid + ", googleUserid=" + googleUserid + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", StatusID=" + StatusID + ", roleID=" + roleID + ", avatar=" + avatar + ", createdDate=" + createdDate + ", roomHistoriesID=" + roomHistoriesID + '}';
+        return "User{" + "id=" + id + ", facebookUserid=" + facebookUserid + ", googleUserid=" + googleUserid + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", StatusID=" + StatusID + ", roleID=" + roleID + ", avatar=" + avatar + ", createdDate=" + createdDate + ", roomHistoriesID=" + roomHistoriesID + ", totalHouses=" + totalHouses + ", totalRooms=" + totalRooms + ", emptyRooms=" + emptyRooms + '}';
     }
 
 }

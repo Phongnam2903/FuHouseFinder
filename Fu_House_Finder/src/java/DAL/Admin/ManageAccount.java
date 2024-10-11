@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class ManageAccount extends DBContext {
 
     public User getAccountById(int id) {
-        User student = null;
+        User user = null;
         String sql = "SELECT * FROM [User] WHERE id = ?";
         try {
             // Chuẩn bị câu lệnh truy vấn
@@ -36,22 +36,25 @@ public class ManageAccount extends DBContext {
                 String phone = rs.getString(7);
                 Date dateOfBirth = rs.getDate(8);
                 String address = rs.getString(9);
-                int StatusID = rs.getInt(10);
+                int statusID = rs.getInt(10);
                 int roleID = rs.getInt(11);
                 String avatar = rs.getString(12);
                 Date createdDate = rs.getDate(13);
                 int roomHistoriesID = rs.getInt(14);
+                int totalHouses = rs.getInt(15); // Assuming you have these fields
+                int totalRooms = rs.getInt(16);  // in your User class definition
+                int emptyRooms = rs.getInt(17);
+
                 // Tạo đối tượng User với các giá trị vừa lấy
-                student = new User(id, facebookUserid, googleUserid,
-                        username, password, email, phone,
-                        dateOfBirth, address, StatusID, roleID,
-                        avatar, createdDate, roomHistoriesID);
+                user = new User(id, facebookUserid, googleUserid, username, password, email, phone,
+                        dateOfBirth, address, statusID, roleID, avatar, createdDate, roomHistoriesID,
+                        totalHouses, totalRooms, emptyRooms);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Trả về đối tượng User hoặc null nếu không tìm thấy
-        return student;
+        return user;
     }
 
     public int updateAccount(User student) {
@@ -65,7 +68,6 @@ public class ManageAccount extends DBContext {
             statement.setString(1, student.getFacebookUserid());
             statement.setString(2, student.getGoogleUserid());
             statement.setString(3, student.getUsername());
-//            statement.setString(4, student.getPassword());
             statement.setString(4, student.getEmail());
             statement.setString(5, student.getPhone());
             if (student.getDateOfBirth() != null) {
@@ -226,14 +228,37 @@ public class ManageAccount extends DBContext {
                 String avatar = rs.getString(12);
                 Date createdDate = rs.getDate(13);
                 int roomHistoriesID = rs.getInt(14);
+                int totalHouses = rs.getInt(15); // Assuming you have these fields
+                int totalRooms = rs.getInt(16);  // in your User class definition
+                int emptyRooms = rs.getInt(17);
                 User stu = new User(id, facebookUserid, googleUserid, username, password, email, phone,
-                        dateOfBirth, address, StatusID, roleID, avatar, createdDate, roomHistoriesID);
+                        dateOfBirth, address, StatusID, roleID, avatar, createdDate, roomHistoriesID, totalHouses, totalRooms, emptyRooms);
                 accounts.add(stu);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
         return accounts;
+    }
+
+    public static void main(String[] args) {
+        User student = new User();
+        student.setUsername("Phong Nguyễn");
+        student.setEmail("phongnnhe176274@fpt.edu.vn");
+        student.setPhone("0398601399");
+        student.setAddress("Hiệp Hòa, Bắc Giang");
+        student.setStatusID(1); // Ví dụ về trạng thái ID
+        student.setRoleID(1);   // Ví dụ về role ID
+        student.setCreatedDate(new Date()); // Ngày tạo hiện tại
+        student.setId(19);
+        ManageAccount manageAccount = new ManageAccount();
+        int result = manageAccount.updateAccount(student);
+
+        if (result > 0) {
+            System.out.println("Cập nhật tài khoản thành công!");
+        } else {
+            System.out.println("Không có bản ghi nào được cập nhật.");
+        }
     }
 
 }

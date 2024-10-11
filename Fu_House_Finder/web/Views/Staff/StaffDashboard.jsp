@@ -184,5 +184,11 @@
                 }
             });
         </script>
+        <!-- Bootstrap JS và phụ thuộc -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+        <!-- Font Awesome JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+        <!-- Custom JS -->
+        <script src="${pageContext.request.contextPath}/js/admin/admin.js"></script>
     </body>
 </html>

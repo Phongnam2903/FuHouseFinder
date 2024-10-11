@@ -13,12 +13,13 @@ import java.util.logging.Logger;
 
 public class DAOHouse extends DAO {
 
-    public List<House> getHousesWithPrices() {
+    public List<House> getHousesWithPricesAndStar() {
         List<House> houses = new ArrayList<>();
         String sql = "SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, "
-                + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice "
+                + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice, AVG(CAST(Rates.Star AS FLOAT)) AS AvgStar "
                 + "FROM House "
                 + "JOIN Room ON House.ID = Room.HouseID "
+                + "LEFT JOIN Rates ON House.ID = Rates.HouseID "
                 + "GROUP BY House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName";
 
         try {
@@ -35,6 +36,7 @@ public class DAOHouse extends DAO {
                 // Set giá từ bảng Room
                 house.setMinPrice(rs.getDouble("MinPrice"));
                 house.setMaxPrice(rs.getDouble("MaxPrice"));
+                house.setAverageStar(rs.getDouble("AvgStar"));
                 house.setImage(rs.getString("image"));
                 houses.add(house);
             }
@@ -43,6 +45,32 @@ public class DAOHouse extends DAO {
         }
 
         return houses;
+    }
+
+    public House getHouseSummary(int ownerId) {
+        House houseSummary = new House();  // Sử dụng House để lưu thông tin tổng hợp
+        String sql = "SELECT COUNT(DISTINCT House.ID) AS TotalHouses, "
+                + "                 COUNT(Room.ID) AS TotalRooms, "
+                + "                 COUNT(CASE WHEN Room.StatusID = 1 THEN 1 END) AS TotalAvailableRooms "
+                + "                 FROM House "
+                + "                 LEFT JOIN Room ON House.ID = Room.HouseID "
+                + "                 WHERE House.OwnerID = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, ownerId);
+            ResultSet rs = pre.executeQuery();
+
+            if (rs.next()) {
+                houseSummary.setTotalHouse(rs.getInt("TotalHouses"));
+                houseSummary.setTotalRooms(rs.getInt("TotalRooms"));
+                houseSummary.setTotalAvailableRooms(rs.getInt("TotalAvailableRooms"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return houseSummary;
     }
 
     public int addHouse(House house) {
@@ -108,7 +136,13 @@ public class DAOHouse extends DAO {
 
     public List<House> getHousesByOwnerId(int ownerId, int pageNumber, int pageSize) {
         List<House> houses = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[House] WHERE Ownerid = ? ORDER BY ID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT House.ID, House.HouseName, House.FingerPrintLock, House.Camera, House.Parking, "
+                + "SUM(Room.Price) AS TotalRoomPrice "
+                + "FROM House "
+                + "LEFT JOIN Room ON House.ID = Room.HouseID "
+                + "WHERE House.OwnerID = ? "
+                + "GROUP BY House.ID, House.HouseName, House.FingerPrintLock, House.Camera, House.Parking "
+                + "ORDER BY House.ID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -121,19 +155,10 @@ public class DAOHouse extends DAO {
                 House house = new House();
                 house.setId(rs.getInt("ID"));
                 house.setHouseName(rs.getString("HouseName"));
-                house.setAddress(rs.getString("Address"));
-                house.setDescription(rs.getString("Description"));
-                house.setDistanceToSchool(rs.getFloat("DistanceToSchool"));
-                house.setOwnerId(rs.getInt("Ownerid"));
-                house.setPowerPrice(rs.getDouble("PowerPrice"));
-                house.setWaterPrice(rs.getDouble("WaterPrice"));
-                house.setOtherServicePrice(rs.getDouble("OtherServicePrice"));
                 house.setFingerPrintLock(rs.getInt("FingerPrintLock") == 1);
                 house.setCamera(rs.getInt("Camera") == 1);
                 house.setParking(rs.getInt("Parking") == 1);
-                house.setCreatedDate(rs.getDate("CreatedDate"));
-                house.setLastModifiedDate(rs.getDate("LastModifiedDate"));
-                house.setImage(rs.getString("Image"));
+                house.setTotalPrice(rs.getDouble("TotalRoomPrice"));
 
                 houses.add(house);
             }
@@ -159,7 +184,10 @@ public class DAOHouse extends DAO {
 
     public House getHouseById(int id) {
         House house = null;
-        String sql = "SELECT * FROM [dbo].[House] WHERE ID = ?";
+        String sql = "SELECT h.*, u.FullName, u.PhoneNumber "
+                + "FROM [dbo].[House] h "
+                + "JOIN [dbo].[User] u ON h.Ownerid = u.ID "
+                + "WHERE h.ID = ?";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -184,6 +212,8 @@ public class DAOHouse extends DAO {
                 house.setCreatedDate(rs.getDate("CreatedDate"));
                 house.setLastModifiedDate(rs.getDate("LastModifiedDate"));
                 house.setImage(rs.getString("Image"));
+                house.setOwnerName(rs.getString("FullName"));
+                house.setOwnerPhoneNumber(rs.getString("PhoneNumber"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
@@ -263,7 +293,13 @@ public class DAOHouse extends DAO {
 
     public List<House> searchHouses(int ownerId, String search, int pageNumber, int pageSize) {
         List<House> houses = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[House] WHERE Ownerid = ? AND HouseName LIKE ? ORDER BY ID DESC, HouseName OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT House.ID, House.HouseName, House.FingerPrintLock, House.Camera, House.Parking, "
+                + "SUM(Room.Price) AS TotalRoomPrice "
+                + "FROM [dbo].[House] "
+                + "LEFT JOIN [dbo].[Room] ON House.ID = Room.HouseID "
+                + "WHERE House.Ownerid = ? AND House.HouseName LIKE ? "
+                + "GROUP BY House.ID, House.HouseName, House.FingerPrintLock, House.Camera, House.Parking "
+                + "ORDER BY House.ID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, ownerId);
@@ -277,19 +313,10 @@ public class DAOHouse extends DAO {
                 House house = new House();
                 house.setId(rs.getInt("ID"));
                 house.setHouseName(rs.getString("HouseName"));
-                house.setAddress(rs.getString("Address"));
-                house.setDescription(rs.getString("Description"));
-                house.setDistanceToSchool(rs.getFloat("DistanceToSchool"));
-                house.setOwnerId(rs.getInt("Ownerid"));
-                house.setPowerPrice(rs.getDouble("PowerPrice"));
-                house.setWaterPrice(rs.getDouble("WaterPrice"));
-                house.setOtherServicePrice(rs.getDouble("OtherServicePrice"));
                 house.setFingerPrintLock(rs.getInt("FingerPrintLock") == 1);
                 house.setCamera(rs.getInt("Camera") == 1);
                 house.setParking(rs.getInt("Parking") == 1);
-                house.setCreatedDate(rs.getDate("CreatedDate"));
-                house.setLastModifiedDate(rs.getDate("LastModifiedDate"));
-                house.setImage(rs.getString("Image"));
+                house.setTotalPrice(rs.getInt("TotalRoomPrice"));
 
                 houses.add(house);
             }

@@ -12,7 +12,70 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="${pageContext.request.contextPath}/css/admin/style.css" rel="stylesheet" type="text/css"/>
-        <link href="${pageContext.request.contextPath}/css/adminProfile.css" rel="stylesheet" type="text/css"/>
+        <style>
+            /* Custom CSS for modern and clean layout */
+            body {
+                background-color: #f0f2f5;
+            }
+            .profile-container {
+                max-width: 900px;
+                margin: 40px auto;
+                background-color: #fff;
+                border-radius: 15px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                padding: 40px;
+            }
+            .profile-header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .profile-header h2 {
+                font-size: 30px;
+                font-weight: bold;
+                color: #333;
+            }
+            .profile-content {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 30px;
+                justify-content: space-between;
+            }
+            .profile-section {
+                flex: 1;
+                min-width: 250px;
+            }
+            .profile-section h3 {
+                font-size: 24px;
+                color: #007bff;
+                margin-bottom: 15px;
+            }
+            .profile-section p {
+                font-size: 18px;
+                color: #555;
+                margin: 5px 0;
+            }
+            .profile-details ul {
+                list-style-type: none;
+                padding: 0;
+                font-size: 18px;
+                color: #555;
+            }
+            .edit-profile {
+                text-align: center;
+                margin-top: 30px;
+            }
+            .edit-profile .btn-edit {
+                background-color: #007bff;
+                color: #fff;
+                padding: 12px 25px;
+                border-radius: 50px;
+                font-size: 16px;
+                transition: all 0.3s ease;
+            }
+            .edit-profile .btn-edit:hover {
+                background-color: #0056b3;
+            }
+        </style>
     </head>
     <body>
         <div id="wrapper">
@@ -25,7 +88,6 @@
                     <div class="container-fluid">
                         <button class="btn btn-outline-success" id="menu-toggle"><i class="fas fa-bars"></i></button>
                         <h2 class="ms-3 text-dark">Dashboard</h2>
-
                         <button class="btn btn-outline-success ms-auto" id="dark-mode-toggle">
                             <a href="admin_profile" style="text-decoration: none; color: #87bbf2">
                                 Hello, <c:out value="${sessionScope.user.username}" />!
@@ -33,29 +95,39 @@
                         </button>
                     </div>
                 </nav>
+
                 <div class="main-content mt-5">
-                    <h2 class="text-center">Profile</h2>
-                    <!-- Profile Section -->
                     <div class="profile-container">
-                        <div class="profile-card">
-                            <div class="profile-image">
-                                <img src="${pageContext.request.contextPath}/images/avatar/avatar2.png" alt="Avatar">
-                            </div>
-                            <div class="profile-info">
-                                <h2>Name: ${admin.getUsername()}</h2>
-                                <p>Email: ${admin.email}</p>
-                                <p>Phone Number: ${admin.phone}</p>
-                                <p>Address: ${admin.address}</p>
-                            </div>
+                        <!-- Profile Header -->
+                        <div class="profile-header">
+                            <h2>Admin Profile</h2>
                         </div>
 
-                        <div class="profile-details">
-                            <h3>Detail Account</h3>
-                            <ul>
-                                <li>Date Of Birth: ${admin.dateOfBirth}</li>
-                                <li>Role: ${admin.roleID == 1 ? 'admin' : 'Unknow'}</li>
-                                <li>Account Status: ${admin.getStatusID() == 1 ? 'Active' : 'UnActive'}</li>
-                            </ul>
+                        <!-- Display Messages -->
+                        <c:if test="${not empty message}">
+                            <div class="alert alert-success" role="alert">
+                                <c:out value="${message}"/>
+                            </div>
+                        </c:if>
+
+                        <!-- Profile Information -->
+                        <div class="profile-content">
+                            <!-- Basic Info Section -->
+                            <div class="profile-section">
+                                <h3>Basic Information</h3>
+                                <p><strong>Name:</strong> ${admin.username}</p>
+                                <p><strong>Email:</strong> ${admin.email}</p>
+                                <p><strong>Phone Number:</strong> ${admin.phone}</p>
+                            </div>
+
+                            <!-- Additional Details Section -->
+                            <div class="profile-section">
+                                <h3>Additional Details</h3>
+                                <ul>
+                                    <li><strong>Address:</strong> ${admin.address}</li>
+                                    <li><strong>Date Of Birth:</strong> ${admin.dateOfBirth}</li>
+                                </ul>
+                            </div>
                         </div>
 
                         <!-- Edit Profile Button -->
@@ -99,11 +171,6 @@
                                             <label for="dateOfBirth" class="form-label">Date of Birth</label>
                                             <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" value="${admin.dateOfBirth}">
                                         </div>
-                                        <!-- Upload Avatar -->
-                                        <div class="mb-3">
-                                            <label for="avatar" class="form-label">Upload Avatar</label>
-                                            <input type="file" class="form-control" id="avatar" name="avatar">
-                                        </div>
                                         <!-- Submit Button -->
                                         <button type="submit" class="btn btn-primary">Save Changes</button>
                                     </form>
@@ -117,8 +184,6 @@
                 </div>
             </div>
         </div>
-        <!-- Footer -->
-        <%@include file="../Partials/Footer.jsp" %>
         <!-- Bootstrap JS và phụ thuộc -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
         <!-- Font Awesome JS -->

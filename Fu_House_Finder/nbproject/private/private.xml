@@ -3,20 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/Login/Login.jsp</file>
-            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/ReplyReview.jsp</file>
-            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/User/HouseDetail.jsp</file>
-            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/Login/Register.jsp</file>
-            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/ListHouse.jsp</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/House.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/ReplyReview.jsp</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controllers/User/HouseDetail.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Models/Rates.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/User/HouseDetail.jsp</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Rating/DAORate.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controllers/House/AddHouse.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/AddHouse.jsp</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controllers/House/ReplyReview.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Staff/StaffDashboard.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Staff/ListHouseOwner.java</file>
         </group>
     </open-files>
 </project-private>
