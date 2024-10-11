@@ -13,12 +13,13 @@ import java.util.logging.Logger;
 
 public class DAOHouse extends DAO {
 
-    public List<House> getHousesWithPrices() {
+    public List<House> getHousesWithPricesAndStar() {
         List<House> houses = new ArrayList<>();
         String sql = "SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, "
-                + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice "
+                + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice, AVG(CAST(Rates.Star AS FLOAT)) AS AvgStar "
                 + "FROM House "
                 + "JOIN Room ON House.ID = Room.HouseID "
+                + "LEFT JOIN Rates ON House.ID = Rates.HouseID "
                 + "GROUP BY House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName";
 
         try {
@@ -35,6 +36,7 @@ public class DAOHouse extends DAO {
                 // Set giá từ bảng Room
                 house.setMinPrice(rs.getDouble("MinPrice"));
                 house.setMaxPrice(rs.getDouble("MaxPrice"));
+                house.setAverageStar(rs.getDouble("AvgStar"));
                 house.setImage(rs.getString("image"));
                 houses.add(house);
             }

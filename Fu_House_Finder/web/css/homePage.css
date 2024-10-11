@@ -85,3 +85,9 @@
     border-radius: 5px;
     transition: width 1s linear;
 }
+.card-text.address {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}

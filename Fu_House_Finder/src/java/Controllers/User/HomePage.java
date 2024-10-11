@@ -24,7 +24,7 @@ public class HomePage extends HttpServlet {
 
         User user = (User) request.getSession().getAttribute("user");
 
-        List<House> houseList = daoHouse.getHousesWithPrices();
+        List<House> houseList = daoHouse.getHousesWithPricesAndStar();
 
         //duyệt danh sách nhà và tách ảnh cho mỗi nhà trọ
         for (House house : houseList) {

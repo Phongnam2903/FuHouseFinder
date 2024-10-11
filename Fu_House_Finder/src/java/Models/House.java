@@ -27,11 +27,12 @@ public class House {
     private int totalAvailableRooms;
     private String ownerName;
     private String ownerPhoneNumber;
+    private double averageStar;
 
     public House() {
     }
 
-    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice, int totalHouse, double totalPrice, int totalRooms, int totalAvailableRooms, String ownerName, String ownerPhoneNumber) {
+    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice, int totalHouse, double totalPrice, int totalRooms, int totalAvailableRooms, String ownerName, String ownerPhoneNumber, double averageStar) {
         this.id = id;
         this.houseName = houseName;
         this.address = address;
@@ -55,6 +56,15 @@ public class House {
         this.totalAvailableRooms = totalAvailableRooms;
         this.ownerName = ownerName;
         this.ownerPhoneNumber = ownerPhoneNumber;
+        this.averageStar = averageStar;
+    }
+
+    public double getAverageStar() {
+        return averageStar;
+    }
+
+    public void setAverageStar(double averageStar) {
+        this.averageStar = averageStar;
     }
 
     public String getOwnerName() {
