@@ -14,6 +14,19 @@ import java.util.logging.Logger;
 
 public class DAOStaff extends DBContext {
 
+    public boolean updateLandlordStatus(int id, int status) {
+        String sql = "UPDATE [User] SET StatusID = ? WHERE ID = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, status);
+            ps.setInt(2, id);
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public int getAccountCount() {
         String sql = "SELECT COUNT(*) FROM [User]";
         try {
@@ -219,29 +232,14 @@ public class DAOStaff extends DBContext {
         // Tạo đối tượng DAOStaff
         DAOStaff daoStaff = new DAOStaff();
 
-        // Định nghĩa số trang và kích thước trang
-        int page = 1; // Trang đầu tiên
-        int pageSize = 5; // Số lượng kết quả trên mỗi trang
+        int testID = 41;
+        int newStatus = 2;
 
-        // Gọi phương thức getAccountsByPage để lấy danh sách tài khoản
-        List<User> users = daoStaff.getAccountsByPage(page, pageSize);
-
-        // Kiểm tra và in ra danh sách tài khoản
-        if (users.isEmpty()) {
-            System.out.println("Không có tài khoản nào được tìm thấy.");
+        boolean result = daoStaff.updateLandlordStatus(testID, newStatus);
+        if (result) {
+            System.out.println("Status updated successfully for user ID: " + testID);
         } else {
-            for (User user : users) {
-                System.out.println("ID: " + user.getId());
-                System.out.println("Facebook User ID: " + user.getFacebookUserid());
-                System.out.println("Google User ID: " + user.getGoogleUserid());
-//                System.out.println("Full Name: " + user.getUsername());
-                System.out.println("Email: " + user.getEmail());
-                System.out.println("Phone Number: " + user.getPhone());
-                System.out.println("Total Houses: " + user.getTotalHouses());
-                System.out.println("Total Rooms: " + user.getTotalRooms());
-                System.out.println("Empty Rooms: " + user.getEmptyRooms());
-                System.out.println("---------------------------------");
-            }
+            System.out.println("Failed to update status for user ID: " + testID);
         }
     }
 

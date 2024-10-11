@@ -59,8 +59,15 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <p class="small text-muted">You are viewing ${totalLandlord} landlords with ${totalHouse} rental houses.</p>
+                                <c:if test="${not empty sessionScope.message}">
+                                    <div class="alert alert-info" role="alert">
+                                        ${sessionScope.message}
+                                    </div>
+                                    <c:remove var="message" scope="session"/>
+                                </c:if>
                                 <h2 class="text-center">Landlord List</h2>
                             </div>
+
                         </div>
                         <!-- Landlord List Table -->
                         <div class="table-responsive">
@@ -84,12 +91,14 @@
                                             <td>${acc.totalRooms}</td>
                                             <td>${acc.emptyRooms}</td>
                                             <td>
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input toggle-switch" type="checkbox" id="toggleActive${acc.id}" ${acc.statusID == 1 ? 'checked' : ''}>
-                                                    <label class="form-check-label" for="toggleActive${acc.id}">
+                                                <form action="${pageContext.request.contextPath}/updateLandlordStatus" method="POST">
+                                                    <input type="hidden" name="id" value="${acc.id}">
+                                                    <input type="hidden" name="currentPage" value="${currentPage}">
+                                                    <button type="submit" name="status" value="${acc.statusID == 1 ? 2 : 1}" 
+                                                            class="btn ${acc.statusID == 1 ? 'btn-success' : 'btn-danger'}">
                                                         ${acc.statusID == 1 ? 'Active' : 'Inactive'}
-                                                    </label>
-                                                </div>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
 
@@ -155,6 +164,6 @@
         <!-- Font Awesome JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
         <!-- Custom JS -->
-        <script src="${pageContext.request.contextPath}/js/admin/admin.js"></script>
+        <script src="${pageContext.request.contextPath}/js/staff/staff.js"></script>
     </body>
 </html>

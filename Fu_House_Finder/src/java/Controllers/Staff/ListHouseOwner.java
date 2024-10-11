@@ -82,21 +82,4 @@ public class ListHouseOwner extends HttpServlet {
         // Forward the request and response to the JSP page for rendering the list of house owners
         request.getRequestDispatcher("Views/Staff/ListHouseOwner.jsp").forward(request, response);
     }
-
-    /**
-     * Handles the HTTP POST request by delegating to the doGet method. This
-     * ensures that both GET and POST requests are handled uniformly.
-     *
-     * @param request HttpServletRequest object containing the client's request.
-     * @param response HttpServletResponse object containing the servlet's
-     * response.
-     * @throws ServletException if a servlet-specific error occurs.
-     * @throws IOException if an input or output error occurs.
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Delegate POST request handling to the doGet method
-        doGet(request, response);
-    }
 }
