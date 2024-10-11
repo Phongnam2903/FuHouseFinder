@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -79,15 +80,29 @@ public class HomePage extends HttpServlet {
             }
 
             //kiểm tra định dạng email
-            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {  // Kiểm tra định dạng email
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 errorMessage = "Invalid email format!";
                 hasError = true;
             }
 
             if (hasError) {
+                //lưu dữ liệu vào session để có thể lấy lại sau khi redirect
+                HttpSession session = request.getSession();
+                session.setAttribute("fullName", fullName);
+                session.setAttribute("phoneNumber", phoneNumber);
+                session.setAttribute("email", email);
+                session.setAttribute("desire", desire);
+
                 //gửi thông báo lỗi qua URL
                 response.sendRedirect(request.getContextPath() + "/homePage?status=error&message=" + errorMessage);
             } else {
+                //xóa các dữ liệu sau khi xử lý thành công
+                HttpSession session = request.getSession();
+                session.removeAttribute("fullName");
+                session.removeAttribute("phoneNumber");
+                session.removeAttribute("email");
+                session.removeAttribute("desire");
+
                 //thêm order vào csdl
                 Order order = new Order();
                 order.setUserID(userId);
@@ -114,4 +129,8 @@ public class HomePage extends HttpServlet {
         }
     }
 
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
 }
