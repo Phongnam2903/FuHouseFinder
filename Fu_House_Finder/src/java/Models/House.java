@@ -25,11 +25,13 @@ public class House {
     private double totalPrice;
     private int totalRooms;
     private int totalAvailableRooms;
+    private String ownerName;
+    private String ownerPhoneNumber;
 
     public House() {
     }
 
-    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice, int totalHouse, double totalPrice, int totalRooms, int totalAvailableRooms) {
+    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice, int totalHouse, double totalPrice, int totalRooms, int totalAvailableRooms, String ownerName, String ownerPhoneNumber) {
         this.id = id;
         this.houseName = houseName;
         this.address = address;
@@ -51,6 +53,24 @@ public class House {
         this.totalPrice = totalPrice;
         this.totalRooms = totalRooms;
         this.totalAvailableRooms = totalAvailableRooms;
+        this.ownerName = ownerName;
+        this.ownerPhoneNumber = ownerPhoneNumber;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getOwnerPhoneNumber() {
+        return ownerPhoneNumber;
+    }
+
+    public void setOwnerPhoneNumber(String ownerPhoneNumber) {
+        this.ownerPhoneNumber = ownerPhoneNumber;
     }
 
     public int getTotalRooms() {

@@ -182,7 +182,10 @@ public class DAOHouse extends DAO {
 
     public House getHouseById(int id) {
         House house = null;
-        String sql = "SELECT * FROM [dbo].[House] WHERE ID = ?";
+        String sql = "SELECT h.*, u.FullName, u.PhoneNumber "
+                + "FROM [dbo].[House] h "
+                + "JOIN [dbo].[User] u ON h.Ownerid = u.ID "
+                + "WHERE h.ID = ?";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -207,6 +210,8 @@ public class DAOHouse extends DAO {
                 house.setCreatedDate(rs.getDate("CreatedDate"));
                 house.setLastModifiedDate(rs.getDate("LastModifiedDate"));
                 house.setImage(rs.getString("Image"));
+                house.setOwnerName(rs.getString("FullName"));
+                house.setOwnerPhoneNumber(rs.getString("PhoneNumber"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);

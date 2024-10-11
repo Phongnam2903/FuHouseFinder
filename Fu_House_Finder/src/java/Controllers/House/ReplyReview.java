@@ -35,12 +35,36 @@ public class ReplyReview extends HttpServlet {
         int houseId = Integer.parseInt(houseIdParam);
         DAORate daoRate = new DAORate();
 
-        List<Rates> ratesList = daoRate.getRatesByHouse(houseId);
+        //phân trang
+        int pageSize = 6;
+        String pageStr = request.getParameter("page");
+        int pageNumber = 1;
+
+        //phân tích số trang
+        if (pageStr != null && !pageStr.isEmpty()) {
+            try {
+                pageNumber = Integer.parseInt(pageStr);
+            } catch (NumberFormatException e) {
+                pageNumber = 1;
+            }
+        }
+
+        List<Rates> ratesList = daoRate.getRatesByHouse(houseId, pageNumber, pageSize);
+
+        // Tính tổng số review và số trang
+        int totalRates = daoRate.getTotalRatesByHouse(houseId);
+        int totalPages = (int) Math.ceil((double) totalRates / pageSize);
+
+        if (totalPages < 1) {
+            totalPages = 1;
+        }
 
         //kiểm tra review có hay không
         if (ratesList != null) {
             request.setAttribute("ratesList", ratesList);
             request.setAttribute("houseId", houseId);
+            request.setAttribute("pageNumber", pageNumber);
+            request.setAttribute("totalPages", totalPages);
 
             request.getRequestDispatcher("/Views/HouseOwner/ReplyReview.jsp").forward(request, response);
         } else {
