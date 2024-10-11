@@ -24,37 +24,31 @@
                     <section class="container my-5">
                         <!-- Statistics Section -->
                         <div class="row text-center mb-4">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="stat-card p-3 border rounded shadow-sm">
                                     <h4 class="stat-title">Total Houses</h4>
                                     <h3 class="stat-number">${totalHouse}</h3>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="stat-card p-3 border rounded shadow-sm">
                                     <h4 class="stat-title">Total Rooms</h4>
                                     <h3 class="stat-number">${totalRoom}</h3>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="stat-card p-3 border rounded shadow-sm">
                                     <h4 class="stat-title">Empty Rooms</h4>
                                     <h3 class="stat-number">${totalRoomEmpty}</h3>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="stat-card p-3 border rounded shadow-sm">
-                                    <h4 class="stat-title">Total Landlord</h4>
+                                    <h4 class="stat-title">Total Landlords</h4>
                                     <h3 class="stat-number">${totalLandlord}</h3>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <div class="stat-card p-3 border rounded shadow-sm">
-                                    <h4 class="stat-title">Empty Spaces</h4>
-                                    <h3 class="stat-number">81</h3>
-                                </div>
-                            </div>
-                        </div>
+                        </div>                              
                         <!-- Table Header -->
                         <div class="row mb-3">
                             <div class="col">
@@ -67,10 +61,31 @@
                                 </c:if>
                                 <h2 class="text-center">Landlord List</h2>
                             </div>
-
                         </div>
+                        <!-- Filter Section -->
+                        <form id="filterForm" class="mb-4">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" id="filterName" placeholder="Landlord Name">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" id="filterPhone" placeholder="Phone Number">
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" id="filterStatus">
+                                        <option value="">Status</option>
+                                        <option value="1">Active</option>
+                                        <option value="2">Inactive</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control" id="filterTotalHouses" placeholder="Total Houses">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">Filter</button>
+                        </form>
                         <!-- Landlord List Table -->
-                        <div class="table-responsive">
+                        <div class="table-responsive">                          
                             <table class="table table-striped table-bordered text-center">
                                 <thead class="table-light">
                                     <tr>
@@ -82,7 +97,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="landlordTableBody">
                                     <c:forEach var="acc" items="${listAccLandlord}" varStatus="status">
                                         <tr>
                                             <td>${acc.username}</td>
@@ -101,14 +116,13 @@
                                                 </form>
                                             </td>
                                         </tr>
-
                                     </c:forEach>
                                 </tbody>
                             </table>
                             <!-- Pagination Start -->
-                            <nav aria-label="Phân trang">
+                            <nav aria-label="Pagination">
                                 <ul class="pagination justify-content-center">
-                                    <!-- Nút Previous -->
+                                    <!-- Previous Button -->
                                     <c:if test="${currentPage > 1}">
                                         <li class="page-item">
                                             <a class="page-link" href="${pageContext.request.contextPath}/listhouseowner?page=${currentPage - 1}" aria-label="Previous">
@@ -124,7 +138,7 @@
                                         </li>
                                     </c:if>
 
-                                    <!-- Các số trang -->
+                                    <!-- Page Numbers -->
                                     <c:forEach var="i" begin="1" end="${totalPage}">
                                         <c:choose>
                                             <c:when test="${i == currentPage}">
@@ -136,7 +150,7 @@
                                             </c:choose>
                                         </c:forEach>
 
-                                    <!-- Nút Next -->
+                                    <!-- Next Button -->
                                     <c:if test="${currentPage < totalPage}">
                                         <li class="page-item">
                                             <a class="page-link" href="${pageContext.request.contextPath}/listhouseowner?page=${currentPage + 1}" aria-label="Next">
@@ -159,11 +173,13 @@
                 </div>
             </div>
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <!-- Bootstrap JS and dependencies -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
         <!-- Font Awesome JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
         <!-- Custom JS -->
         <script src="${pageContext.request.contextPath}/js/staff/staff.js"></script>
+        <script src="${pageContext.request.contextPath}/js/staff/filterForHouseOwner.js" type="text/javascript"></script>
     </body>
 </html>
