@@ -95,23 +95,37 @@ public class Login_User extends HttpServlet {
                 // Attempt to authenticate the user
                 User account = login.loginUser(email, password);
                 if (account != null) {
-                    // Authentication successful
-                    HttpSession session = request.getSession();
-                    session.setAttribute("user", account);
-                    session.setMaxInactiveInterval(30 * 60); // Set session timeout to 30 minutes
-
-                    // Redirect based on user role
-                    switch (account.getRoleID()) {
-                        case 1 ->
-                            response.sendRedirect("viewAccountList");
-                        case 3 ->
-                            response.sendRedirect("homePage");
-                        case 4 ->
-                            response.sendRedirect("staffDashboard");
-                        case 5 ->
-                            response.sendRedirect("ListHouse");
-                        default ->
-                            response.sendRedirect("login");
+                    //Check account status
+                    int statusID = account.getStatusID();
+                    //Inactive
+                    switch (statusID) {
+                        case 2 -> {
+                            request.setAttribute("loginError", "Your account is inactive. Please contact support.");
+                            request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
+                        }
+                        case 3 -> {
+                            request.setAttribute("loginError", "Your account is banned.");
+                            request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
+                        }
+                        default -> {
+                            // Authentication successful
+                            HttpSession session = request.getSession();
+                            session.setAttribute("user", account);
+                            session.setMaxInactiveInterval(30 * 60); // Set session timeout to 30 minutes
+                            // Redirect based on user role
+                            switch (account.getRoleID()) {
+                                case 1 ->
+                                    response.sendRedirect("viewAccountList");
+                                case 3 ->
+                                    response.sendRedirect("homePage");
+                                case 4 ->
+                                    response.sendRedirect("staffDashboard");
+                                case 5 ->
+                                    response.sendRedirect("ListHouse");
+                                default ->
+                                    response.sendRedirect("login");
+                            }
+                        }
                     }
                 } else {
                     // Authentication failed
