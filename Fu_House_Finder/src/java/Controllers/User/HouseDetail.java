@@ -41,15 +41,40 @@ public class HouseDetail extends HttpServlet {
         DAOHouse daoHouse = new DAOHouse();
         DAORate daoRate = new DAORate();
 
-        List<Rates> ratesList = daoRate.getRatesByHouse(houseId);
+        //phân trang
+        int pageSize = 3;
+        String pageStr = request.getParameter("page");
+        int pageNumber = 1;
+
+        //phân tích số trang
+        if (pageStr != null && !pageStr.isEmpty()) {
+            try {
+                pageNumber = Integer.parseInt(pageStr);
+            } catch (NumberFormatException e) {
+                pageNumber = 1;
+            }
+        }
+
+        List<Rates> ratesList = daoRate.getRatesByHouse(houseId, pageNumber, pageSize);
 
         House house = daoHouse.getHouseById(houseId);
+
+        //tính tổng số trang cho phân trang
+        int totalRates = daoRate.getTotalRatesByHouse(houseId);
+        int totalPages = (int) Math.ceil((double) totalRates / pageSize);
+
+        //đảm bảo có ít nhất 1 trang
+        if (totalPages < 1) {
+            totalPages = 1;
+        }
 
         //kiểm tra nhà trọ có hay không
         if (house != null) {
             request.setAttribute("house", house);
             request.setAttribute("images", house.getImage());
             request.setAttribute("ratesList", ratesList);
+            request.setAttribute("pageNumber", pageNumber);//trang hiện tại
+            request.setAttribute("totalPages", totalPages);//tổng trang
 
             request.getRequestDispatcher("/Views/User/HouseDetail.jsp").forward(request, response);
         } else {
@@ -69,11 +94,11 @@ public class HouseDetail extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //lấy thông tin từ form comment và rating
-        String commentText = request.getParameter("comment").trim(); // Lấy mô tả đánh giá
-        String starRating = request.getParameter("ratingValue"); // Lấy số sao
-        String houseIdParam = request.getParameter("houseId"); // ID của ngôi nhà
+        String commentText = request.getParameter("comment").trim(); //lấy mô tả đánh giá
+        String starRating = request.getParameter("ratingValue"); //lấy số sao
+        String houseIdParam = request.getParameter("houseId"); //ID của ngôi nhà
 
-        User user = (User) request.getSession().getAttribute("user");  // Lấy user từ session
+        User user = (User) request.getSession().getAttribute("user");  //lấy user từ session
 
         //nếu không tìm thấy chủ trọ thì quay về trang đăng nhập
         if (user == null) {

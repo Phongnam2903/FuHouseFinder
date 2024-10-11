@@ -7,7 +7,6 @@
  * DATE                       Version             AUTHOR                       DESCRIPTION
  * 2024-10-06                1.0                 DuongTD                     Initial creation of ListHouse servlet.
  */
-
 package Controllers.House;
 
 import DAL.House.DAOHouse;
@@ -25,11 +24,11 @@ import java.util.List;
  * viewing detailed house information for a house owner. It also supports
  * pagination and search functionality.
  *
- * <p> Bugs: No known bugs
+ * <p>
+ * Bugs: No known bugs
  *
  * @author DuongTD
  */
-
 public class ListHouse extends HttpServlet {
 
     /**
@@ -109,6 +108,8 @@ public class ListHouse extends HttpServlet {
             }
         }
 
+        House houseSummary = daoHouse.getHouseSummary(ownerId);
+
         //tìm kiếm
         String search = request.getParameter("search");
         List<House> houseList;
@@ -134,6 +135,9 @@ public class ListHouse extends HttpServlet {
         //đặt các thuộc tính cho phân trang và danh sách nhà
         request.setAttribute("itemsPerPage", itemsPerPage);
         request.setAttribute("houseList", houseList);
+        request.setAttribute("totalHouses", houseSummary.getTotalHouse());
+        request.setAttribute("totalRooms", houseSummary.getTotalRooms());
+        request.setAttribute("totalAvailableRooms", houseSummary.getTotalAvailableRooms());
         request.setAttribute("currentPage", pageNumber);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("search", search);

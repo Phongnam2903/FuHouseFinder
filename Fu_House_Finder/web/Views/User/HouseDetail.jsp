@@ -23,28 +23,29 @@
         <div class="container mt-4">
             <!-- House Image and Owner Info -->
             <div class="row">
-                <div class="d-flex">
-                    <a href="homePage" style="color: #f44336;">Home Page</a>
-                    >
-                    <p>House Detail
-                </div>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="homePage" style="color: #f44336;">Home Page</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">House Detail</li>
+                </ol>
                 <!-- House Image -->
                 <div class="col-lg-8">
                     <div id="houseImageCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <c:forEach var="image" items="${images}" varStatus="status">
                                 <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
-                                    <img style="height: 600px; max-width: 100%;" src="${pageContext.request.contextPath}/images/${image}" class="d-block w-100 img-fluid" alt="${image}">
+                                    <img style="height: 800px; max-width: 100%;" src="${pageContext.request.contextPath}/images/${image}" class="d-block w-100 img-fluid" alt="${image}">
                                 </div>
                             </c:forEach>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#houseImageCarousel" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
+                            <span class="visually-hidden"></span>
                         </button>
                         <button class="carousel-control-next" type="button" data-bs-target="#houseImageCarousel" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
+                            <span class="visually-hidden"></span>
                         </button>
                     </div>
                 </div>
@@ -55,9 +56,9 @@
                         <div class="card-body">
                             <h3 class="card-title" style="text-align: center;">Owner Information</h3>
                             <p class="card-text">
-                                <strong>Name:</strong> Tâm Lê <br>
-                                <strong>Phone Number:</strong> <a href="tel:0123456789">Click để hiện số</a> <br>
-                                <strong>Address:</strong> ${house.address}
+                                <strong>Owner Name:</strong> ${house.ownerName} <br>
+                                <strong>Phone Number:</strong> ${house.ownerPhoneNumber} <br>
+                                <strong>House Address:</strong> ${house.address}
                             </p>
                         </div>
                     </div>
@@ -90,6 +91,72 @@
                                         </c:if>
                                     </div>
                                 </c:forEach>
+                                <!-- Phân trang -->
+                                <div class="pagination-container">
+                                    <ul class="pagination">
+                                        <!-- Nút Previous -->
+                                        <c:if test="${pageNumber > 1}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="?id=${house.id}&page=${pageNumber - 1}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
+
+                                        <!-- Hiển thị các số trang -->
+                                        <c:choose>
+                                            <c:when test="${totalPages <= 4}">
+                                                <!-- Nếu tổng số trang <= 4, hiển thị tất cả các trang -->
+                                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                                    <li class="page-item ${i == pageNumber ? 'active' : ''}">
+                                                        <a class="page-link" href="?id=${house.id}&page=${i}">${i}</a>
+                                                    </li>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <!-- Hiển thị trang đầu tiên -->
+                                                <li class="page-item ${pageNumber == 1 ? 'active' : ''}">
+                                                    <a class="page-link" href="?id=${house.id}&page=1">1</a>
+                                                </li>
+
+                                                <!-- Hiển thị dấu "..." nếu cần -->
+                                                <c:if test="${pageNumber > 3}">
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">...</span>
+                                                    </li>
+                                                </c:if>
+
+                                                <!-- Hiển thị các trang xung quanh trang hiện tại -->
+                                                <c:forEach var="i" begin="${(pageNumber - 1 < 2) ? 2 : pageNumber - 1}" end="${(pageNumber + 1 > totalPages - 1) ? totalPages - 1 : pageNumber + 1}">
+                                                    <li class="page-item ${i == pageNumber ? 'active' : ''}">
+                                                        <a class="page-link" href="?id=${house.id}&page=${i}">${i}</a>
+                                                    </li>
+                                                </c:forEach>
+
+                                                <!-- Hiển thị dấu "..." trước trang cuối cùng nếu cần -->
+                                                <c:if test="${pageNumber < totalPages - 2}">
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">...</span>
+                                                    </li>
+                                                </c:if>
+
+                                                <!-- Hiển thị trang cuối cùng -->
+                                                <li class="page-item ${pageNumber == totalPages ? 'active' : ''}">
+                                                    <a class="page-link" href="?id=${house.id}&page=${totalPages}">${totalPages}</a>
+                                                </li>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <!-- Nút Next -->
+                                        <c:if test="${pageNumber < totalPages}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="?id=${house.id}&page=${pageNumber + 1}" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </div>
                             </c:if>
                             <c:if test="${empty ratesList}">
                                 <div class="card mb-1">
@@ -140,7 +207,7 @@
                                 <strong>Electricity Price:</strong> <fmt:formatNumber value="${house.powerPrice}" type="number" minFractionDigits="0" />VND/KWh <br>
                                 <strong>Water Price:</strong> <fmt:formatNumber value="${house.waterPrice}" type="number" minFractionDigits="0" />VND/m3 <br>
                                 <strong>Service Price:</strong> <fmt:formatNumber value="${house.otherServicePrice}" type="number" minFractionDigits="0" />đ/month <br>
-                                <strong>Address:</strong> ${house.address} <br>
+                                <strong>House Address:</strong> ${house.address} <br>
                                 <strong>Other Information:</strong> ${house.description}
                             </p>
                         </div>
@@ -253,50 +320,49 @@
                         star.classList.remove('selected'); // Xóa màu của tất cả các ngôi sao
                     });
                 }
-        </script>
-        <script>
-            // Hiển thị modal với thông báo
-            function showModal(message, duration) {
-                // Thiết lập thông điệp cho modal
-                document.getElementById('modalMessage').innerText = message;
-                document.getElementById('notificationModal').style.display = 'block'; // Hiển thị modal
 
-                // Thiết lập thanh tiến trình
-                const progressBar = document.getElementById('progress');
-                const progressBarContainer = document.getElementById('progressBar');
-                let timeLeft = duration / 1000; // Chuyển đổi từ milliseconds sang seconds
-                const totalWidth = progressBarContainer.offsetWidth; // Chiều rộng tối đa của thanh tiến trình
+                // Hiển thị modal với thông báo
+                function showModal(message, duration) {
+                    // Thiết lập thông điệp cho modal
+                    document.getElementById('modalMessage').innerText = message;
+                    document.getElementById('notificationModal').style.display = 'block'; // Hiển thị modal
 
-                // Cập nhật thanh tiến trình
-                const interval = setInterval(() => {
-                    timeLeft--;
-                    const newWidth = (timeLeft / (duration / 1000)) * totalWidth; // Tính toán chiều rộng mới
+                    // Thiết lập thanh tiến trình
+                    const progressBar = document.getElementById('progress');
+                    const progressBarContainer = document.getElementById('progressBar');
+                    let timeLeft = duration / 1000; // Chuyển đổi từ milliseconds sang seconds
+                    const totalWidth = progressBarContainer.offsetWidth; // Chiều rộng tối đa của thanh tiến trình
 
-                    progressBar.style.width = newWidth + 'px'; // Cập nhật chiều rộng
+                    // Cập nhật thanh tiến trình
+                    const interval = setInterval(() => {
+                        timeLeft--;
+                        const newWidth = (timeLeft / (duration / 1000)) * totalWidth; // Tính toán chiều rộng mới
 
-                    if (timeLeft <= 0) {
-                        clearInterval(interval); // Dừng interval khi hết thời gian
-                        closeModal(); // Đóng modal khi hết thời gian
-                    }
-                }, 1000); // Cập nhật mỗi giây
-            }
+                        progressBar.style.width = newWidth + 'px'; // Cập nhật chiều rộng
 
-            function closeModal() {
-                const modal = document.getElementById('notificationModal');
-                modal.style.display = 'none'; // Ẩn modal
-                modal.style.opacity = 0; // Đặt độ mờ về 0
-            }
-
-            // Lấy tham số từ URL để hiển thị thông báo (nếu có)
-            window.onload = function () {
-                const urlParams = new URLSearchParams(window.location.search);
-                const status = urlParams.get('status');
-                const message = urlParams.get('message');
-
-                if (status && message) {
-                    showModal(message, 7000);
+                        if (timeLeft <= 0) {
+                            clearInterval(interval); // Dừng interval khi hết thời gian
+                            closeModal(); // Đóng modal khi hết thời gian
+                        }
+                    }, 1000); // Cập nhật mỗi giây
                 }
-            };
+
+                function closeModal() {
+                    const modal = document.getElementById('notificationModal');
+                    modal.style.display = 'none'; // Ẩn modal
+                    modal.style.opacity = 0; // Đặt độ mờ về 0
+                }
+
+                // Lấy tham số từ URL để hiển thị thông báo (nếu có)
+                window.onload = function () {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const status = urlParams.get('status');
+                    const message = urlParams.get('message');
+
+                    if (status && message) {
+                        showModal(message, 7000);
+                    }
+                };
         </script>
     </body>
 </html>

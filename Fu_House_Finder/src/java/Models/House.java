@@ -90,7 +90,7 @@ public class House {
     public void setTotalRooms(int totalRooms) {
         this.totalRooms = totalRooms;
     }
-
+    
     public int getTotalHouse() {
         return totalHouse;
     }
