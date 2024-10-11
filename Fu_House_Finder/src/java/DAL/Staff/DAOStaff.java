@@ -50,7 +50,7 @@ public class DAOStaff extends DBContext {
                     u.RoomHistoriesID,
                     COUNT(DISTINCT h.ID) AS totalHouses,
                     COUNT(r.ID) AS totalRooms,
-                    COUNT(CASE WHEN r.StatusID = 0 THEN 1 END) AS emptyRooms
+                    COUNT(CASE WHEN r.StatusID = 2 THEN 1 END) AS emptyRooms
                 FROM [User] u
                 LEFT JOIN House h ON h.OwnerID = u.ID
                 LEFT JOIN Room r ON r.HouseID = h.ID
