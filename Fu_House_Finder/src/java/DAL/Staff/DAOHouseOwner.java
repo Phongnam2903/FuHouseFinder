@@ -15,6 +15,20 @@ import java.util.logging.Logger;
 
 public class DAOHouseOwner extends DBContext {
 
+    public int getHouseOwnerCount() {
+        String sql = "SELECT COUNT(*) FROM [User] Where Roleid = 5";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
     public User getLandlordDetailById(int id) {
         User landlord = null;
         String sql = """
@@ -69,37 +83,62 @@ public class DAOHouseOwner extends DBContext {
     public List<House> getHouseByPage(int ownerId, int page, int pageSize) {
         List<House> houses = new ArrayList<>();
         String sql = """
-       SELECT 
-            h.ID AS HouseID,
-            h.HouseName,
-            h.Address,
-            h.Description AS HouseDescription,
-            h.DistanceToSchool,
-            h.PowerPrice,
-            h.WaterPrice,
-            r.RoomNumber,
-            r.FloorNumber,
-            r.Price,
-            r.Area,
-            r.Bed,
-            r.ClosedToilet,
-            r.Desk,
-            r.Fridge,
-            r.Kitchen,
-            r.WashingMachine,
-            r.LiveInHouseOwner
-        FROM 
-            House h
-        LEFT JOIN 
-            Room r ON h.ID = r.HouseID
-        WHERE 
-            h.OwnerID = ? 
-        ORDER BY
-            r.FloorNumber ASC,
-            r.RoomNumber
-        OFFSET ? ROWS
-        FETCH NEXT ? ROWS ONLY;
-        """;
+    SELECT 
+        h.ID AS HouseID,                     
+        h.HouseName,                         
+        h.Address,                           
+        h.Description AS HouseDescription,   
+        h.DistanceToSchool,                  
+        h.OwnerID,                           
+        h.PowerPrice,                        
+        h.WaterPrice,                        
+        h.OtherServicePrice,                 
+        h.FingerPrintLock,                   
+        h.Camera,                            
+        h.Parking,                           
+        MIN(r.Price) AS MinPrice,            
+        MAX(r.Price) AS MaxPrice,            
+        h.CreatedDate,                       
+        h.LastModifiedDate,                  
+        h.Image,                             
+        (SELECT COUNT(*) FROM House) AS TotalHouse,     
+        (SELECT COUNT(*) FROM Room WHERE HouseID = h.ID) AS TotalRooms, 
+        (SELECT COUNT(*) FROM Room WHERE HouseID = h.ID AND StatusID = 1) AS TotalAvailableRooms, 
+        u.FullName AS OwnerName,                 
+        u.PhoneNumber AS OwnerPhoneNumber,   
+        STRING_AGG(r.FloorNumber, ', ') AS Floors, 
+        STRING_AGG(r.RoomNumber, ', ') AS Rooms    
+    FROM 
+        House h
+    LEFT JOIN 
+        Room r ON h.ID = r.HouseID
+    LEFT JOIN 
+        [User] u ON h.OwnerID = u.ID
+    WHERE 
+        h.OwnerID = ? 
+    GROUP BY
+        h.ID, 
+        h.HouseName, 
+        h.Address, 
+        h.Description, 
+        h.DistanceToSchool, 
+        h.OwnerID, 
+        h.PowerPrice, 
+        h.WaterPrice, 
+        h.OtherServicePrice, 
+        h.FingerPrintLock, 
+        h.Camera, 
+        h.Parking, 
+        h.CreatedDate, 
+        h.LastModifiedDate, 
+        h.Image, 
+        u.FullName, 
+        u.PhoneNumber
+    ORDER BY
+        h.ID
+    OFFSET ? ROWS
+    FETCH NEXT ? ROWS ONLY;
+    """;
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -108,36 +147,41 @@ public class DAOHouseOwner extends DBContext {
             statement.setInt(2, offset);
             statement.setInt(3, pageSize);
             ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt(1);
-                String houseName = rs.getString(2);
-                String address = rs.getString(3);
-                String description = rs.getString(4);
-                float distanceToSchool = rs.getFloat(5);
-                double powerPrice = rs.getDouble(6);
-                double waterPrice = rs.getDouble(7);
-                double otherServicePrice = rs.getDouble(8);
-                boolean fingerPrintLock = rs.getBoolean(9);
-                boolean camera = rs.getBoolean(10);
-                boolean parking = rs.getBoolean(11);
-                Date createdDate = rs.getDate(12);
-                Date lastModifiedDate = rs.getDate(13);
-                String image = rs.getString(14);
-                double minPrice = rs.getDouble(15);
-                double maxPrice = rs.getDouble(16);
-                int totalHouse = rs.getInt(17);
-                double totalPrice = rs.getDouble(18);
-                int totalRooms = rs.getInt(19);
-                int totalAvailableRooms = rs.getInt(20);
-                String ownerName = rs.getString(21);
-                String ownerPhoneNumber = rs.getString(22);
-                double averageStar = rs.getDouble(23);
 
-                House house = new House(id, houseName, address, description, distanceToSchool,
-                        ownerId, powerPrice, waterPrice, otherServicePrice, fingerPrintLock,
-                        camera, parking, createdDate, lastModifiedDate, image,
-                        minPrice, maxPrice, totalHouse, totalPrice, totalRooms,
-                        totalAvailableRooms, ownerName, ownerPhoneNumber, averageStar);
+            while (rs.next()) {
+                House house = new House();
+
+                // Thiết lập các thuộc tính của House từ kết quả truy vấn
+                house.setId(rs.getInt("HouseID"));
+                house.setHouseName(rs.getString("HouseName"));
+                house.setAddress(rs.getString("Address"));
+                house.setDescription(rs.getString("HouseDescription"));
+                house.setDistanceToSchool(rs.getFloat("DistanceToSchool"));
+                house.setOwnerId(rs.getInt("OwnerID"));
+                house.setPowerPrice(rs.getDouble("PowerPrice"));
+                house.setWaterPrice(rs.getDouble("WaterPrice"));
+                house.setOtherServicePrice(rs.getDouble("OtherServicePrice"));
+                house.setFingerPrintLock(rs.getBoolean("FingerPrintLock"));
+                house.setCamera(rs.getBoolean("Camera"));
+                house.setParking(rs.getBoolean("Parking"));
+                house.setCreatedDate(rs.getDate("CreatedDate"));
+                house.setLastModifiedDate(rs.getDate("LastModifiedDate"));
+                house.setImage(rs.getString("Image"));
+
+                // Thiết lập giá trị minPrice và maxPrice
+                house.setMinPrice(rs.getDouble("MinPrice"));
+                house.setMaxPrice(rs.getDouble("MaxPrice"));
+
+                // Thiết lập tổng số nhà, phòng và phòng trống
+                house.setTotalHouse(rs.getInt("TotalHouse"));
+                house.setTotalRooms(rs.getInt("TotalRooms"));
+                house.setTotalAvailableRooms(rs.getInt("TotalAvailableRooms"));
+
+                // Thiết lập thông tin chủ nhà
+                house.setOwnerName(rs.getString("OwnerName"));
+                house.setOwnerPhoneNumber(rs.getString("OwnerPhoneNumber"));
+
+                // Thêm đối tượng House vào danh sách
                 houses.add(house);
             }
         } catch (SQLException ex) {
@@ -148,19 +192,21 @@ public class DAOHouseOwner extends DBContext {
 
     public static void main(String[] args) {
         DAOHouseOwner daoHouseOwner = new DAOHouseOwner();
-        int ownerId = 41;
-        int page = 1;
-        int pageSize = 5;
-        List<House> house = daoHouseOwner.getHouseByPage(ownerId, page, pageSize);
-        for (House house1 : house) {
-            System.out.println("House ID: " + house1.getId());
-            System.out.println("House Name: " + house1.getHouseName());
-            System.out.println("Address: " + house1.getAddress());
-            System.out.println("Description: " + house1.getDescription());
-            System.out.println("Distance to School: " + house1.getDistanceToSchool());
-            System.out.println("Power Price: " + house1.getPowerPrice());
-            System.out.println("Water Price: " + house1.getWaterPrice());
-            System.out.println("Created Date: " + house1.getCreatedDate());
-        }
+        int houseOwnerCount = daoHouseOwner.getHouseOwnerCount();
+        System.out.println("số lượng tài khoản là : " + houseOwnerCount);
+//        int ownerId = 41;
+//        int page = 1;
+//        int pageSize = 5;
+//        List<House> house = daoHouseOwner.getHouseByPage(ownerId, page, pageSize);
+//        for (House house1 : house) {
+//            System.out.println("House ID: " + house1.getId());
+//            System.out.println("House Name: " + house1.getHouseName());
+//            System.out.println("Address: " + house1.getAddress());
+//            System.out.println("Description: " + house1.getDescription());
+//            System.out.println("Distance to School: " + house1.getDistanceToSchool());
+//            System.out.println("Power Price: " + house1.getPowerPrice());
+//            System.out.println("Water Price: " + house1.getWaterPrice());
+//            System.out.println("Created Date: " + house1.getCreatedDate());
+//        }
     }
 }

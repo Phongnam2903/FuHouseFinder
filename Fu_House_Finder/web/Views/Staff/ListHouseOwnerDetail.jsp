@@ -62,26 +62,41 @@
                                 <th>Tên nhà trọ</th>
                                 <th>Giá điện (VND)</th>
                                 <th>Giá nước (VND)</th>
-                                <th><i class="fas fa-users"></i></th>
-                                <th><i class="fas fa-user"></i></th>
-                                <th><i class="fas fa-bed"></i></th>
+                                <th>Địa chỉ</th>
                                 <th>Tiện ích</th>
                             </tr>
                         </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Nhà trọ Bình Yên</td>
-                                <td>3,500</td>
-                                <td>1,300</td>
-                                <td>0</td>
-                                <td>3</td>
-                                <td>3</td>
-                                <td><i class="fas fa-parking"></i></td>
-                            </tr>         
-                        </tbody>
-
+                        <c:forEach var="houseOwner" items="${listHouses}">
+                            <tbody>
+                                <tr>
+                                    <td>${houseOwner.id}</td>
+                                    <td>${houseOwner.houseName}</td>
+                                    <td>${houseOwner.powerPrice}</td>
+                                    <td>${houseOwner.waterPrice}</td>
+                                    <td>${houseOwner.address}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${houseOwner.fingerPrintLock || houseOwner.camera || houseOwner.parking}">
+                                                <c:if test="${houseOwner.fingerPrintLock}">
+                                                    <i class="fas fa-fingerprint" title="Fingerprint Lock" style="font-size: 2rem;
+                                                       margin-right: 20px;"></i>
+                                                </c:if>
+                                                <c:if test="${houseOwner.camera}">
+                                                    <i class="fas fa-video" title="Security camera" style="font-size: 2rem;
+                                                       margin-right: 20px;"></i>
+                                                </c:if>
+                                                <c:if test="${houseOwner.parking}">
+                                                    <i class="fas fa-parking" title="Parking" style="font-size: 2rem;"  ></i>
+                                                </c:if>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p>No utilities available</p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>         
+                            </tbody>
+                        </c:forEach>
                     </table>
 
                 </div>
