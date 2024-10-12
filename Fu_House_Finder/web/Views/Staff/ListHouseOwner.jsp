@@ -100,7 +100,11 @@
                                 <tbody id="landlordTableBody">
                                     <c:forEach var="acc" items="${listAccLandlord}" varStatus="status">
                                         <tr>
-                                            <td>${acc.username}</td>
+                                            <td>
+                                                <a href="${pageContext.request.contextPath}/listHouseOwnerDetail?id=${acc.id}">
+                                                    ${acc.username}
+                                                </a>
+                                            </td>
                                             <td>${acc.phone}</td>
                                             <td>${acc.totalHouses}</td>
                                             <td>${acc.totalRooms}</td>

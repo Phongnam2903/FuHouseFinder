@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -41,15 +42,14 @@
 
                     <div class="row host-info">
                         <div class="col-md-6">
-                            <p><strong>Họ và tên:</strong> Bình Yên</p>
-                            <p><strong>Facebook:</strong> <a href="https://facebook.com/binhyen56">facebook.com/binhyen56</a></p>
-                            <p><strong>Số điện thoại:</strong> 0978366690</p>
-                            <p><strong>Địa chỉ:</strong> Nhà số..., Đối diện cổng sau Đại học FPT; Cạnh quán Bún bò Huế</p>
+                            <p><strong>Họ và tên:</strong> ${landlordDetail.username}</p>
+                            <p><strong>Số điện thoại:</strong> ${landlordDetail.phone}</p>
+                            <p><strong>Địa chỉ:</strong> ${landlordDetail.address}</p>
                         </div>
                         <div class="col-md-6 text-right summary-info">
-                            <p><strong>Tổng số nhà trọ:</strong> 4 nhà</p>
-                            <p><strong>Tổng số phòng:</strong> 6 phòng</p>
-                            <p><strong>Tổng số phòng trống:</strong> 6 phòng</p>
+                            <p><strong>Tổng số nhà trọ:</strong> ${landlordDetail.totalHouses} nhà</p>
+                            <p><strong>Tổng số phòng:</strong> ${landlordDetail.totalRooms} phòng</p>
+                            <p><strong>Tổng số phòng trống:</strong> ${landlordDetail.emptyRooms} phòng</p>
                         </div>
                     </div>
 
@@ -68,6 +68,7 @@
                                 <th>Tiện ích</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             <tr>
                                 <td>1</td>
@@ -78,39 +79,11 @@
                                 <td>3</td>
                                 <td>3</td>
                                 <td><i class="fas fa-parking"></i></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Trọ Campus 4</td>
-                                <td>3,400</td>
-                                <td>1,500</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td><i class="fas fa-parking"></i></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Trọ RoomType 2</td>
-                                <td>3,400</td>
-                                <td>1,500</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td><i class="fas fa-parking"></i></td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Trọ District 2</td>
-                                <td>3,400</td>
-                                <td>1,500</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td><i class="fas fa-parking"></i></td>
-                            </tr>
+                            </tr>         
                         </tbody>
+
                     </table>
+
                 </div>
             </div>
         </div>
