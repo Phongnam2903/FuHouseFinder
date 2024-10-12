@@ -1,3 +1,11 @@
+/*
+ * Copyright(C) 2024, FU House Finder.
+ * FU House Finder : House Listing Application
+ *
+ * Record of change:
+ * DATE                       Version             AUTHOR                       DESCRIPTION
+ * 2024-10-12                 1.0                 DuongTD                      Initial implementation of ReplyReview servlet
+ */
 package Controllers.House;
 
 import DAL.Rating.DAORate;
@@ -11,20 +19,29 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
+ * This servlet handles the reply to user reviews for a specific house. It
+ * retrieves the list of ratings for a house and allows the house owner to
+ * respond to the reviews.
  *
- * @author ADMIN
+ * <p>
+ * Bugs: None
+ *
+ * @author DuongTD
  */
 @WebServlet(name = "ReplyReview", urlPatterns = {"/replyReview"})
 public class ReplyReview extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles GET requests to retrieve ratings for a specific house and display
+     * the reply form for the house owner.
      *
-     * @param request servlet request
-     * @param response servlet response
+     * @param request the HttpServletRequest object that contains the request
+     * made by the client
+     * @param response the HttpServletResponse object that contains the response
+     * from the servlet
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException if an input or output error occurs while handling the
+     * request
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -73,12 +90,17 @@ public class ReplyReview extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles POST requests to process replies from the house owner to user
+     * reviews. It validates the reply input and updates the review in the
+     * database.
      *
-     * @param request servlet request
-     * @param response servlet response
+     * @param request the HttpServletRequest object that contains the request
+     * made by the client
+     * @param response the HttpServletResponse object that contains the response
+     * from the servlet
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException if an input or output error occurs while handling the
+     * request
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

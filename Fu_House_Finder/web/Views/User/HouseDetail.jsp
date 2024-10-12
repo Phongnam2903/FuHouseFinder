@@ -69,20 +69,20 @@
                             <label for="comment" class="form-label">Comments:</label>
                             <c:if test="${not empty ratesList}">
                                 <c:forEach var="rate" items="${ratesList}">
-                                    <div class="card mb-1" style="position: relative;">
-                                        <span style="position: absolute; top: 5px; right: 10px; font-size: 12px; color: gray;">
-                                            ${rate.createdDate}
-                                        </span>
+                                    <div class="card mb-1 review-container">
+                                        <span class="created-date">${rate.createdDate}</span>
                                         <p class="m-1">
-                                            ${rate.userName}:
-                                            ${rate.decription}
-                                            <c:if test="${not empty rate.star}">
-                                                <span>
-                                                    <c:forEach var="i" begin="1" end="${rate.star}">
-                                                        <i class="fas fa-star" style="color: gold;"></i>
-                                                    </c:forEach>
-                                                </span>
-                                            </c:if>
+                                            <span class="username">${rate.userName}:</span>
+                                            <span class="description-and-star">
+                                                <span class="description-text">${rate.decription}</span>
+                                                <c:if test="${not empty rate.star}">
+                                                    <span class="star-rating">
+                                                        <c:forEach var="i" begin="1" end="${rate.star}">
+                                                            <i class="fas fa-star" style="color: gold;"></i>
+                                                        </c:forEach>
+                                                    </span>
+                                                </c:if>
+                                            </span>
                                         </p>
                                         <c:if test="${not empty rate.houseOwnerReply}">
                                             <p><i class="fas fa-chevron-right" style="margin-right: 5px;"></i>
@@ -204,9 +204,9 @@
                         <div class="card-body">
                             <h2 class="card-title" style="text-align: center;">${house.houseName}</h2>
                             <p class="card-text">
-                                <strong>Electricity Price:</strong> <fmt:formatNumber value="${house.powerPrice}" type="number" minFractionDigits="0" />VND/KWh <br>
-                                <strong>Water Price:</strong> <fmt:formatNumber value="${house.waterPrice}" type="number" minFractionDigits="0" />VND/m3 <br>
-                                <strong>Service Price:</strong> <fmt:formatNumber value="${house.otherServicePrice}" type="number" minFractionDigits="0" />đ/month <br>
+                                <strong>Electricity Price:</strong> <fmt:formatNumber value="${house.powerPrice}" type="number" minFractionDigits="0" /> VND/KWh <br>
+                                <strong>Water Price:</strong> <fmt:formatNumber value="${house.waterPrice}" type="number" minFractionDigits="0" /> VND/m3 <br>
+                                <strong>Service Price:</strong> <fmt:formatNumber value="${house.otherServicePrice}" type="number" minFractionDigits="0" /> VND/month <br>
                                 <strong>House Address:</strong> ${house.address} <br>
                                 <strong>Other Information:</strong> ${house.description}
                             </p>
@@ -224,7 +224,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Room</th>
+                                <th>Room Name</th>
                                 <th>Room Price</th>
                                 <th>Utilities</th>
                                 <th>Room Type</th>
@@ -233,42 +233,45 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>101</td>
-                                <td>2.900.000</td>
-                                <td class="room-info-item">
-                                    <i class="fas fa-wifi room-info-icon"></i>
-                                    <i class="fas fa-fan room-info-icon"></i>
-                                    <i class="fas fa-bath room-info-icon"></i>
-                                </td>
-                                <td>Không khép kín</td>
-                                <td>3 m²</td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>102</td>
-                                <td>2.900.000</td>
-                                <td class="room-info-item">
-                                    <i class="fas fa-wifi room-info-icon"></i>
-                                    <i class="fas fa-fan room-info-icon"></i>
-                                    <i class="fas fa-bath room-info-icon"></i>
-                                </td>
-                                <td>Không khép kín</td>
-                                <td>3 m²</td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>103</td>
-                                <td>2.900.000</td>
-                                <td class="room-info-item">
-                                    <i class="fas fa-wifi room-info-icon"></i>
-                                    <i class="fas fa-fan room-info-icon"></i>
-                                    <i class="fas fa-bath room-info-icon"></i>
-                                </td>
-                                <td>Không khép kín</td>
-                                <td>3 m²</td>
-                                <td>2</td>
-                            </tr>
+                            <c:forEach var="room" items="${roomList}">
+                                <tr>
+                                    <td>
+                                        ${room.roomNumber}
+                                    </td>
+                                    <td>
+                                        <fmt:formatNumber value="${room.price}" type="number" minFractionDigits="0" /> VND
+                                    </td>
+                                    <td>
+                                        <c:if test="${room.fridge}">
+                                            <i class="fas fa-snowflake" title="Fridge" style="margin-right: 5px;"></i>
+                                        </c:if>
+                                        <c:if test="${room.bed}">
+                                            <i class="fas fa-bed" title="Bed" style="margin-right: 5px;"></i>
+                                        </c:if>
+                                        <c:if test="${room.desk}">
+                                            <i class="fas fa-table" title="Desk" style="margin-right: 5px;"></i>
+                                        </c:if>
+                                        <c:if test="${room.kitchen}">
+                                            <i class="fas fa-utensils" title="Kitchen" style="margin-right: 5px;"></i>
+                                        </c:if>
+                                        <c:if test="${room.closedToilet}">
+                                            <i class="fas fa-toilet" title="Closed Toilet" style="margin-right: 5px;"></i>
+                                        </c:if>
+                                        <c:if test="${room.washingMachine}">
+                                            <i class="fas fa-water" title="Washing Machine" style="margin-right: 5px;"></i>
+                                        </c:if>
+                                    </td>
+                                    <td>
+                                        ${room.roomTypeId == 1 ? "Single Room" : "Double Room"}
+                                    </td>
+                                    <td>
+                                        <fmt:formatNumber value="${room.area}" type="number" minFractionDigits="0" /> m²
+                                    </td>
+                                    <td>
+                                        ${room.statusId == 1 ? "Fully Available" : "Partially Available"}
+                                    </td>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </div>

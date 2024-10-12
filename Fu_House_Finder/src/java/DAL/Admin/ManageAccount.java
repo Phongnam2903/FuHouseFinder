@@ -189,7 +189,7 @@ public class ManageAccount extends DBContext {
     }
 
     public int getAccountCount() {
-        String sql = "SELECT COUNT(*) FROM [User]";
+        String sql = "SELECT COUNT(*) FROM [User] Where roleid = 4";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
@@ -242,23 +242,28 @@ public class ManageAccount extends DBContext {
     }
 
     public static void main(String[] args) {
-        User student = new User();
-        student.setUsername("Phong Nguyễn");
-        student.setEmail("phongnnhe176274@fpt.edu.vn");
-        student.setPhone("0398601399");
-        student.setAddress("Hiệp Hòa, Bắc Giang");
-        student.setStatusID(1); // Ví dụ về trạng thái ID
-        student.setRoleID(1);   // Ví dụ về role ID
-        student.setCreatedDate(new Date()); // Ngày tạo hiện tại
-        student.setId(19);
+//        User student = new User();
+//        student.setUsername("Phong Nguyễn");
+//        student.setEmail("phongnnhe176274@fpt.edu.vn");
+//        student.setPhone("0398601399");
+//        student.setAddress("Hiệp Hòa, Bắc Giang");
+//        student.setStatusID(1); // Ví dụ về trạng thái ID
+//        student.setRoleID(1);   // Ví dụ về role ID
+//        student.setCreatedDate(new Date()); // Ngày tạo hiện tại
+//        student.setId(19);
         ManageAccount manageAccount = new ManageAccount();
-        int result = manageAccount.updateAccount(student);
-
-        if (result > 0) {
-            System.out.println("Cập nhật tài khoản thành công!");
-        } else {
-            System.out.println("Không có bản ghi nào được cập nhật.");
-        }
+        int page = 1;
+        int pageSize = 7;
+        int listaccount = manageAccount.getAccountCount();
+        List<User> listAcc = manageAccount.getAccountsByPage(page, pageSize);
+        System.out.println(listAcc.toString());
+//        int result = manageAccount.updateAccount(student);
+//
+//        if (listaccount > 0) {
+//            System.out.println(" thành công!");
+//        } else {
+//            System.out.println("Không có bản ghi nào được cập nhật.");
+//        }
     }
 
 }

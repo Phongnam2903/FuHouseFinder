@@ -248,19 +248,23 @@
                             <input type="hidden" name="service" value="sendOrder">
                             <div class="mb-3">
                                 <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name"
+                                       value="${sessionScope.fullName != null ? sessionScope.fullName : ''}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="phoneNumber" class="form-label">Phone Number <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+                                <input type="number" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" 
+                                       value="${sessionScope.phoneNumber != null ? sessionScope.phoneNumber : ''}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" 
+                                       value="${sessionScope.email != null ? sessionScope.email : ''}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="desire" class="form-label">What is your desire to find accommodation? <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="desire" rows="3" name="desire" placeholder="Describe your needs" required></textarea>
+                                <textarea class="form-control" id="desire" rows="3" name="desire" placeholder="Describe your needs"  
+                                          required>${sessionScope.desire != null ? sessionScope.desire : ''}</textarea>
                             </div>
                         </form>
                     </div>
