@@ -1,3 +1,11 @@
+/*
+ * Copyright(C) 2024, FU House Finder.
+ * FHF : House Finder Application
+ *
+ * Record of change:
+ * DATE                       Version             AUTHOR                       DESCRIPTION
+ * 2024-10-12                 1.0                 DuongTD                      Initial implementation of HomePage servlet
+ */
 package Controllers.User;
 
 import DAL.House.DAOHouse;
@@ -15,9 +23,31 @@ import jakarta.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This servlet handles requests related to the home page of the house listing
+ * application. It retrieves available houses and displays them to the user. It
+ * also processes order submissions from the user.
+ *
+ * <p>
+ * Bugs: None
+ *
+ * @author DuongTD
+ */
 @WebServlet(name = "HomePage", urlPatterns = {"/homePage"})
 public class HomePage extends HttpServlet {
 
+    /**
+     * Handles GET requests to retrieve and display a list of houses. It fetches
+     * houses from the database and prepares the data for the view.
+     *
+     * @param request the HttpServletRequest object that contains the request
+     * made by the client
+     * @param response the HttpServletResponse object that contains the response
+     * from the servlet
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an input or output error occurs while handling the
+     * request
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,6 +72,18 @@ public class HomePage extends HttpServlet {
         request.getRequestDispatcher("/Views/User/HomePage.jsp").forward(request, response);
     }
 
+    /**
+     * Handles POST requests to process order submissions from the user.
+     * Validates input data and creates a new order if the data is valid.
+     *
+     * @param request the HttpServletRequest object that contains the request
+     * made by the client
+     * @param response the HttpServletResponse object that contains the response
+     * from the servlet
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an input or output error occurs while handling the
+     * request
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -129,6 +171,11 @@ public class HomePage extends HttpServlet {
         }
     }
 
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing the servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";

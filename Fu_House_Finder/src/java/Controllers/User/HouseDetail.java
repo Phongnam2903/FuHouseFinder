@@ -1,3 +1,11 @@
+/*
+ * Copyright(C) 2024, FU House Finder.
+ * FU House Finder : House Listing Application
+ *
+ * Record of change:
+ * DATE                       Version             AUTHOR                       DESCRIPTION
+ * 2024-10-12                 1.0                 DuongTD                      Initial implementation of HouseDetail servlet
+ */
 package Controllers.User;
 
 import DAL.House.DAOHouse;
@@ -17,20 +25,30 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * This servlet handles requests related to the details of a specific house. It
+ * retrieves house information, ratings, and rooms associated with the house. It
+ * also processes comments and ratings submitted by users.
  *
- * @author ADMIN
+ * <p>
+ * Bugs: None
+ *
+ * @author DuongTD
  */
 @WebServlet(name = "HouseDetail", urlPatterns = {"/houseDetail"})
 public class HouseDetail extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles GET requests to retrieve and display the details of a specific
+     * house. It fetches the house details, associated rooms, and ratings from
+     * the database.
      *
-     * @param request servlet request
-     * @param response servlet response
+     * @param request the HttpServletRequest object that contains the request
+     * made by the client
+     * @param response the HttpServletResponse object that contains the response
+     * from the servlet
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException if an input or output error occurs while handling the
+     * request
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -61,7 +79,7 @@ public class HouseDetail extends HttpServlet {
         List<Rates> ratesList = daoRate.getRatesByHouse(houseId, pageNumber, pageSize);
 
         House house = daoHouse.getHouseById(houseId);
-        
+
         List<Room> roomList = daoRoom.getRoomsByHouseId(houseId);
 
         //tính tổng số trang cho phân trang
@@ -89,12 +107,16 @@ public class HouseDetail extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles POST requests to process comments and ratings submitted by users.
+     * Validates the input data and adds the comment/rating to the database.
      *
-     * @param request servlet request
-     * @param response servlet response
+     * @param request the HttpServletRequest object that contains the request
+     * made by the client
+     * @param response the HttpServletResponse object that contains the response
+     * from the servlet
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException if an input or output error occurs while handling the
+     * request
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
