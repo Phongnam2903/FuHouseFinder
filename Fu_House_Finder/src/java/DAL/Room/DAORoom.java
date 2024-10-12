@@ -16,7 +16,7 @@ public class DAORoom extends DAO {
     // Lấy danh sách phòng thuộc một nhà (houseId)
     public List<Room> getRoomsByHouseId(int houseId) {
         List<Room> roomList = new ArrayList<>();
-        String query = "SELECT * FROM Room WHERE houseId = ? AND deleted = 0";
+        String query = "SELECT * FROM Room WHERE HouseID = ? AND Deleted = 0 AND StatusID = 1";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, houseId);
@@ -132,8 +132,8 @@ public class DAORoom extends DAO {
 
         return roomList;
     }
-    
-    public int countRoomsByHouseId(int houseId){
+
+    public int countRoomsByHouseId(int houseId) {
         String query = "SELECT COUNT(*) FROM Room WHERE deleted = 0 and HouseID = ?";
 
         try {
@@ -142,7 +142,7 @@ public class DAORoom extends DAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-              return rs.getInt(1);
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
             Logger.getLogger(DAORoom.class.getName()).log(Level.SEVERE, "Error getting rooms by houseId", e);
@@ -150,15 +150,15 @@ public class DAORoom extends DAO {
 
         return 0;
     }
-    
-     public List<Room> getRoomsByHouseIdPaging(int houseId, int pageIndex, int pageSize) {
+
+    public List<Room> getRoomsByHouseIdPaging(int houseId, int pageIndex, int pageSize) {
         List<Room> roomList = new ArrayList<>();
         String query = "SELECT * FROM Room WHERE deleted = 0 and HouseID = ? order by CreatedDate desc offset ? rows fetch next ? rows only";
 
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, houseId);
-            ps.setInt(2, (pageIndex-1) * pageSize);
+            ps.setInt(2, (pageIndex - 1) * pageSize);
             ps.setInt(3, pageSize);
             ResultSet rs = ps.executeQuery();
 
@@ -193,7 +193,6 @@ public class DAORoom extends DAO {
 
         return roomList;
     }
-
 
     // Xóa phòng theo roomId
     public void deleteRoom(int id) {

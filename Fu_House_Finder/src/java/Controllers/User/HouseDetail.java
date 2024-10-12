@@ -2,8 +2,10 @@ package Controllers.User;
 
 import DAL.House.DAOHouse;
 import DAL.Rating.DAORate;
+import DAL.Room.DAORoom;
 import Models.House;
 import Models.Rates;
+import Models.Room;
 import Models.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -40,6 +42,7 @@ public class HouseDetail extends HttpServlet {
 
         DAOHouse daoHouse = new DAOHouse();
         DAORate daoRate = new DAORate();
+        DAORoom daoRoom = new DAORoom();
 
         //phân trang
         int pageSize = 3;
@@ -58,6 +61,8 @@ public class HouseDetail extends HttpServlet {
         List<Rates> ratesList = daoRate.getRatesByHouse(houseId, pageNumber, pageSize);
 
         House house = daoHouse.getHouseById(houseId);
+        
+        List<Room> roomList = daoRoom.getRoomsByHouseId(houseId);
 
         //tính tổng số trang cho phân trang
         int totalRates = daoRate.getTotalRatesByHouse(houseId);
@@ -71,6 +76,7 @@ public class HouseDetail extends HttpServlet {
         //kiểm tra nhà trọ có hay không
         if (house != null) {
             request.setAttribute("house", house);
+            request.setAttribute("roomList", roomList);
             request.setAttribute("images", house.getImage());
             request.setAttribute("ratesList", ratesList);
             request.setAttribute("pageNumber", pageNumber);//trang hiện tại

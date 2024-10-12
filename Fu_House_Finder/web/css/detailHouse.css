@@ -132,3 +132,58 @@
     color: #6c757d;
     border: none;
 }
+/* Đảm bảo username và description nằm trên cùng một dòng */
+.description-and-star {
+    display: inline;                  /* Sử dụng inline để giữ chúng cùng một dòng */
+}
+
+/* Căn chỉnh phần text và sao */
+.description-text {
+    display: inline;                  /* Cả phần mô tả cũng hiển thị inline */
+    margin-right: 10px;               /* Khoảng cách giữa description và star */
+}
+
+/* Ngôi sao cũng trên cùng dòng */
+.star-rating {
+    display: inline-block;            /* Giữ ngôi sao nằm trên cùng một dòng với description */
+}
+
+/* Định dạng cho ngày tạo (createdDate) */
+.created-date {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 12px;
+    color: gray;
+    white-space: nowrap;              /* Đảm bảo ngày luôn nằm trên một dòng */
+}
+
+/* Định dạng cho phần chứa thông tin đánh giá */
+.review-container {
+    position: relative;               /* Giữ vị trí tương đối cho createdDate */
+    margin-bottom: 10px;              /* Khoảng cách giữa các bình luận */
+    padding-right: 80px;              /* Đảm bảo không đè lên createdDate */
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table th, table td {
+    border-bottom: 1px solid #ddd; /* Chỉ hiển thị đường kẻ ngang */
+    padding: 8px;
+}
+
+table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+table td {
+    text-align: left;
+}
+
+table th, table td {
+    border-left: none;  /* Bỏ đường kẻ dọc */
+    border-right: none; /* Bỏ đường kẻ dọc */
+}
