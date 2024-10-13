@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -60,9 +61,15 @@
                             <tbody>
                                 <tr>
                                     <td>${houseOwner.id}</td>
-                                    <td>${houseOwner.houseName}</td>
-                                    <td>${houseOwner.powerPrice}</td>
-                                    <td>${houseOwner.waterPrice}</td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/listOfRoom?id=${houseOwner.id}"">${houseOwner.houseName}</a>
+                                    </td>
+                                    <td>
+                                        <fmt:formatNumber value="${houseOwner.powerPrice}" type="number" minFractionDigits="0" maxFractionDigits="0" groupingUsed="true"/>
+                                    </td>
+                                    <td>
+                                        <fmt:formatNumber value="${houseOwner.waterPrice}" type="number" minFractionDigits="0" maxFractionDigits="0" groupingUsed="true"/>
+                                    </td>
                                     <td>${houseOwner.address}</td>
                                     <td>
                                         <c:choose>
