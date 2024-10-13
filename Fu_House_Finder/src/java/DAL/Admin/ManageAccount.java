@@ -205,35 +205,60 @@ public class ManageAccount extends DBContext {
     public List<User> getAccountsByPage(int page, int pageSize) {
         List<User> accounts = new ArrayList<>();
         String sql = """
-                     select * from [User] where roleid = 4 order by id offset ?
-                     rows fetch next ? rows only""";
+                 SELECT 
+                    u.*, 
+                    COUNT(DISTINCT h.ID) AS totalHouses,                         
+                    COUNT(r.ID) AS totalRooms,                                   
+                    COUNT(CASE WHEN r.StatusID = 1 THEN 1 END) AS emptyRooms     
+                 FROM 
+                    [User] u
+                 LEFT JOIN 
+                    House h ON u.ID = h.OwnerID
+                 LEFT JOIN 
+                    Room r ON h.ID = r.HouseID
+                 WHERE 
+                    u.RoleID = 4
+                 GROUP BY 
+                    u.ID, u.FacebookUserID, u.GoogleUserID, u.FullName, u.Password, u.Email, 
+                    u.PhoneNumber, u.DateOfBirth, u.Address, u.StatusID, u.RoleID, u.Avatar, 
+                    u.CreatedDate, u.RoomHistoriesID
+                 ORDER BY 
+                    u.ID
+                 OFFSET ? ROWS 
+                 FETCH NEXT ? ROWS ONLY;
+                 """;
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, (page - 1) * pageSize);
             statement.setInt(2, pageSize);
             ResultSet rs = statement.executeQuery();
+
             while (rs.next()) {
-                int id = rs.getInt(1);
-                String facebookUserid = rs.getString(2);
-                String googleUserid = rs.getString(3);
-                String username = rs.getString(4);
-                String password = rs.getString(5);
-                String email = rs.getString(6);
-                String phone = rs.getString(7);
-                Date dateOfBirth = rs.getDate(8);
-                String address = rs.getString(9);
-                int StatusID = rs.getInt(10);
-                int roleID = rs.getInt(11);
-                String avatar = rs.getString(12);
-                Date createdDate = rs.getDate(13);
-                int roomHistoriesID = rs.getInt(14);
-                int totalHouses = rs.getInt(15); // Assuming you have these fields
-                int totalRooms = rs.getInt(16);  // in your User class definition
-                int emptyRooms = rs.getInt(17);
-                User stu = new User(id, facebookUserid, googleUserid, username, password, email, phone,
+                int id = rs.getInt("ID");
+                String facebookUserid = rs.getString("FacebookUserID");
+                String googleUserid = rs.getString("GoogleUserID");
+                String username = rs.getString("FullName");
+                String password = rs.getString("Password");
+                String email = rs.getString("Email");
+                String phone = rs.getString("PhoneNumber");
+                Date dateOfBirth = rs.getDate("DateOfBirth");
+                String address = rs.getString("Address");
+                int StatusID = rs.getInt("StatusID");
+                int roleID = rs.getInt("RoleID");
+                String avatar = rs.getString("Avatar");
+                Date createdDate = rs.getDate("CreatedDate");
+                int roomHistoriesID = rs.getInt("RoomHistoriesID");
+
+                // Các thông tin lấy từ join
+                int totalHouses = rs.getInt("totalHouses");
+                int totalRooms = rs.getInt("totalRooms");
+                int emptyRooms = rs.getInt("emptyRooms");
+
+                // Tạo đối tượng User và thêm vào danh sách
+                User user = new User(id, facebookUserid, googleUserid, username, password, email, phone,
                         dateOfBirth, address, StatusID, roleID, avatar, createdDate, roomHistoriesID, totalHouses, totalRooms, emptyRooms);
-                accounts.add(stu);
+                accounts.add(user);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
