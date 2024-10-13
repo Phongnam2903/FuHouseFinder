@@ -65,11 +65,15 @@
                 <%@include file="../Partials/Staff/Nav.jsp" %>
                 <div class="container mt-4">
                     <!-- Breadcrumb -->
+                    <c:url var="rentalHousesURL" value="/listHouseOwnerDetail">
+                        <c:param name="id" value="${acc.id}"/>
+                    </c:url>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Danh sách chủ trọ</a></li>
-                            <li class="breadcrumb-item"><a href="#">Danh sách nhà trọ</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Danh sách phòng trọ</li>
+                            <li class="breadcrumb-item"><a href="staffDashboard">Staff Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="listhouseowner">List of Landlords</a></li>
+                            <li class="breadcrumb-item"><a href="${rentalHousesUrl}">List of Rental Houses</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">List of Rooms</li>
                         </ol>
                     </nav>
 
