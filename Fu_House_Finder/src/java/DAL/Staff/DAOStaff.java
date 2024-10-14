@@ -210,22 +210,22 @@ public class DAOStaff extends DBContext {
     }
 
     private int getCapacityByRoomTypes(String roomTypeName) {
-        switch (roomTypeName) {
-            case "single":
-                return 1;
-            case "Double":
-                return 2;
-            case "Triple":
-                return 3;
-            case "Quad":
-                return 4;
-            case "Mini Apartment":
-                return 3;
-            case "Full House":
-                return 6;
-            default:
-                return 0;
-        }
+        return switch (roomTypeName) {
+            case "single" ->
+                1;
+            case "Double" ->
+                2;
+            case "Triple" ->
+                3;
+            case "Quad" ->
+                4;
+            case "Mini Apartment" ->
+                3;
+            case "Full House" ->
+                6;
+            default ->
+                0;
+        };
     }
 
     public static void main(String[] args) {

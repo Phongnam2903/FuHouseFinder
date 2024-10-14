@@ -21,6 +21,17 @@
                 <%@include file="../Partials/Staff/Nav.jsp" %>
                 <!-- Main Content -->
                 <div class="container">
+                    <div class="mt-3">
+                        <c:url var="rentalHousesURL" value="/listHouseOwnerDetail">
+                            <c:param name="id" value="${acc.id}"/>
+                        </c:url>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="staffDashboard">Staff Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">List of Landlords</li>
+                            </ol>
+                        </nav>
+                    </div>
                     <section class="container my-5">
                         <!-- Statistics Section -->
                         <div class="row text-center mb-4">
@@ -100,7 +111,11 @@
                                 <tbody id="landlordTableBody">
                                     <c:forEach var="acc" items="${listAccLandlord}" varStatus="status">
                                         <tr>
-                                            <td>${acc.username}</td>
+                                            <td>
+                                                <a href="${pageContext.request.contextPath}/listHouseOwnerDetail?id=${acc.id}">
+                                                    ${acc.username}
+                                                </a>
+                                            </td>
                                             <td>${acc.phone}</td>
                                             <td>${acc.totalHouses}</td>
                                             <td>${acc.totalRooms}</td>

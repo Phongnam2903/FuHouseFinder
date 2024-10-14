@@ -1,6 +1,7 @@
 package Models;
 
 import java.util.Date;
+import java.util.List;
 
 public class House {
 
@@ -28,11 +29,12 @@ public class House {
     private String ownerName;
     private String ownerPhoneNumber;
     private double averageStar;
+    private List<Room> room;
 
     public House() {
     }
 
-    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice, int totalHouse, double totalPrice, int totalRooms, int totalAvailableRooms, String ownerName, String ownerPhoneNumber, double averageStar) {
+    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice, int totalHouse, double totalPrice, int totalRooms, int totalAvailableRooms, String ownerName, String ownerPhoneNumber, double averageStar, List<Room> room) {
         this.id = id;
         this.houseName = houseName;
         this.address = address;
@@ -57,6 +59,15 @@ public class House {
         this.ownerName = ownerName;
         this.ownerPhoneNumber = ownerPhoneNumber;
         this.averageStar = averageStar;
+        this.room = room;
+    }
+
+    public List<Room> getRoom() {
+        return room;
+    }
+
+    public void setRoom(List<Room> room) {
+        this.room = room;
     }
 
     public double getAverageStar() {
@@ -90,7 +101,7 @@ public class House {
     public void setTotalRooms(int totalRooms) {
         this.totalRooms = totalRooms;
     }
-    
+
     public int getTotalHouse() {
         return totalHouse;
     }
