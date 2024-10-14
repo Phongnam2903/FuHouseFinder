@@ -1,0 +1,39 @@
+.breadcrumb {
+    background-color: transparent;
+    font-size: 14px;
+}
+.breadcrumb-item a {
+    color: #007bff;
+    text-decoration: none;
+}
+.breadcrumb-item.active {
+    color: #6c757d;
+}
+.container .row .col-md-3 img {
+    max-width: 100%;
+    height: 200px;
+    border-radius: 8px;
+}
+.container h5, .container p {
+    margin: 5px 0;
+}
+.table {
+    margin-top: 20px;
+}
+.table thead {
+    background-color: #343a40;
+    color: white;
+}
+.table td, .table th {
+    vertical-align: middle;
+    text-align: center;
+}
+.table i {
+    margin-right: 5px;
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+.table td:last-child {
+    font-weight: bold;
+    color: #28a745;
+}

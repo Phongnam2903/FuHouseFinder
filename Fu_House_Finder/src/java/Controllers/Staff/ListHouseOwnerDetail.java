@@ -50,7 +50,12 @@ public class ListHouseOwnerDetail extends HttpServlet {
         int landlordId;
         try {
             // Retrieve the "id" parameter from the request and parse it as an integer
-            landlordId = Integer.parseInt(request.getParameter("id"));
+            String idParam = request.getParameter("id");
+            if (idParam == null || idParam.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Landlord ID is required");
+                return;
+            }
+            landlordId = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
             // If the "id" parameter is invalid, send a 400 Bad Request error
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid landlord ID");
@@ -74,17 +79,23 @@ public class ListHouseOwnerDetail extends HttpServlet {
             }
         }
 
-        // Retrieve the total number of house owners from the database
+        // Retrieve the landlord's details based on the landlordId
+        User landlordDetail = houseOwnerDAO.getLandlordDetailById(landlordId);
+        if (landlordDetail == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Landlord not found");
+            return;
+        }
+
+        // Retrieve the total number of houses for this landlord
         int totalAccount = houseOwnerDAO.getHouseOwnerCount();
         // Calculate the total number of pages based on the total count and page size
         int totalPages = (int) Math.ceil((double) totalAccount / pageSize);
 
-        // Retrieve the landlord's details based on the landlordId
-        User landlordDetail = houseOwnerDAO.getLandlordDetailById(landlordId);
         // Retrieve the list of houses for the landlord for the current page
         List<House> listHouses = houseOwnerDAO.getHouseByPage(landlordId, page, pageSize);
 
         // Set attributes to be used in the JSP for rendering
+        request.setAttribute("houseOwnerId", landlordId); // Giả sử landlordId là ID của nhà chủ
         request.setAttribute("listHouses", listHouses);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPage", totalPages);
