@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Danh sách phòng trọ</title>
+        <title>Room List</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
@@ -37,47 +37,51 @@
                     <!-- Info Section -->
                     <div class="row mb-3">
                         <div class="col-md-3">
-                            <!-- Hiển thị hình ảnh -->
+                            <!-- Display Image -->
                             <img class="mb-3" src="${pageContext.request.contextPath}/images/${imageList[0]}" alt="${roomDetail.houseName}" width="650">
                         </div>
                         <div class="col-md-9">
-                            <!-- Hiển thị thông tin nhà trọ động -->
-                            <h5>Tên nhà trọ: <strong>${roomDetail.houseName}</strong></h5>
-                            <p><strong>Giá điện:</strong> ${roomDetail.powerPrice} VND/kWh</p>
-                            <p><strong>Giá nước:</strong> ${roomDetail.waterPrice} VND/m³</p>
-                            <p><strong>Địa chỉ:</strong> ${roomDetail.address}</p>
-                            <p><strong>Thông tin khác:</strong> ${roomDetail.description}</p>
+                            <!-- Display Dynamic House Information -->
+                            <h5><strong>House Name: </strong>${roomDetail.houseName}</h5>
+                            <p><strong>Electricity Price:</strong> ${roomDetail.powerPrice} VND/kWh</p>
+                            <p><strong>Water Price:</strong> ${roomDetail.waterPrice} VND/m³</p>
+                            <p><strong>Address:</strong> ${roomDetail.address}</p>
+                            <p><strong>Other Information:</strong> ${roomDetail.description}</p>
                         </div>
                         <div class="col-md-3">
-                            <!-- Hiển thị số phòng trống và số chỗ trống -->
-                            <p><strong>Tổng số phòng trống:</strong> ${roomDetail.totalAvailableRooms} phòng</p>
+                            <!-- Display Number of Available Rooms -->
+                            <p><strong>Total Available Rooms:</strong> ${roomDetail.totalAvailableRooms} rooms</p>
                         </div>
                     </div>
 
                     <!-- Table Section -->
-                    <h4 class="mb-3">Danh sách phòng trọ</h4>
+                    <h4 class="mb-3" style="text-align: center">Room List</h4>
                     <table class="table table-striped table-hover">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">STT</th>
-                                <th scope="col">Tên phòng</th>
-                                <th scope="col">Giá phòng (VND)</th>
-                                <th scope="col">Tiện ích</th>
-                                <th scope="col">Diện tích</th>
-                                <th scope="col">Loại Phòng</th>
-                                <th scope="col">Trạng thái</th>
+                                <th scope="col">No.</th>
+                                <th scope="col">Room Name</th>
+                                <th scope="col">Room Price (VND)</th>
+                                <th scope="col">Amenities</th>
+                                <th scope="col">Area (m²)</th>
+                                <th scope="col">Room Type</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Sửa forEach để duyệt qua các phòng -->
+                            <!-- Modify forEach to iterate over the rooms -->
                             <c:forEach var="rooms" items="${roomList}" varStatus="status" >
                                 <tr>
-                                    <!-- Sử dụng varStatus để lấy chỉ số -->
+                                    <!-- Use varStatus to get the index -->
                                     <th scope="row">${status.index + 1}</th>
-                                    <td>${rooms.roomNumber}</td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/roomDetail?id=${rooms.id}"">
+                                            ${rooms.roomNumber}
+                                        </a>
+                                    </td>
                                     <td>${rooms.price}</td>
                                     <td>
-                                        <!-- Hiển thị các tiện ích động -->
+                                        <!-- Display Dynamic Amenities -->
                                         <c:if test="${rooms.bed}">
                                             <i class="fas fa-bed"></i> 
                                         </c:if>
@@ -98,10 +102,10 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${rooms.roomTypeId == 1}">
-                                                single
+                                                Single
                                             </c:when>
                                             <c:when test="${rooms.roomTypeId == 2}">
-                                                double
+                                                Double
                                             </c:when>
                                             <c:when test="${rooms.roomTypeId == 3}">
                                                 Triple
@@ -117,13 +121,13 @@
                                             </c:otherwise>
                                         </c:choose></td>
                                     <td>
-                                        <!-- Kiểm tra trạng thái phòng -->
+                                        <!-- Check Room Status -->
                                         <c:choose>
                                             <c:when test="${rooms.statusId == 1}">
-                                                Còn Trống
+                                                Available
                                             </c:when>
                                             <c:otherwise>
-                                                Đã Đầy
+                                                Full
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
