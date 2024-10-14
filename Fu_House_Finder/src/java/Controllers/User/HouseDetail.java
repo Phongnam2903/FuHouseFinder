@@ -157,7 +157,7 @@ public class HouseDetail extends HttpServlet {
             rate.setCreatedDate(new Date(System.currentTimeMillis()));
             rate.setDecription(commentText);
 
-            //thiết lập HouseOwnerReply thành null vì người dùng chưa đánh giá
+            //thiết lập HouseOwnerReply thành null vì người dùng mới comment
             rate.setHouseOwnerReply(null);
 
             //thiết lập LastModifiedBy thành ownerId từ đối tượng House

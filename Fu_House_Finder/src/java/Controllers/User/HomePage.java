@@ -53,6 +53,7 @@ public class HomePage extends HttpServlet {
             throws ServletException, IOException {
         DAOHouse daoHouse = new DAOHouse();
 
+        //lấy thông tin người dùng từ session
         User user = (User) request.getSession().getAttribute("user");
 
         List<House> houseList = daoHouse.getHousesWithPricesAndStar();

@@ -10,10 +10,6 @@
                     <file>${file.reference.SendMailJava-master.zip}</file>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jakarta.activation-1.2.1.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
                     <file>${file.reference.javamail1_4_5.zip}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -43,6 +39,14 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.org-netbeans-modules-java-j2seproject-copylibstask.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.servlet.jsp.jstl-2.0.0.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

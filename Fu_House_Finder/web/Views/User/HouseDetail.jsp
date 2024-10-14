@@ -220,7 +220,6 @@
                 <div class="col-lg-12 mb-4">
                     <h2 class="mb-3" style="text-align: center;">Available Rooms List</h2>
                     <p><strong>Total Fully Available Rooms:</strong> 0 phòng</p>
-                    <p><strong>Total Partially Available Rooms:</strong> 3 phòng</p>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
