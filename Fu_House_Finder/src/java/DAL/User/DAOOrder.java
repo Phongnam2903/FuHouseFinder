@@ -46,19 +46,21 @@ public class DAOOrder extends DAO {
 
     public List<Order> getAllOrders(int pageNumber, int pageSize) {
         List<Order> orderList = new ArrayList<>();
-        String sql = "SELECT *\n"
-                + "FROM [dbo].[Order] \n"
-                + "ORDER BY ID DESC\n"
+        String sql = "SELECT o.*, u.FullName AS SolvedByUser "
+                + "FROM [Order] o "
+                + "LEFT JOIN [User] u ON o.SolvedBy = u.ID "
+                + "ORDER BY o.ID DESC "
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";  // Phân trang
 
-        try (PreparedStatement pre = connection.prepareStatement(sql)) {
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
             // Tính toán giá trị offset dựa trên số trang và kích thước trang
             int offset = (pageNumber - 1) * pageSize;
 
             pre.setInt(1, offset);
             pre.setInt(2, pageSize);
-            ResultSet rs = pre.executeQuery();
 
+            ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 Order order = new Order();
                 // Lấy thông tin từ bảng Order
@@ -72,7 +74,7 @@ public class DAOOrder extends DAO {
                 order.setOrderedDate(rs.getDate("OrderedDate"));
                 order.setSolvedDate(rs.getDate("SolvedDate"));
                 order.setSolvedBy(rs.getInt("SolvedBy"));
-                order.setHouseID(rs.getInt("HouseID"));
+                order.setSolvedByName(rs.getString("SolvedByUser"));
 
                 orderList.add(order);
             }

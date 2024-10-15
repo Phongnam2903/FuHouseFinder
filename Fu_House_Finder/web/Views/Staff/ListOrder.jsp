@@ -54,7 +54,7 @@
                                     <td>${order.email}</td>
                                     <td>${order.orderedDate}</td>
                                     <td>${order.solvedDate}</td>
-                                    <td>${order.solvedBy}</td>
+                                    <td>${order.solvedByName}</td>
                                     <td>
                                         <c:choose>
                                             <c:when test="${order.statusID == 1}">
@@ -69,7 +69,9 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-primary btn-sm">View</a>
+                                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal">
+                                            <i class="fa-regular fa-circle-exclamation"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             </c:forEach>
