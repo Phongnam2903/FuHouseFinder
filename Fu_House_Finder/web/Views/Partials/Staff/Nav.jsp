@@ -14,7 +14,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-light border-bottom">
             <div class="container-fluid">
-                <button class="btn btn-outline-success" id="menu-toggle"><i class="fas fa-bars"></i></button>
+                <button class="btn btn-outline-warning" id="menu-toggle"><i class="fas fa-bars"></i></button>
                 <h2 class="ms-3 text-dark">Dashboard</h2>
 
                 <button class="btn btn-outline-success ms-auto" id="dark-mode-toggle">

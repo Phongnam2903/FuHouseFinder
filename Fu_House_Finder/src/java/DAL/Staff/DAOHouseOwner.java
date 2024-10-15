@@ -38,7 +38,7 @@ public class DAOHouseOwner extends DBContext {
                     u.PhoneNumber, u.DateOfBirth,  u.Address,  
                     u.StatusID,  u.Roleid, u.Avatar, 
                     u.CreatedDate,u.RoomHistoriesID,COUNT(DISTINCT h.ID) AS totalHouses, 
-                    COUNT(r.ID) AS totalRooms,SUM(CASE WHEN r.StatusID = 2 THEN 1 END) AS emptyRooms 
+                    COUNT(r.ID) AS totalRooms,SUM(CASE WHEN r.StatusID = 1 THEN 1 END) AS emptyRooms 
                 FROM  [User] u
                 LEFT JOIN  House h ON u.ID = h.OwnerID   
                 LEFT JOIN  Room r ON h.ID = r.HouseID   
