@@ -124,4 +124,22 @@ public class DAOOrder extends DAO {
 
         return order;
     }
+
+    public int updateOrder(Order order) {
+        int n = 0;
+        String sql = "UPDATE [Order] SET StatusID = ?, SolvedDate = ?, SolvedBy = ?, HouseID = ? WHERE ID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, order.getStatusID());
+            pre.setDate(2, new java.sql.Date(order.getSolvedDate().getTime()));
+            pre.setInt(3, order.getSolvedBy());
+            pre.setInt(4, order.getHouseID());
+            pre.setInt(5, order.getId());
+
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
 }

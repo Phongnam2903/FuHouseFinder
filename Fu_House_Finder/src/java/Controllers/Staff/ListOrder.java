@@ -4,6 +4,7 @@ import DAL.House.DAOHouse;
 import DAL.User.DAOOrder;
 import Models.House;
 import Models.Order;
+import Models.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -92,7 +93,61 @@ public class ListOrder extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/Views/Staff/ListOrder.jsp").forward(request, response);
+        DAOOrder daoOrder = new DAOOrder();
+
+        //khởi tạo biến để lưu thông báo và hiển thị lên jsp
+        String errorMessage = null;
+        String successMessage = null;
+
+        // Lấy các thông tin từ request và kiểm tra
+        String orderIdParam = request.getParameter("orderId");
+        String orderStatusParam = request.getParameter("orderStatus");
+        String houseIdParam = request.getParameter("houseId");
+
+        if (orderStatusParam == null || houseIdParam == null) {
+            errorMessage = "Dont't have information to solved accommodation!";
+        }
+
+        //chuyển đổi sang dạng int
+        int orderId = Integer.parseInt(orderIdParam);
+        int orderStatus = Integer.parseInt(orderStatusParam);
+        int houseId = Integer.parseInt(houseIdParam);
+
+        //lấy user từ session, kiểm tra và lấy id
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login");
+            return;
+        }
+
+        int userId = user.getId();
+
+        //tạo đối tượng Order để cập nhật
+        Order order = new Order();
+        order.setId(orderId);
+        order.setStatusID(orderStatus);
+        order.setHouseID(houseId);
+        order.setSolvedBy(userId);
+        order.setSolvedDate(new java.sql.Date(System.currentTimeMillis()));
+
+        //cập nhật order
+        int result = daoOrder.updateOrder(order);
+
+        //kiểm tra kết quả cập nhật
+        if (result > 0) {
+            successMessage = "Solve Order Accommodation Successfully!";
+        } else {
+            errorMessage = "Fail To Solve Order Accommodation!";
+        }
+
+        //thiết lập thông báo vào yêu cầu trước khi chuyển hướng
+        if (errorMessage != null) {
+            //gửi thông báo lỗi qua URL với tham số "error"
+            response.sendRedirect(request.getContextPath() + "/listOrder" + "?status=error&message=" + errorMessage);
+        } else if (successMessage != null) {
+            //gửi thông báo thành công qua URL với tham số "success"
+            response.sendRedirect(request.getContextPath() + "/listOrder" + "?status=success&message=" + successMessage);
+        }
     }
 
     /**

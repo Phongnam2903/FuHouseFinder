@@ -125,10 +125,10 @@ public class ReplyReview extends HttpServlet {
         }
 
         //cập nhật reply của chủ trọ
-        boolean isUpdated = daoRate.updateRateReply(rateId, replyText);
+        int result = daoRate.updateRateReply(rateId, replyText);
 
         //kiểm tra đã được thêm vào chưa với thông báo
-        if (isUpdated) {
+        if (result > 0) {
             successMessage = "Reply comment successfully!";
             response.sendRedirect(request.getContextPath() + "/replyReview?id=" + houseId + "&status=success&message=" + successMessage);
         } else {

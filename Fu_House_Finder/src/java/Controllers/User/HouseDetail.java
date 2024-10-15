@@ -181,10 +181,10 @@ public class HouseDetail extends HttpServlet {
 
             //thiết lập thông báo vào yêu cầu trước khi chuyển hướng
             if (errorMessage != null) {
-                // Gửi thông báo lỗi qua URL với tham số "error"
+                //gửi thông báo lỗi qua URL với tham số "error"
                 response.sendRedirect(request.getContextPath() + "/houseDetail?id=" + houseId + "&status=error&message=" + errorMessage);
             } else if (successMessage != null) {
-                // Gửi thông báo thành công qua URL với tham số "success"
+                //gửi thông báo thành công qua URL với tham số "success"
                 response.sendRedirect(request.getContextPath() + "/houseDetail?id=" + houseId + "&status=success&message=" + successMessage);
             }
         }
