@@ -49,7 +49,7 @@ public class ListHouseOwner extends HttpServlet {
         // Retrieve the total number of houses, rooms, and empty rooms from the database
         int totalHouse = daoStaff.getHouseCount();
         int totalRoom = daoStaff.getRoomCount();
-        int totalRoomEmpty = daoStaff.getRoomEmpty(2); // 2 represents a specific room status
+        int totalRoomEmpty = daoStaff.getRoomEmpty(1); // 2 represents a specific room status
 
         // Retrieve the total number of landlords (role = 5) from the database
         int totalLandlord = daoStaff.getUserCountByRole(5);

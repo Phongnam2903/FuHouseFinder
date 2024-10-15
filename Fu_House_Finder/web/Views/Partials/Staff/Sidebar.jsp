@@ -25,11 +25,11 @@
                 </a>
                 <!-- Changed icon to chart-bar to represent reports -->
                 <a href="#" class="list-group-item list-group-item-action bg-orange text-white">
-                    <i class="fas fa-chart-bar me-2"></i>Reports
+                    <i class="fas fa-chart-bar me-2"></i>Reports House
                 </a>
                 <!-- Changed icon to clipboard-list to represent requests -->
-                <a href="#" class="list-group-item list-group-item-action bg-orange text-white">
-                    <i class="fas fa-clipboard-list me-2"></i>Requests
+                <a href="listOrder" class="list-group-item list-group-item-action bg-orange text-white">
+                    <i class="fas fa-clipboard-list me-2"></i>Requests Orders Accommodation
                 </a>
                 <!-- Log out icon remains the same -->
                 <a href="logout" class="list-group-item list-group-item-action bg-orange text-white">

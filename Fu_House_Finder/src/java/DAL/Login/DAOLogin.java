@@ -204,11 +204,11 @@ public class DAOLogin extends DBContext {
 //        } else {
 //            System.out.println("Login Failed!");
 //        }
-        String googleUserId = "114468492892790826988";
-        String name = "Phong Nguyễn Nam";
-        String email = "xuxumanh1@gmail.com";
+//        String googleUserId = "114468492892790826988";
+//        String name = "Phong Nguyễn Nam";
+//        String email = "xuxumanh1@gmail.com";
 
-        login.saveUserPassword("DuongTD", "abche170700fpt.edu.vn", "duong3", 1, 3);
+        login.saveUserPassword("Trần Dương", "tdd177777@fpt.edu.vn", "duong4", 1, 4);
         System.out.println("Test saveUser completed.");
     }
 }

@@ -166,6 +166,7 @@
 
                             <!-- Form nhập đánh giá và bình luận mới -->
                             <form action="${pageContext.request.contextPath}/houseDetail" method="POST">
+                                <input type="hidden" name="service" value="sendReview">
                                 <input type="hidden" name="houseId" value="${house.id}" />
 
                                 <!-- Nhập bình luận -->
@@ -277,6 +278,42 @@
             </div>
         </div>
 
+        <!-- Floating Button -->
+        <a href="#" class="btn btn-danger btn-lg btn-danger-custom" data-bs-toggle="modal" data-bs-target="#orderModal">
+            <i class="fas fa-flag"></i>
+        </a>
+
+        <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderModalLabel">Report House</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="reportForm" action="${pageContext.request.contextPath}/houseDetail" method="POST">
+                            <input type="hidden" name="userId" value="${user.id}" />
+                            <input type="hidden" name="houseId" value="${house.id}" />
+                            <input type="hidden" name="service" value="sendReport">
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title" name="title" placeholder="Enter title"
+                                       value="${sessionScope.fullName != null ? sessionScope.fullName : ''}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="desire" class="form-label">Reason you report this house? <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="reason" rows="3" name="reason" placeholder="Describe your opinion"  
+                                          required>${sessionScope.desire != null ? sessionScope.desire : ''}</textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" form="reportForm" class="btn btn-custom">Submit Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="notificationModal">
             <span class="close-btn" onclick="closeModal()">&#10006;</span>
             <i class="fa-solid fa-circle-exclamation"></i>
@@ -285,9 +322,6 @@
                 <div id="progress"></div>
             </div>
         </div>
-
-        <!-- Floating Button -->
-        <a href="#" class="btn btn-danger btn-lg btn-danger-custom"><i class="fas fa-flag"></i></a>
 
         <!-- Footer -->
         <%@include file="../Partials/Footer.jsp" %>
