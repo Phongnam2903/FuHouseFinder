@@ -1,15 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>List Order</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!-- Bootstrap 5 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
         <link href="${pageContext.request.contextPath}/css/staff/style.css" rel="stylesheet" type="text/css"/>
+        <link href="${pageContext.request.contextPath}/css/staff/listOrder.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div id="wrapper">
@@ -49,7 +51,7 @@
                         <tbody>
                             <c:forEach var="order" items="${orderList}" varStatus="status">
                                 <tr>
-                                    <th scope="row">${status.index + 1}</th>
+                                    <th scope="row">${status.index + 1 + (currentPage - 1) * itemsPerPage}</th>
                                     <td>${order.fullName}</td>
                                     <td>${order.email}</td>
                                     <td>${order.orderedDate}</td>
@@ -69,7 +71,7 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal">
+                                        <a href="${pageContext.request.contextPath}/listOrder?orderId=${order.id}&page=${currentPage}" class="btn btn-primary">
                                             <i class="fa-regular fa-circle-exclamation"></i>
                                         </a>
                                     </td>
@@ -79,20 +81,196 @@
                     </table>
 
                     <!-- Pagination Section -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            <c:forEach var="i" begin="1" end="${totalPages}">
-                                <li class="page-item <c:if test='${i == currentPage}'>active</c:if>'">
-                                    <a class="page-link" href="${pageContext.request.contextPath}/listOrders?page=${i}">${i}</a>
+                    <div class="pagination-container">
+                        <ul class="pagination justify-content-center">
+                            <!-- Nút Previous -->
+                            <c:if test="${currentPage > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/listOrder?page=${currentPage - 1}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo; Previous</span>
+                                    </a>
                                 </li>
-                            </c:forEach>
+                            </c:if>
+
+                            <!-- Hiển thị các số trang -->
+                            <c:choose>
+                                <c:when test="${totalPages <= 5}">
+                                    <!-- Nếu tổng số trang <= 5, hiển thị tất cả -->
+                                    <c:forEach var="i" begin="1" end="${totalPages}">
+                                        <c:choose>
+                                            <c:when test="${i == currentPage}">
+                                                <li class="page-item active"><span class="page-link">${i}</span></li>
+                                                </c:when>
+                                                <c:otherwise>
+                                                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/listOrder?page=${i}">${i}</a></li>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                    <!-- Nếu tổng số trang > 5, hiển thị các trang đầu, cuối và dấu "..." -->
+                                    <c:if test="${currentPage > 3}">
+                                        <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/listOrder?page=1">1</a></li>
+                                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                                        </c:if>
+
+                                    <c:forEach var="i" begin="${(currentPage - 2 < 1) ? 1 : currentPage - 2}" end="${(currentPage + 2 > totalPages) ? totalPages : currentPage + 2}">
+                                        <c:choose>
+                                            <c:when test="${i == currentPage}">
+                                                <li class="page-item active"><span class="page-link">${i}</span></li>
+                                                </c:when>
+                                                <c:otherwise>
+                                                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/listOrder?page=${i}">${i}</a></li>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+
+                                    <c:if test="${currentPage < totalPages - 2}">
+                                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                                        <li class="page-item"><a class="page-link" href="${pageContext.request.context.path}/listOrder?page=${totalPages}">${totalPages}</a></li>
+                                        </c:if>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            <!-- Nút Next -->
+                            <c:if test="${currentPage < totalPages}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/listOrder?page=${currentPage + 1}" aria-label="Next">
+                                        <span aria-hidden="true">Next &raquo;</span>
+                                    </a>
+                                </li>
+                            </c:if>
                         </ul>
-                    </nav>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="orderModalLabel">Order Detail</h5>
+                            </div>
+                            <form action="${pageContext.request.contextPath}/updateOrder" method="post">
+                                <div class="modal-body">
+                                    <!-- Kiểm tra nếu có selectedOrder -->
+                                    <c:if test="${not empty selectedOrder}">
+                                        <p><strong>Full Name:</strong> ${selectedOrder.fullName}</p>
+                                        <p><strong>Phone Number:</strong> ${selectedOrder.phoneNumber}</p>
+                                        <p><strong>Email:</strong> ${selectedOrder.email}</p>
+                                        <p><strong>Order Date:</strong> ${selectedOrder.orderedDate}</p>
+                                        <p><strong>Order Content:</strong> ${selectedOrder.orderContent}</p>
+                                        <hr>
+
+                                        <!-- Dropdown chọn trạng thái -->
+                                        <div class="form-group">
+                                            <label for="orderStatus">Status</label>
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="orderStatusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Select Status
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="orderStatusDropdown">
+                                                    <li><a class="dropdown-item" data-value="1">Pending</a></li>
+                                                    <li><a class="dropdown-item" data-value="2">Solved</a></li>
+                                                </ul>
+                                                <input type="hidden" name="orderStatus" id="orderStatus" value="">
+                                            </div>
+                                        </div>
+
+                                        <!-- Dropdown chọn nhà trọ và phòng trọ trống -->
+                                        <div class="form-group">
+                                            <label for="houseSelect">Choose a House</label>
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="houseDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Select House
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="houseDropdown">
+                                                    <c:forEach var="house" items="${houseList}">
+                                                        <a class="dropdown-item" href="#" data-id="${house.id}">
+                                                            <div style="white-space: normal;">
+                                                                <strong>${house.houseName}</strong><br>
+                                                                Min Price: <fmt:formatNumber value="${house.minPrice}" type="number" minFractionDigits="0" /> VND 
+                                                                - Max Price: <fmt:formatNumber value="${house.maxPrice}" type="number" minFractionDigits="0" /> VND<br>
+                                                                Distance To School: ${house.distanceToSchool} km<br>
+                                                                Description: ${house.description}
+                                                            </div>
+                                                        </a>
+                                                        <div class="dropdown-divider"></div>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="houseId" name="houseId" value="">
+                                        </div>
+
+                                        <!-- Hidden field để gửi Order ID (cần thiết để cập nhật đơn hàng) -->
+                                        <input type="hidden" name="orderId" value="${selectedOrder.id}">
+                                    </c:if>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+        <script>
+            <c:if test="${selectedOrder != null}">
+            // Khi selectedOrder tồn tại, tự động hiển thị modal
+            var myModal = new bootstrap.Modal(document.getElementById('orderModal'));
+            myModal.show();
+            </c:if>
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var dropdownItems = document.querySelectorAll('.dropdown-item');
+
+                dropdownItems.forEach(function (item) {
+                    item.addEventListener('click', function (event) {
+                        event.preventDefault();
+
+                        // Lấy thông tin house đã chọn
+                        var houseName = item.querySelector('strong').innerText;
+
+                        // Cập nhật nút dropdown
+                        var dropdownButton = document.getElementById('houseDropdown');
+                        dropdownButton.innerHTML = houseName;
+
+                        // Cập nhật giá trị cho input ẩn
+                        var houseId = item.getAttribute('data-id'); // Thêm thuộc tính data-id vào mỗi item
+                        document.getElementById('houseId').value = houseId;
+
+                        // Đóng dropdown
+                        var dropdown = new bootstrap.Dropdown(dropdownButton);
+                        dropdown.hide();
+                    });
+                });
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+                var dropdownStatusItems = document.querySelectorAll('.dropdown-item[data-value]');
+
+                dropdownStatusItems.forEach(function (item) {
+                    item.addEventListener('click', function (event) {
+                        event.preventDefault();
+
+                        // Cập nhật nút dropdown
+                        var dropdownButton = document.getElementById('orderStatusDropdown');
+                        dropdownButton.innerHTML = item.innerText;
+
+                        // Lưu giá trị vào input ẩn
+                        var value = item.getAttribute('data-value');
+                        document.getElementById('orderStatus').value = value;
+
+                        // Đóng dropdown
+                        var dropdown = new bootstrap.Dropdown(dropdownButton);
+                        dropdown.hide();
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

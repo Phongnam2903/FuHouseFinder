@@ -50,7 +50,7 @@ public class DAOOrder extends DAO {
                 + "FROM [Order] o "
                 + "LEFT JOIN [User] u ON o.SolvedBy = u.ID "
                 + "ORDER BY o.ID DESC "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";  // Phân trang
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -84,12 +84,12 @@ public class DAOOrder extends DAO {
         return orderList;
     }
 
-    // Phương thức đếm tổng số order để hỗ trợ phân trang
     public int getTotalOrders() {
         int totalOrders = 0;
         String sql = "SELECT COUNT(*) AS total FROM [dbo].[Order]";
 
-        try (PreparedStatement pre = connection.prepareStatement(sql)) {
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                 totalOrders = rs.getInt("total");
@@ -98,5 +98,30 @@ public class DAOOrder extends DAO {
             Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
         return totalOrders;
+    }
+
+    public Order getOrderById(int orderId) {
+        Order order = null;
+        String sql = "SELECT * FROM [ORDER] WHERE ID = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, orderId);
+            ResultSet rs = pre.executeQuery();
+
+            if (rs.next()) {
+                order = new Order();
+                order.setId(rs.getInt("ID"));
+                order.setFullName(rs.getString("FullName"));
+                order.setPhoneNumber(rs.getString("PhoneNumber"));
+                order.setEmail(rs.getString("Email"));
+                order.setOrderContent(rs.getString("OrderContent"));
+                order.setOrderedDate(rs.getDate("OrderedDate"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return order;
     }
 }

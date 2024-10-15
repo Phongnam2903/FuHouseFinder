@@ -1,6 +1,8 @@
 package Controllers.Staff;
 
+import DAL.House.DAOHouse;
 import DAL.User.DAOOrder;
+import Models.House;
 import Models.Order;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -30,33 +32,52 @@ public class ListOrder extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOOrder daoOrder = new DAOOrder();
+        DAOHouse daoHouse = new DAOHouse();
 
-        // Lấy số trang hiện tại từ request, nếu không có thì mặc định là trang 1
+        //xử lý lấy thông tin chi tiết order
+        String orderIdParam = request.getParameter("orderId");
+        Order selectedOrder = null;
+        if (orderIdParam != null) {
+            try {
+                int orderId = Integer.parseInt(orderIdParam);
+                selectedOrder = daoOrder.getOrderById(orderId);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //lấy số trang hiện tại từ request, nếu không có thì mặc định là trang 1
         String pageStr = request.getParameter("page");
         int pageNumber = 1;
         if (pageStr != null) {
             try {
                 pageNumber = Integer.parseInt(pageStr);
             } catch (NumberFormatException e) {
-                pageNumber = 1; // Trang mặc định nếu có lỗi
+                pageNumber = 1; //trang mặc định nếu có lỗi
             }
         }
 
-        int pageSize = 10;  // Số lượng đơn hàng hiển thị trên mỗi trang
+        //số lượng order hiển thị trên mỗi trang
+        int pageSize = 10;
+        int itemsPerPage = 10;
 
-        // Lấy danh sách các đơn hàng
+        //lấy danh sách các order, house
         List<Order> orderList = daoOrder.getAllOrders(pageNumber, pageSize);
+        List<House> houseList = daoHouse.getHousesWithPricesAndStar();
 
-        // Lấy tổng số đơn hàng để tính tổng số trang
+        //lấy tổng số order để tính tổng số trang
         int totalOrders = daoOrder.getTotalOrders();
         int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
 
-        // Đặt các thuộc tính cho request để hiển thị trên JSP
+        //đặt các thuộc tính cho request để hiển thị trên JSP
+        request.setAttribute("itemsPerPage", itemsPerPage);
         request.setAttribute("orderList", orderList);
+        request.setAttribute("houseList", houseList);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", pageNumber);
+        request.setAttribute("selectedOrder", selectedOrder);
 
-        // Điều hướng đến JSP
+        //điều hướng đến JSP
         request.getRequestDispatcher("/Views/Staff/ListOrder.jsp").forward(request, response);
     }
 
