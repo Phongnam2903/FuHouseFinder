@@ -15,11 +15,13 @@ public class Order {
     private Date solvedDate;
     private int solvedBy;
     private int houseID;
+    private String houseName;
+    private String houseDescription;
 
     public Order() {
     }
 
-    public Order(int id, int userID, String FullName, String phoneNumber, String email, String orderContent, int statusID, Date orderedDate, Date solvedDate, int solvedBy, int houseID) {
+    public Order(int id, int userID, String FullName, String phoneNumber, String email, String orderContent, int statusID, Date orderedDate, Date solvedDate, int solvedBy, int houseID, String houseName, String houseDescription) {
         this.id = id;
         this.userID = userID;
         this.FullName = FullName;
@@ -31,6 +33,24 @@ public class Order {
         this.solvedDate = solvedDate;
         this.solvedBy = solvedBy;
         this.houseID = houseID;
+        this.houseName = houseName;
+        this.houseDescription = houseDescription;
+    }
+
+    public String getHouseName() {
+        return houseName;
+    }
+
+    public void setHouseName(String houseName) {
+        this.houseName = houseName;
+    }
+
+    public String getHouseDescription() {
+        return houseDescription;
+    }
+
+    public void setHouseDescription(String houseDescription) {
+        this.houseDescription = houseDescription;
     }
 
     public int getId() {

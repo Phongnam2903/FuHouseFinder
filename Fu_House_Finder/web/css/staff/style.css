@@ -12,6 +12,9 @@ html, body {
     height: 100%;
     width: 100%;
 }
+.container {
+    max-width: 100%;
+}
 
 /* Đặt sidebar với chiều rộng cố định và chiều cao đầy đủ */
 #sidebar-wrapper {
