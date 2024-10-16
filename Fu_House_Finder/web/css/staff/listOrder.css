@@ -73,10 +73,14 @@ label {
     display: none;
     text-align: center; /* Căn giữa nội dung */
 }
-#notificationModal i.fa-circle-exclamation {
-    font-size: 40px;
-    color: #dc3545;
-    margin-bottom: 10px;
+.notification-icon {
+    color: #dc3545; /* Màu cho biểu tượng notification */
+    font-size: 40px; /* Kích thước lớn hơn cho biểu tượng modal */
+    margin-top: 10px; /* Thêm khoảng cách nếu cần */
+}
+.order-icon {
+    color: blue; /* Màu cho biểu tượng order */
+    font-size: 20px; /* Kích thước của biểu tượng */
 }
 .close-btn {
     position: absolute;

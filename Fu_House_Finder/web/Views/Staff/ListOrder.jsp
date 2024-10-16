@@ -74,7 +74,7 @@
 
                             <!-- Apply button -->
                             <div class="form-group col-md-3">
-                                <button type="submit" class="btn btn-primary mb-2">Apply Filters</button>
+                                <button type="submit" class="btn btn-secondary mb-2">Apply Filters</button>
                             </div>
                         </div>
                     </form>
@@ -120,8 +120,8 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${order.statusID == 1}">
-                                                <a href="${pageContext.request.contextPath}/listOrder?orderId=${order.id}&page=${currentPage}" class="btn btn-primary">
-                                                    <i class="fa-regular fa-circle-exclamation"></i>
+                                                <a href="${pageContext.request.contextPath}/listOrder?orderId=${order.id}&page=${currentPage}">
+                                                    <i class="fa-regular fa-circle-exclamation order-icon"></i>
                                                 </a>
                                             </c:when>
                                             <c:otherwise>
@@ -270,7 +270,7 @@
 
                 <div id="notificationModal">
                     <span class="close-btn" onclick="closeModal()">&#10006;</span>
-                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <i class="fa-solid fa-circle-exclamation notification-icon"></i>
                     <p id="modalMessage">Your message here</p>
                     <div id="progressBar">
                         <div id="progress"></div>
