@@ -35,6 +35,9 @@ public class ListOrder extends HttpServlet {
         DAOOrder daoOrder = new DAOOrder();
         DAOHouse daoHouse = new DAOHouse();
 
+        //lấy giá trị tìm kiếm
+        String search = request.getParameter("search");
+
         //xử lý lấy thông tin chi tiết order
         String orderIdParam = request.getParameter("orderId");
         Order selectedOrder = null;
@@ -62,12 +65,21 @@ public class ListOrder extends HttpServlet {
         int pageSize = 10;
         int itemsPerPage = 10;
 
-        //lấy danh sách các order, house
-        List<Order> orderList = daoOrder.getAllOrders(pageNumber, pageSize);
+        //lấy danh sách các order, house tùy vào có search hay không
+        List<Order> orderList;
+        int totalOrders;
+        if (search != null && !search.trim().isEmpty()) {
+            // Tìm kiếm dựa trên từ khóa
+            orderList = daoOrder.searchOrdersByQuery(search, pageNumber, pageSize);
+            totalOrders = daoOrder.getTotalOrdersSearch(search);
+        } else {
+            // Lấy toàn bộ đơn đặt hàng nếu không có tìm kiếm
+            orderList = daoOrder.getAllOrders(pageNumber, pageSize);
+            totalOrders = daoOrder.getTotalOrders();
+        }
         List<House> houseList = daoHouse.getHousesWithPricesAndStar();
 
-        //lấy tổng số order để tính tổng số trang
-        int totalOrders = daoOrder.getTotalOrders();
+        //tính tổng số trang
         int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
 
         //đặt các thuộc tính cho request để hiển thị trên JSP

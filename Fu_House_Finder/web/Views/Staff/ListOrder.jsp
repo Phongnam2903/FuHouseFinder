@@ -31,7 +31,12 @@
                     <!-- Info Section -->
                     <div class="row mb-3">
                         <h1 class="text-center">List Of Orders Accommodation</h1>
-                        <label>Search</label>
+                        <form action="listOrder" method="get" class="d-flex justify-content-center">
+                            <div class="col-md-6">
+                                <input class="form-control" type="search" name="search" placeholder="Enter keywords to search orders" aria-label="Search">
+                            </div>
+                            <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+                        </form>
                     </div>
 
                     <!-- Table Section -->
@@ -40,6 +45,7 @@
                             <tr>
                                 <th scope="col">No.</th>
                                 <th scope="col">User Name</th>
+                                <th scope="col">Phone Number</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Created Date</th>
                                 <th scope="col">Solve Date</th>
@@ -53,6 +59,7 @@
                                 <tr>
                                     <th scope="row">${status.index + 1 + (currentPage - 1) * itemsPerPage}</th>
                                     <td>${order.fullName}</td>
+                                    <td>${order.phoneNumber}</td>
                                     <td>${order.email}</td>
                                     <td>${order.orderedDate}</td>
                                     <td>${order.solvedDate}</td>

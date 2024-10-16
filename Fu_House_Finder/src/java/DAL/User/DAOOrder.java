@@ -142,4 +142,68 @@ public class DAOOrder extends DAO {
         }
         return n;
     }
+
+    public List<Order> searchOrdersByQuery(String search, int pageNumber, int pageSize) {
+        List<Order> orderList = new ArrayList<>();
+        String sql = "SELECT o.*, u.fullName AS SolvedByUser\n"
+                + "FROM [Order] o\n"
+                + "LEFT JOIN [User] u ON o.solvedBy = u.id\n"
+                + "WHERE o.fullName LIKE ? \n"
+                + "   OR o.phoneNumber LIKE ? \n"
+                + "   OR o.email LIKE ?\n"
+                + "ORDER BY o.orderedDate DESC \n"
+                + "OFFSET ? ROWS \n"
+                + "FETCH NEXT ? ROWS ONLY;";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            String searchPattern = "%" + search + "%";
+            ps.setString(1, searchPattern);
+            ps.setString(2, searchPattern);
+            ps.setString(3, searchPattern);
+            ps.setInt(4, (pageNumber - 1) * pageSize);
+            ps.setInt(5, pageSize);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                // Tạo đối tượng Order từ kết quả truy vấn
+                Order order = new Order();
+                order.setId(rs.getInt("ID"));
+                order.setFullName(rs.getString("fullName"));
+                order.setPhoneNumber(rs.getString("phoneNumber"));
+                order.setEmail(rs.getString("email"));
+                order.setOrderedDate(rs.getDate("orderedDate"));
+                order.setOrderContent(rs.getString("orderContent"));
+                order.setStatusID(rs.getInt("StatusID"));
+                order.setSolvedDate(rs.getDate("SolvedDate"));
+                order.setSolvedByName(rs.getString("SolvedByUser"));
+                // Thêm đối tượng Order vào danh sách
+                orderList.add(order);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orderList;
+    }
+
+    public int getTotalOrdersSearch(String search) {
+        int totalOrders = 0;
+        String sql = "SELECT COUNT(*) FROM [Order] o "
+                + "LEFT JOIN [User] u ON o.userId = u.id "
+                + "WHERE o.fullName LIKE ? OR o.phoneNumber LIKE ? OR o.email LIKE ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            String searchPattern = "%" + search + "%";
+            ps.setString(1, searchPattern);
+            ps.setString(2, searchPattern);
+            ps.setString(3, searchPattern);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                totalOrders = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return totalOrders;
+    }
 }
