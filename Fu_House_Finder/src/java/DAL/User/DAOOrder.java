@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -143,25 +144,56 @@ public class DAOOrder extends DAO {
         return n;
     }
 
-    public List<Order> searchOrdersByQuery(String search, int pageNumber, int pageSize) {
+    public List<Order> searchOrdersByQueryAndFilter(String search, String fromDate, String toDate, String filterStatus, String sortOrder, int pageNumber, int pageSize) {
         List<Order> orderList = new ArrayList<>();
-        String sql = "SELECT o.*, u.fullName AS SolvedByUser\n"
-                + "FROM [Order] o\n"
-                + "LEFT JOIN [User] u ON o.solvedBy = u.id\n"
-                + "WHERE o.fullName LIKE ? \n"
-                + "   OR o.phoneNumber LIKE ? \n"
-                + "   OR o.email LIKE ?\n"
-                + "ORDER BY o.orderedDate DESC \n"
-                + "OFFSET ? ROWS \n"
-                + "FETCH NEXT ? ROWS ONLY;";
+
+        StringBuilder sql = new StringBuilder("SELECT o.*, u.fullName AS SolvedByUser FROM [Order] o ");
+        //nối chuỗi
+        sql.append("LEFT JOIN [User] u ON o.solvedBy = u.id WHERE (o.fullName LIKE ? OR o.phoneNumber LIKE ? OR o.email LIKE ?) ");
+
+        //thêm các điều kiện lọc theo ngày và trạng thái
+        if (fromDate != null && !fromDate.isEmpty()) {
+            sql.append("AND o.orderedDate >= ? ");
+        }
+        if (toDate != null && !toDate.isEmpty()) {
+            sql.append("AND o.orderedDate <= ? ");
+        }
+        if (filterStatus != null && !filterStatus.isEmpty()) {
+            sql.append("AND o.statusID = ? ");
+        }
+
+        //sắp xếp theo yêu cầu (Oldest to Newest hoặc Newest to Oldest)
+        if (sortOrder != null && sortOrder.equals("asc")) {
+            sql.append("ORDER BY o.orderedDate ASC ");
+        } else {
+            sql.append("ORDER BY o.orderedDate DESC ");
+        }
+
+        //phân trang
+        sql.append("OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;");
+
         try {
-            PreparedStatement pre = connection.prepareStatement(sql);
+            PreparedStatement pre = connection.prepareStatement(sql.toString());
             String searchPattern = "%" + search + "%";
-            pre.setString(1, searchPattern);
-            pre.setString(2, searchPattern);
-            pre.setString(3, searchPattern);
-            pre.setInt(4, (pageNumber - 1) * pageSize);
-            pre.setInt(5, pageSize);
+            int paramIndex = 1;
+            pre.setString(paramIndex++, searchPattern);
+            pre.setString(paramIndex++, searchPattern);
+            pre.setString(paramIndex++, searchPattern);
+
+            // Thiết lập giá trị cho các bộ lọc
+            if (fromDate != null && !fromDate.isEmpty()) {
+                pre.setDate(paramIndex++, Date.valueOf(fromDate));
+            }
+            if (toDate != null && !toDate.isEmpty()) {
+                pre.setDate(paramIndex++, Date.valueOf(toDate));
+            }
+            if (filterStatus != null && !filterStatus.isEmpty()) {
+                pre.setInt(paramIndex++, Integer.parseInt(filterStatus));
+            }
+
+            // Phân trang
+            pre.setInt(paramIndex++, (pageNumber - 1) * pageSize);
+            pre.setInt(paramIndex, pageSize);
 
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
@@ -176,7 +208,7 @@ public class DAOOrder extends DAO {
                 order.setStatusID(rs.getInt("StatusID"));
                 order.setSolvedDate(rs.getDate("SolvedDate"));
                 order.setSolvedByName(rs.getString("SolvedByUser"));
-                // Thêm đối tượng Order vào danh sách
+
                 orderList.add(order);
             }
         } catch (SQLException ex) {
@@ -185,17 +217,40 @@ public class DAOOrder extends DAO {
         return orderList;
     }
 
-    public int getTotalOrdersSearch(String search) {
+    public int getTotalOrdersSearchAndFilter(String search, String fromDate, String toDate, String filterStatus) {
         int totalOrders = 0;
-        String sql = "SELECT COUNT(*) FROM [Order] o "
-                + "LEFT JOIN [User] u ON o.userId = u.id "
-                + "WHERE o.fullName LIKE ? OR o.phoneNumber LIKE ? OR o.email LIKE ?";
 
-        try (PreparedStatement pre = connection.prepareStatement(sql)) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM [Order] o ");
+        sql.append("LEFT JOIN [User] u ON o.userId = u.id WHERE (o.fullName LIKE ? OR o.phoneNumber LIKE ? OR o.email LIKE ?) ");
+
+        // Thêm các điều kiện lọc theo ngày và trạng thái
+        if (fromDate != null && !fromDate.isEmpty()) {
+            sql.append("AND o.orderedDate >= ? ");
+        }
+        if (toDate != null && !toDate.isEmpty()) {
+            sql.append("AND o.orderedDate <= ? ");
+        }
+        if (filterStatus != null && !filterStatus.isEmpty()) {
+            sql.append("AND o.statusID = ? ");
+        }
+
+        try (PreparedStatement pre = connection.prepareStatement(sql.toString())) {
             String searchPattern = "%" + search + "%";
-            pre.setString(1, searchPattern);
-            pre.setString(2, searchPattern);
-            pre.setString(3, searchPattern);
+            int paramIndex = 1;
+            pre.setString(paramIndex++, searchPattern);
+            pre.setString(paramIndex++, searchPattern);
+            pre.setString(paramIndex++, searchPattern);
+
+            // Thiết lập giá trị cho các bộ lọc
+            if (fromDate != null && !fromDate.isEmpty()) {
+                pre.setDate(paramIndex++, Date.valueOf(fromDate));
+            }
+            if (toDate != null && !toDate.isEmpty()) {
+                pre.setDate(paramIndex++, Date.valueOf(toDate));
+            }
+            if (filterStatus != null && !filterStatus.isEmpty()) {
+                pre.setInt(paramIndex++, Integer.parseInt(filterStatus));
+            }
 
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {

@@ -31,44 +31,44 @@
                     <!-- Info Section -->
                     <div class="row mb-3">
                         <h1 class="text-center">List Of Orders Accommodation</h1>
-                        <form action="listOrder" method="get" class="d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <input class="form-control" type="search" name="search" placeholder="Enter keywords to search orders" aria-label="Search">
-                            </div>
-                            <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
-                        </form>
                     </div>
 
-                    <form id="filterForm" class="form-inline d-flex mb-3">
+                    <form action="${pageContext.request.contextPath}/listOrder" method="GET" class="form-inline d-flex mb-3">
                         <div class="row w-100">
+                            <!-- Search (căn giữa) -->
+                            <div class="form-group col-md-12 d-flex justify-content-center mb-3">
+                                <input class="form-control w-50" type="search" name="search" placeholder="Enter keywords to search orders" aria-label="Search" value="${param.search}">
+                                <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+                            </div>
+
                             <!-- Filter theo ngày tạo -->
                             <div class="form-group col-md-3">
                                 <label for="fromDate" class="">From Date</label>
-                                <input type="date" class="form-control" id="fromDate" placeholder="From Date">
+                                <input type="date" class="form-control" id="fromDate" name="fromDate" placeholder="From Date" value="${param.fromDate}">
                             </div>
 
                             <div class="form-group col-md-3">
                                 <label for="toDate" class="">To Date</label>
-                                <input type="date" class="form-control" id="toDate" placeholder="To Date">
+                                <input type="date" class="form-control" id="toDate" name="toDate" placeholder="To Date" value="${param.toDate}">
                             </div>
 
                             <!-- Filter theo status -->
                             <div class="form-group col-md-3">
                                 <label for="filterStatus" class="">Status</label>
-                                <select class="form-control" id="filterStatus">
+                                <select class="form-control" id="filterStatus" name="filterStatus">
                                     <option value="">Select Status</option>
-                                    <option value="1">Pending</option>
-                                    <option value="2">Solved</option>
+                                    <option value="1" ${param.filterStatus == '1' ? 'selected' : ''}>Pending</option>
+                                    <option value="2" ${param.filterStatus == '2' ? 'selected' : ''}>Solved</option>
                                 </select>
                             </div>
 
                             <!-- Sort (sắp xếp) -->
                             <div class="form-group col-md-3">
                                 <label for="sortOrder" class="">Sort Order</label>
-                                <select class="form-control" id="sortOrder">
+                                <select class="form-control" id="sortOrder" name="sortOrder">
                                     <option value="">Select Sort Order</option>
-                                    <option value="asc">Oldest to Newest</option>
-                                    <option value="desc">Newest to Oldest</option>
+                                    <option value="asc" ${param.sortOrder == 'asc' ? 'selected' : ''}>Oldest to Newest</option>
+                                    <option value="desc" ${param.sortOrder == 'desc' ? 'selected' : ''}>Newest to Oldest</option>
                                 </select>
                             </div>
 

@@ -38,6 +38,12 @@ public class ListOrder extends HttpServlet {
         //lấy giá trị tìm kiếm
         String search = request.getParameter("search");
 
+        //lấy các giá trị từ form để lọc
+        String fromDate = request.getParameter("fromDate");
+        String toDate = request.getParameter("toDate");
+        String filterStatus = request.getParameter("filterStatus");
+        String sortOrder = request.getParameter("sortOrder");
+
         //xử lý lấy thông tin chi tiết order
         String orderIdParam = request.getParameter("orderId");
         Order selectedOrder = null;
@@ -65,13 +71,17 @@ public class ListOrder extends HttpServlet {
         int pageSize = 10;
         int itemsPerPage = 10;
 
-        //lấy danh sách các order, house tùy vào có search hay không
+        //lấy danh sách các order nếu có search hoặc filter
         List<Order> orderList;
         int totalOrders;
-        if (search != null && !search.trim().isEmpty()) {
-            // Tìm kiếm dựa trên từ khóa
-            orderList = daoOrder.searchOrdersByQuery(search, pageNumber, pageSize);
-            totalOrders = daoOrder.getTotalOrdersSearch(search);
+        if ((search != null && !search.trim().isEmpty())
+                || (fromDate != null && !fromDate.isEmpty())
+                || (toDate != null && !toDate.isEmpty())
+                || (filterStatus != null && !filterStatus.isEmpty())
+                || (sortOrder != null && !sortOrder.isEmpty())) {
+            // Tìm kiếm dựa trên từ khóa và filter
+            orderList = daoOrder.searchOrdersByQueryAndFilter(search, fromDate, toDate, filterStatus, sortOrder, pageNumber, pageSize);
+            totalOrders = daoOrder.getTotalOrdersSearchAndFilter(search, fromDate, toDate, filterStatus);
         } else {
             // Lấy toàn bộ đơn đặt hàng nếu không có tìm kiếm
             orderList = daoOrder.getAllOrders(pageNumber, pageSize);
@@ -89,6 +99,11 @@ public class ListOrder extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", pageNumber);
         request.setAttribute("selectedOrder", selectedOrder);
+        request.setAttribute("search", search);
+        request.setAttribute("fromDate", fromDate);
+        request.setAttribute("toDate", toDate);
+        request.setAttribute("filterStatus", filterStatus);
+        request.setAttribute("sortOrder", sortOrder);
 
         //điều hướng đến JSP
         request.getRequestDispatcher("/Views/Staff/ListOrder.jsp").forward(request, response);
