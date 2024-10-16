@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,7 +19,7 @@
 
         <!-- Header -->
         <%@include file="../Partials/Header.jsp" %>
-
+        <%@include file="../Partials/Navbar.jsp" %>
         <!-- Main Content -->
         <section class="container-fluid-custom my-4">
             <div class="row">
@@ -28,34 +30,6 @@
                             <button type="reset" class="btn btn-link text-white mb-0">Reset Filters</button>
                         </div>
                         <div class="card p-3">
-                            <!--                             Location Filters 
-                                                        <div class="mb-3 d-flex justify-content-between">
-                                                            <label for="location" class="form-label">Facility</label>
-                                                            <select class="form-select" id="location">
-                                                                <option value="">Select Facility</option>
-                                                                <option value="hanoi">FU - Hoa Lac</option>
-                                                            </select>
-                                                        </div>-->
-                            <div class="mb-3 d-flex justify-content-between">
-                                <label for="district" class="form-label">District</label>
-                                <select class="form-select" id="district">
-                                    <option value="">Thach That District</option>
-                                </select>
-                            </div>
-                            <div class="mb-3 d-flex justify-content-between">
-                                <label for="ward" class="form-label">Ward/Commune</label>
-                                <select class="form-select" id="ward">
-                                    <option value="">Lien Quan Town</option>
-                                </select>
-                            </div>
-                            <div class="mb-3 d-flex justify-content-between">
-                                <label for="village" class="form-label">Village/Hamlet</label>
-                                <select class="form-select" id="village">
-                                    <option value="">Dong Cam</option>
-                                </select>
-                            </div>
-
-                            <hr>
                             <!-- Distance Filter -->
                             <div class="mb-3">
                                 <label for="distance" class="form-label">Distance to School</label>
@@ -199,7 +173,7 @@
                                 <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
                             </form>
                         </div>
-                        <div class="col-md-3 mr-5">
+                        <div class="col-md-4">
                             <select class="form-select" id="sortBy">
                                 <option value="">Sort By</option>
                                 <option value="priceAsc">Price: Low to High</option>
@@ -211,16 +185,21 @@
                     <div class="row">
                         <c:forEach var="house" items="${houseList}">
                             <div class="col-md-4 mb-4">
-                                <div class="card">
-                                    <img src="${pageContext.request.contextPath}/images/${house.image}" class="card-img-top" alt="${house.houseName}">
-                                    <div class="card-body">
-                                        <h5 class="card-title"> ${house.houseName}</h5>
-                                        <p class="card-text"><i class="fas fa-money-bill-wave"></i>${house.price} VND</p>
-                                        <p class="card-text"><i class="fas fa-map-marker-alt"></i> ${house.address}</p>
-                                        <p class="card-text"><i class="fas fa-route"></i> ${house.distanceToSchool} km</p>
-                                        <!--                                        <p class="card-text"><i class="fas fa-phone-alt"></i> Contact method pending</p>-->
+                                <a href="${pageContext.request.contextPath}/houseDetail?id=${house.id}" style="text-decoration: none; color: inherit;">
+                                    <div class="card" style="cursor: pointer;">
+                                        <img style="height: 300px; max-width: 100%" src="${pageContext.request.contextPath}/images/${house.image}" class="card-img-top" alt="${house.houseName}">
+
+                                        <div class="card-body">
+                                            <h5 class="card-title"> ${house.houseName}</h5>
+                                            <p class="card-text"><i class="fas fa-money-bill-wave"></i>
+                                                <fmt:formatNumber value="${house.minPrice}" type="number" minFractionDigits="0" /> VND - 
+                                                <fmt:formatNumber value="${house.maxPrice}" type="number" minFractionDigits="0" /> VND
+                                            </p>
+                                            <p class="card-text"><i class="fas fa-map-marker-alt"></i> ${house.address}</p>
+                                            <p class="card-text"><i class="fas fa-route"></i> ${house.distanceToSchool} km</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </c:forEach>
                     </div>
@@ -228,10 +207,103 @@
             </div>
         </section>
 
+        <a href="#" class="btn btn-lg btn-danger-custom" data-bs-toggle="modal" data-bs-target="#orderModal">
+            <i class="fa-solid fa-pen-to-square"></i> Order Accommodation
+        </a>
+
+        <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderModalLabel">Accommodation Request</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="orderForm" action="${pageContext.request.contextPath}/homePage" method="POST">
+                            <input type="hidden" name="userId" value="${user.id}" />
+                            <input type="hidden" name="service" value="sendOrder">
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="desire" class="form-label">What is your desire to find accommodation? <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="desire" rows="3" name="desire" placeholder="Describe your needs" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" form="orderForm" class="btn btn-custom">Submit Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="notificationModal">
+            <span class="close-btn" onclick="closeModal()">&#10006;</span>
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <p id="modalMessage">Your message here</p>
+            <div id="progressBar">
+                <div id="progress"></div>
+            </div>
+        </div>
+
         <!-- Footer -->
         <%@include file="../Partials/Footer.jsp" %>
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+                // Hiển thị modal với thông báo
+                function showModal(message, duration) {
+                    // Thiết lập thông điệp cho modal
+                    document.getElementById('modalMessage').innerText = message;
+                    document.getElementById('notificationModal').style.display = 'block'; // Hiển thị modal
+
+                    // Thiết lập thanh tiến trình
+                    const progressBar = document.getElementById('progress');
+                    const progressBarContainer = document.getElementById('progressBar');
+                    let timeLeft = duration / 1000; // Chuyển đổi từ milliseconds sang seconds
+                    const totalWidth = progressBarContainer.offsetWidth; // Chiều rộng tối đa của thanh tiến trình
+
+                    // Cập nhật thanh tiến trình
+                    const interval = setInterval(() => {
+                        timeLeft--;
+                        const newWidth = (timeLeft / (duration / 1000)) * totalWidth; // Tính toán chiều rộng mới
+
+                        progressBar.style.width = newWidth + 'px'; // Cập nhật chiều rộng
+
+                        if (timeLeft <= 0) {
+                            clearInterval(interval); // Dừng interval khi hết thời gian
+                            closeModal(); // Đóng modal khi hết thời gian
+                        }
+                    }, 1000); // Cập nhật mỗi giây
+                }
+
+                function closeModal() {
+                    const modal = document.getElementById('notificationModal');
+                    modal.style.display = 'none'; // Ẩn modal
+                    modal.style.opacity = 0; // Đặt độ mờ về 0
+                }
+
+                // Lấy tham số từ URL để hiển thị thông báo (nếu có)
+                window.onload = function () {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const status = urlParams.get('status');
+                    const message = urlParams.get('message');
+
+                    if (status && message) {
+                        showModal(message, 7000);
+                    }
+                };
+        </script>
     </body>
 </html>

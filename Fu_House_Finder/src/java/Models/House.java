@@ -19,12 +19,13 @@ public class House {
     private Date createdDate;
     private Date lastModifiedDate;
     private String image;
-    private double price;
+    private double minPrice;
+    private double maxPrice;
 
     public House() {
     }
 
-    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double price) {
+    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice) {
         this.id = id;
         this.houseName = houseName;
         this.address = address;
@@ -40,16 +41,27 @@ public class House {
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
         this.image = image;
-        this.price = price;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
     }
 
-    public double getPrice() {
-        return price;
+    public double getMinPrice() {
+        return minPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setMinPrice(double minPrice) {
+        this.minPrice = minPrice;
     }
+
+    public double getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(double maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
+    
 
     public int getId() {
         return id;
@@ -173,7 +185,7 @@ public class House {
 
     @Override
     public String toString() {
-        return "House{" + "id=" + id + ", houseName=" + houseName + ", address=" + address + ", description=" + description + ", distanceToSchool=" + distanceToSchool + ", ownerId=" + ownerId + ", powerPrice=" + powerPrice + ", waterPrice=" + waterPrice + ", otherServicePrice=" + otherServicePrice + ", fingerPrintLock=" + fingerPrintLock + ", camera=" + camera + ", parking=" + parking + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + ", image=" + image + ", price=" + price + '}';
+        return "House{" + "id=" + id + ", houseName=" + houseName + ", address=" + address + ", description=" + description + ", distanceToSchool=" + distanceToSchool + ", ownerId=" + ownerId + ", powerPrice=" + powerPrice + ", waterPrice=" + waterPrice + ", otherServicePrice=" + otherServicePrice + ", fingerPrintLock=" + fingerPrintLock + ", camera=" + camera + ", parking=" + parking + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + ", image=" + image + ", minPrice=" + minPrice + ", maxPrice=" + maxPrice + '}';
     }
 
 }

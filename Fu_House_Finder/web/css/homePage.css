@@ -6,9 +6,82 @@
     font-weight: bold;
     margin-bottom: 5px; /* Giúp cách biệt với các phần tử khác */
 }
-.form-control {
+#distance-km #distance-miles #price-min #price-max {
     width: 50%;
 }
-.form-select {
-    width: 50%;
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    background-color: #f44336;
+    color: white;
+}
+.btn-custom {
+    background-color: #f44336;
+    color: white;
+}
+.btn-danger-custom {
+    position: fixed;
+    right: 10%;
+    bottom: 0px;
+    color: #f44336; /* Đặt màu chữ */
+    border: 2px solid #f44336; /* Thêm viền màu */
+    background-color: transparent; /* Giữ nền trong suốt nếu muốn */
+    border-radius: 5px; /* Bo góc cho nút */
+    font-size: 18px; /* Kích thước chữ */
+}
+.btn-danger-custom:hover {
+    background-color: #f44336; /* Nền khi hover */
+    color: white; /* Màu chữ khi hover */
+}
+#notificationModal {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 300px;
+    padding: 15px;
+    padding-right: 35px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    text-align: center; /* Căn giữa nội dung */
+}
+#notificationModal i.fa-circle-exclamation {
+    font-size: 40px;
+    color: #dc3545;
+    margin-bottom: 10px;
+}
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #6c757d;
+}
+
+#modalMessage {
+    margin: 0;
+    color: #495057;
+    padding-right: 20px;
+}
+
+#progressBar {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+#progress {
+    height: 3px;
+    background-color: #007bff;
+    border-radius: 5px;
+    transition: width 1s linear;
 }

@@ -51,7 +51,7 @@ public class AdminProfile extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Retrieve the current admin's information from session
-        User admin = (User) request.getSession().getAttribute("account");
+        User admin = (User) request.getSession().getAttribute("user");
         // Set admin object as a request attribute to be forwarded to the JSP
         request.setAttribute("admin", admin);
         // Forward the request to the Admin Profile JSP

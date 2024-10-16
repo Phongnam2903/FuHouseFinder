@@ -1,0 +1,123 @@
+/* Đảm bảo html và body chiếm đầy không gian */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Bố trí Flex cho wrapper */
+#wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+/* Đặt sidebar với chiều rộng cố định và chiều cao đầy đủ */
+#sidebar-wrapper {
+    min-width: 250px;
+    max-width: 250px;
+    background-color: #ff9800; /* Màu nền sidebar */
+    color: white;
+    height: 100vh; /* Chiều cao bằng viewport */
+    position: fixed; /* Đảm bảo sidebar cố định khi cuộn */
+    left: 0;
+    top: 0;
+    overflow-y: auto; /* Cuộn dọc nếu nội dung quá dài */
+    transition: margin-left 0.3s ease;
+}
+
+/* Đặt nội dung trang chiếm phần còn lại và đẩy sang phải để tránh bị sidebar che */
+#page-content-wrapper {
+    margin-left: 250px; /* Bằng với chiều rộng sidebar */
+    width: 100%;
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+}
+
+/* Khi sidebar bị ẩn */
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -250px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: -250px;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+    #page-content-wrapper {
+        margin-left: 0;
+    }
+}
+
+/* Kiểu cho tiêu đề sidebar */
+.sidebar-heading {
+    color: white;
+}
+
+/* Thêm hiệu ứng chuyển tiếp */
+#sidebar-wrapper {
+    transition: margin 0.3s ease;
+}
+
+#page-content-wrapper {
+    transition: margin 0.3s ease;
+}
+
+/* Tùy chỉnh các nút */
+.btn-primary {
+    background-color: #007bff; /* Màu nền chính */
+    border-color: #007bff; /* Màu viền chính */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
+    border-color: #0056b3; /* Màu viền khi hover */
+}
+
+/* Định dạng cho bảng */
+.table {
+    margin-top: 20px; /* Khoảng cách trên bảng */
+}
+
+.table th {
+    background-color: #f8f9fa; /* Màu nền cho header */
+    color: #495057; /* Màu chữ cho header */
+}
+
+.table td {
+    vertical-align: middle; /* Giữa hàng */
+}
+
+/* Hiệu ứng cho các nút trong bảng */
+.table-actions a {
+    margin: 0 5px; /* Khoảng cách giữa các nút */
+}
+
+/* Định dạng cho phần breadcrumb */
+.breadcrumb {
+    background-color: transparent; /* Không có màu nền */
+}
+
+/* Định dạng cho các biểu mẫu tìm kiếm và bộ lọc */
+.filter-form {
+    display: flex;
+    align-items: center; /* Giữa hàng dọc */
+}
+
+.filter-form input[type="radio"] {
+    margin-left: 10px; /* Khoảng cách giữa các nút radio */
+}
+
+.input-group {
+    max-width: 300px; /* Đặt chiều rộng tối đa cho ô tìm kiếm */
+}

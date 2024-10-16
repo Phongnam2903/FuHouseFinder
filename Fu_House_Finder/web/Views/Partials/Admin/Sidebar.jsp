@@ -17,21 +17,15 @@
                 <i class="fas fa-user-shield me-2"></i>Admin
             </div>
             <div class="list-group list-group-flush">
-                <a href="adminDashboard" class="list-group-item list-group-item-action bg-dark text-white active">
-                    <i class="fas fa-home me-2"></i>Home
-                </a>
-                <a href="viewAccountList" class="list-group-item list-group-item-action bg-dark text-white">
-                    <i class="fas fa-envelope me-2"></i>List Account
-                </a>
-                <a href="introduce.jsp" class="list-group-item list-group-item-action bg-dark text-white">
-                    <i class="fas fa-info-circle me-2"></i>Giới Thiệu
+                <a href="viewAccountList" class="list-group-item list-group-item-action bg-dark text-white active">
+                    <i class="fas fa-list me-2"></i>List Account
                 </a>
                 <a href="settings.jsp" class="list-group-item list-group-item-action bg-dark text-white">
                     <i class="fas fa-cog me-2"></i>Cài Đặt
                 </a>
                 <a href="logout" class="list-group-item list-group-item-action bg-dark text-white">
                     <i class="fas fa-sign-out-alt me-2"></i>Log Out
-                </a>
+                </a> 
             </div>
         </div>
     </body>

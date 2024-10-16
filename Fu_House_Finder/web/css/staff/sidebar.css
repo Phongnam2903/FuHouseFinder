@@ -1,0 +1,23 @@
+/* To ensure all the elements use the same orange background */
+.bg-orange {
+    background-color: #ff9800; /* Orange color */
+}
+
+/* Set the default text color for sidebar */
+.text-white {
+    color: #ffffff;
+}
+
+/* Hover effect: highlight the menu items with a lighter shade of orange */
+.list-group-item-action:hover {
+    background-color: #e68a00; /* Lighter orange for hover */
+    color: #fff; /* Keep the text white */
+    font-weight: bold; /* Make the text bold when hovered */
+}
+
+/* Optional: when a list group item is active (clicked), make it stand out */
+.list-group-item-action.active {
+    background-color: #cc7a00; /* Even darker shade of orange */
+    color: #fff;
+    font-weight: bold;
+}

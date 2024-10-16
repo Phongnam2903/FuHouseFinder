@@ -20,19 +20,21 @@
             <!-- Right Content -->
             <div id="page-content-wrapper">
                 <!-- Navigation Bar trên Page Content -->
-                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-light border-bottom">
                     <div class="container-fluid">
                         <button class="btn btn-outline-success" id="menu-toggle"><i class="fas fa-bars"></i></button>
                         <h2 class="ms-3 text-dark">Dashboard</h2>
+
                         <button class="btn btn-outline-success ms-auto" id="dark-mode-toggle">
-                            <i class="fas fa-moon"></i> Nguyễn Nam Phong
+                            <a href="admin_profile" style="text-decoration: none; color: #87bbf2">
+                                Hello, <c:out value="${sessionScope.user.username}" />!
+                            </a>  
                         </button>
                     </div>
                 </nav>
                 <!-- Breadcrumb -->
                 <nav aria-label="breadcrumb" class="mt-3">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="adminDashboard">Home</a></li>
                         <li class="breadcrumb-item"><a href="viewAccountList">List Account</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Update Account</li>
                     </ol>
@@ -61,7 +63,7 @@
                         <input type="hidden" name="id" value="${param.id != null ? param.id : user.id}" />
 
                         <div class="col-md-6">
-                            <label for="username">Username:</label>
+                            <label for="username">Full Name:</label>
                             <input type="text" class="form-control" id="username" name="username" value="${user != null ? user.username : param.username}" >
                         </div>
 
