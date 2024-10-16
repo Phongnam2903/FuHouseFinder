@@ -155,15 +155,15 @@ public class DAOOrder extends DAO {
                 + "OFFSET ? ROWS \n"
                 + "FETCH NEXT ? ROWS ONLY;";
         try {
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement pre = connection.prepareStatement(sql);
             String searchPattern = "%" + search + "%";
-            ps.setString(1, searchPattern);
-            ps.setString(2, searchPattern);
-            ps.setString(3, searchPattern);
-            ps.setInt(4, (pageNumber - 1) * pageSize);
-            ps.setInt(5, pageSize);
-            ResultSet rs = ps.executeQuery();
+            pre.setString(1, searchPattern);
+            pre.setString(2, searchPattern);
+            pre.setString(3, searchPattern);
+            pre.setInt(4, (pageNumber - 1) * pageSize);
+            pre.setInt(5, pageSize);
 
+            ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 // Tạo đối tượng Order từ kết quả truy vấn
                 Order order = new Order();
@@ -191,13 +191,13 @@ public class DAOOrder extends DAO {
                 + "LEFT JOIN [User] u ON o.userId = u.id "
                 + "WHERE o.fullName LIKE ? OR o.phoneNumber LIKE ? OR o.email LIKE ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement pre = connection.prepareStatement(sql)) {
             String searchPattern = "%" + search + "%";
-            ps.setString(1, searchPattern);
-            ps.setString(2, searchPattern);
-            ps.setString(3, searchPattern);
+            pre.setString(1, searchPattern);
+            pre.setString(2, searchPattern);
+            pre.setString(3, searchPattern);
 
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                 totalOrders = rs.getInt(1);
             }

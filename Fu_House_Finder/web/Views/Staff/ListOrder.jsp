@@ -39,6 +39,46 @@
                         </form>
                     </div>
 
+                    <form id="filterForm" class="form-inline d-flex mb-3">
+                        <div class="row w-100">
+                            <!-- Filter theo ngày tạo -->
+                            <div class="form-group col-md-3">
+                                <label for="fromDate" class="">From Date</label>
+                                <input type="date" class="form-control" id="fromDate" placeholder="From Date">
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="toDate" class="">To Date</label>
+                                <input type="date" class="form-control" id="toDate" placeholder="To Date">
+                            </div>
+
+                            <!-- Filter theo status -->
+                            <div class="form-group col-md-3">
+                                <label for="filterStatus" class="">Status</label>
+                                <select class="form-control" id="filterStatus">
+                                    <option value="">Select Status</option>
+                                    <option value="1">Pending</option>
+                                    <option value="2">Solved</option>
+                                </select>
+                            </div>
+
+                            <!-- Sort (sắp xếp) -->
+                            <div class="form-group col-md-3">
+                                <label for="sortOrder" class="">Sort Order</label>
+                                <select class="form-control" id="sortOrder">
+                                    <option value="">Select Sort Order</option>
+                                    <option value="asc">Oldest to Newest</option>
+                                    <option value="desc">Newest to Oldest</option>
+                                </select>
+                            </div>
+
+                            <!-- Apply button -->
+                            <div class="form-group col-md-3">
+                                <button type="submit" class="btn btn-primary mb-2">Apply Filters</button>
+                            </div>
+                        </div>
+                    </form>
+
                     <!-- Table Section -->
                     <table class="table table-striped table-hover">
                         <thead class="thead-dark">
@@ -67,10 +107,10 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${order.statusID == 1}">
-                                                <span class="badge bg-success">Pending</span>
+                                                <span class="badge bg-danger">Pending</span>
                                             </c:when>
                                             <c:when test="${order.statusID == 2}">
-                                                <span class="badge bg-warning">Solved</span>
+                                                <span class="badge bg-success">Solved</span>
                                             </c:when>
                                             <c:otherwise>
                                                 <span class="badge bg-danger">Cancelled</span>
@@ -78,9 +118,16 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/listOrder?orderId=${order.id}&page=${currentPage}" class="btn btn-primary">
-                                            <i class="fa-regular fa-circle-exclamation"></i>
-                                        </a>
+                                        <c:choose>
+                                            <c:when test="${order.statusID == 1}">
+                                                <a href="${pageContext.request.contextPath}/listOrder?orderId=${order.id}&page=${currentPage}" class="btn btn-primary">
+                                                    <i class="fa-regular fa-circle-exclamation"></i>
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <!-- Có thể thêm các hành động khác ở đây -->
+                                            </c:otherwise>
+                                        </c:choose>
                                     </td>
                                 </tr>
                             </c:forEach>
