@@ -104,8 +104,14 @@ public class ListOrder extends HttpServlet {
         String orderStatusParam = request.getParameter("orderStatus");
         String houseIdParam = request.getParameter("houseId");
 
-        if (orderStatusParam == null || houseIdParam == null) {
+        if (orderStatusParam == null || orderStatusParam.isEmpty() || houseIdParam == null || houseIdParam.isEmpty()) {
             errorMessage = "Dont't have information to solved accommodation!";
+        }
+
+        //nếu có lỗi, quay lại với thông báo lỗi
+        if (errorMessage != null) {
+            response.sendRedirect(request.getContextPath() + "/listOrder?status=error&message=" + errorMessage);
+            return;
         }
 
         //chuyển đổi sang dạng int
