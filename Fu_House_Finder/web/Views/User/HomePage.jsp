@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.lang.Math" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -195,8 +196,32 @@
                                                 <fmt:formatNumber value="${house.minPrice}" type="number" minFractionDigits="0" /> VND - 
                                                 <fmt:formatNumber value="${house.maxPrice}" type="number" minFractionDigits="0" /> VND
                                             </p>
-                                            <p class="card-text"><i class="fas fa-map-marker-alt"></i> ${house.address}</p>
+                                            <p class="card-text address"><i class="fas fa-map-marker-alt"></i> ${house.address}</p>
                                             <p class="card-text"><i class="fas fa-route"></i> ${house.distanceToSchool} km</p>
+
+                                            <div class="star-rating" style="position: absolute; bottom: 10px; right: 10px; display: flex; align-items: center;">
+                                                <!-- Lấy giá trị trung bình sao và tính số sao đầy đủ -->
+                                                <c:set var="fullStars" value="${Math.floor(house.averageStar)}" />
+
+                                                <!-- Hiển thị các ngôi sao đầy đủ -->
+                                                <c:forEach var="i" begin="1" end="${fullStars}">
+                                                    <i class="fas fa-star" style="color: gold;"></i>
+                                                </c:forEach>
+
+                                                <!-- Kiểm tra nếu có sao nửa -->
+                                                <c:if test="${house.averageStar - fullStars >= 0.5}">
+                                                    <i class="fas fa-star-half-alt" style="color: gold;"></i>
+                                                </c:if>
+
+                                                <!-- Hiển thị ngôi sao rỗng cho các sao chưa được tính -->
+                                                <c:set var="emptyStars" value="${5 - fullStars - (house.averageStar - fullStars >= 0.5 ? 1 : 0)}" />
+                                                <c:forEach var="i" begin="1" end="${emptyStars}">
+                                                    <i class="fas fa-star" style="color: lightgray;"></i>
+                                                </c:forEach>
+
+                                                <!-- Hiển thị số trung bình sao -->
+                                                <span style="margin-left: 5px;">(<fmt:formatNumber value="${house.averageStar}" type="number" minFractionDigits="1" maxFractionDigits="1"/>)</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </a>
@@ -223,19 +248,23 @@
                             <input type="hidden" name="service" value="sendOrder">
                             <div class="mb-3">
                                 <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name"
+                                       value="${sessionScope.fullName != null ? sessionScope.fullName : ''}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="phoneNumber" class="form-label">Phone Number <span class="text-danger">*</span></label>
-                                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+                                <input type="number" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" 
+                                       value="${sessionScope.phoneNumber != null ? sessionScope.phoneNumber : ''}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" 
+                                       value="${sessionScope.email != null ? sessionScope.email : ''}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="desire" class="form-label">What is your desire to find accommodation? <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="desire" rows="3" name="desire" placeholder="Describe your needs" required></textarea>
+                                <textarea class="form-control" id="desire" rows="3" name="desire" placeholder="Describe your needs"  
+                                          required>${sessionScope.desire != null ? sessionScope.desire : ''}</textarea>
                             </div>
                         </form>
                     </div>

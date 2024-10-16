@@ -18,18 +18,7 @@
             <%@include file="../Partials/Staff/Sidebar.jsp" %>
             <div id="page-content-wrapper">
                 <!-- Navigation Bar in Page Content -->
-                <nav class="navbar navbar-expand-lg navbar-dark bg-light border-bottom">
-                    <div class="container-fluid">
-                        <button class="btn btn-outline-success" id="menu-toggle"><i class="fas fa-bars"></i></button>
-                        <h2 class="ms-3 text-dark">Dashboard</h2>
-
-                        <button class="btn btn-outline-success ms-auto" id="dark-mode-toggle">
-                            <a href="admin_profile" style="text-decoration: none; color: #87bbf2">
-                                Hello, <c:out value="${sessionScope.user.username}" />!
-                            </a>  
-                        </button>
-                    </div>
-                </nav>
+                <%@include file="../Partials/Staff/Nav.jsp" %>
                 <!-- Main Content -->
                 <div class="container">
                     <h1 class="text-center mt-4">Thống Kê Tổng Quan</h1>
@@ -195,5 +184,11 @@
                 }
             });
         </script>
+        <!-- Bootstrap JS và phụ thuộc -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+        <!-- Font Awesome JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+        <!-- Custom JS -->
+        <script src="${pageContext.request.contextPath}/js/admin/admin.js"></script>
     </body>
 </html>

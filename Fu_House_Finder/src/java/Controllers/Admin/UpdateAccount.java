@@ -144,21 +144,6 @@ public class UpdateAccount extends HttpServlet {
             return;
         }
 
-        // Parse dateOfBirth string to Date
-        Date dateOfBirth = null;
-        if (dateOfBirthStr != null && !dateOfBirthStr.isEmpty()) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            sdf.setLenient(false);
-            try {
-                dateOfBirth = sdf.parse(dateOfBirthStr);
-            } catch (ParseException ex) {
-                request.setAttribute("id", idParam);
-                request.setAttribute("error", "Invalid date format (yyyy-MM-dd).");
-                request.getRequestDispatcher("Views/Admin/AdminUpdateAccount.jsp").forward(request, response);
-                return;
-            }
-        }
-
         // Tạo đối tượng User với thông tin cập nhật
         User user = new User();
         user.setId(id);
@@ -167,7 +152,6 @@ public class UpdateAccount extends HttpServlet {
         user.setPhone(phone);
         user.setStatusID(statusID);
         user.setAddress(address);
-        user.setDateOfBirth(dateOfBirth);
         user.setRoleID(4);
 
         // Cập nhật tài khoản trong cơ sở dữ liệu

@@ -1,3 +1,11 @@
+/*
+ * Copyright(C) 2024, FU House Finder.
+ * FHF : House Finder Application
+ *
+ * Record of change:
+ * DATE                       Version             AUTHOR                       DESCRIPTION
+ * 2024-10-12                 1.0                 DuongTD                      Initial implementation of HomePage servlet
+ */
 package Controllers.User;
 
 import DAL.House.DAOHouse;
@@ -11,20 +19,44 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This servlet handles requests related to the home page of the house listing
+ * application. It retrieves available houses and displays them to the user. It
+ * also processes order submissions from the user.
+ *
+ * <p>
+ * Bugs: None
+ *
+ * @author DuongTD
+ */
 @WebServlet(name = "HomePage", urlPatterns = {"/homePage"})
 public class HomePage extends HttpServlet {
 
+    /**
+     * Handles GET requests to retrieve and display a list of houses. It fetches
+     * houses from the database and prepares the data for the view.
+     *
+     * @param request the HttpServletRequest object that contains the request
+     * made by the client
+     * @param response the HttpServletResponse object that contains the response
+     * from the servlet
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an input or output error occurs while handling the
+     * request
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOHouse daoHouse = new DAOHouse();
 
+        //lấy thông tin người dùng từ session
         User user = (User) request.getSession().getAttribute("user");
 
-        List<House> houseList = daoHouse.getHousesWithPrices();
+        List<House> houseList = daoHouse.getHousesWithPricesAndStar();
 
         //duyệt danh sách nhà và tách ảnh cho mỗi nhà trọ
         for (House house : houseList) {
@@ -41,6 +73,18 @@ public class HomePage extends HttpServlet {
         request.getRequestDispatcher("/Views/User/HomePage.jsp").forward(request, response);
     }
 
+    /**
+     * Handles POST requests to process order submissions from the user.
+     * Validates input data and creates a new order if the data is valid.
+     *
+     * @param request the HttpServletRequest object that contains the request
+     * made by the client
+     * @param response the HttpServletResponse object that contains the response
+     * from the servlet
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an input or output error occurs while handling the
+     * request
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -66,26 +110,42 @@ public class HomePage extends HttpServlet {
 
             int userId = Integer.parseInt(userIdParam);
 
-            //kiểm tra lỗi
+            //kiểm tra lỗi null
             if (fullName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || desire.isEmpty()) {
                 errorMessage = "Fields marked with * cannot be blank or contain only spaces!";
                 hasError = true;
             }
 
-            if (!phoneNumber.matches("\\d{11}")) {
-                errorMessage = "Phone number must contain 11 digits!";
+            //kiểm tra định dạng số điện thoại
+            if (!phoneNumber.matches("\\d{10,11}")) {
+                errorMessage = "Phone number must contain between 10 adn 11 digits!";
                 hasError = true;
             }
 
-            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {  // Kiểm tra định dạng email
+            //kiểm tra định dạng email
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 errorMessage = "Invalid email format!";
                 hasError = true;
             }
 
             if (hasError) {
+                //lưu dữ liệu vào session để có thể lấy lại sau khi redirect
+                HttpSession session = request.getSession();
+                session.setAttribute("fullName", fullName);
+                session.setAttribute("phoneNumber", phoneNumber);
+                session.setAttribute("email", email);
+                session.setAttribute("desire", desire);
+
                 //gửi thông báo lỗi qua URL
                 response.sendRedirect(request.getContextPath() + "/homePage?status=error&message=" + errorMessage);
             } else {
+                //xóa các dữ liệu sau khi xử lý thành công
+                HttpSession session = request.getSession();
+                session.removeAttribute("fullName");
+                session.removeAttribute("phoneNumber");
+                session.removeAttribute("email");
+                session.removeAttribute("desire");
+
                 //thêm order vào csdl
                 Order order = new Order();
                 order.setUserID(userId);
@@ -112,4 +172,13 @@ public class HomePage extends HttpServlet {
         }
     }
 
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing the servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
 }

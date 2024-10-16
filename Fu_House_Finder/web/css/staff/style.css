@@ -12,6 +12,9 @@ html, body {
     height: 100%;
     width: 100%;
 }
+.container {
+    max-width: 100%;
+}
 
 /* Đặt sidebar với chiều rộng cố định và chiều cao đầy đủ */
 #sidebar-wrapper {
@@ -120,4 +123,40 @@ html, body {
 
 .input-group {
     max-width: 300px; /* Đặt chiều rộng tối đa cho ô tìm kiếm */
+}
+/* Statistics Section for List House Owner */
+.stat-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #d9534f;
+}
+
+/* Table Styling */
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.table td button {
+    min-width: 100px;
+}
+
+/* Optional: Additional styling for responsiveness */
+@media (max-width: 768px) {
+    .stat-number {
+        font-size: 1.5rem;
+    }
+}
+
+.host-info, .summary-info {
+    margin: 20px 0;
+}
+
+.table th, .table td {
+    text-align: center;
 }

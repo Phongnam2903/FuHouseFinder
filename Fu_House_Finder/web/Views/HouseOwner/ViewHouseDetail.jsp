@@ -36,15 +36,15 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Monthly Power Price (VND)</label>
-                            <p><fmt:formatNumber value="${house.powerPrice}" type="number" minFractionDigits="0" /></p>
+                            <p><fmt:formatNumber value="${house.powerPrice}" type="number" minFractionDigits="0" /> VND</p>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Monthly Water Price (VND)</label>
-                            <p><fmt:formatNumber value="${house.waterPrice}" type="number" minFractionDigits="0" /></p>
+                            <p><fmt:formatNumber value="${house.waterPrice}" type="number" minFractionDigits="0" /> VND</p>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Monthly Service Price (VND)</label>
-                            <p><fmt:formatNumber value="${house.otherServicePrice}" type="number" minFractionDigits="0" /></p>
+                            <p><fmt:formatNumber value="${house.otherServicePrice}" type="number" minFractionDigits="0" /> VND</p>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Utilities</label><br>

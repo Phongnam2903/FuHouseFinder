@@ -46,15 +46,19 @@ public class DAORate extends DAO {
         return n;
     }
 
-    public List<Rates> getRatesByHouse(int houseId) {
+    public List<Rates> getRatesByHouse(int houseId, int pageNumber, int pageSize) {
         List<Rates> rateList = new ArrayList<>();
         String sql = "SELECT r.ID, r.Star, r.Description, r.CreatedDate, u.FullName, r.HouseOwnerReply "
                 + "FROM [Rates] r "
                 + "JOIN [User] u ON r.UserID = u.ID "
-                + "WHERE r.HouseID = ?";
+                + "WHERE r.HouseID = ? "
+                + "ORDER BY r.ID DESC "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, houseId);  // Gán houseId cho câu truy vấn
+            pre.setInt(1, houseId);
+            pre.setInt(2, (pageNumber - 1) * pageSize);
+            pre.setInt(3, pageSize);
             ResultSet rs = pre.executeQuery();
 
             while (rs.next()) {
@@ -76,7 +80,27 @@ public class DAORate extends DAO {
         return rateList;
     }
 
-    public boolean updateRateReply(int rateId, String replyText) {
+    public int getTotalRatesByHouse(int houseId) {
+        int totalRates = 0;
+        String sql = "SELECT COUNT(*) AS TotalRates FROM [Rates] WHERE HouseID = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, houseId);
+            ResultSet rs = pre.executeQuery();
+
+            if (rs.next()) {
+                totalRates = rs.getInt("TotalRates");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAORate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return totalRates;
+    }
+
+    public int updateRateReply(int rateId, String replyText) {
+        int n = 0;
         String sql = "UPDATE Rates SET HouseOwnerReply = ?, LastModifiedDate = ? WHERE ID = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -84,11 +108,10 @@ public class DAORate extends DAO {
             pre.setDate(2, new java.sql.Date(System.currentTimeMillis()));
             pre.setInt(3, rateId);
 
-            int rowsUpdated = pre.executeUpdate();
-            return rowsUpdated > 0;
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DAORate.class.getName()).log(Level.SEVERE, null, ex);
-            return false; // Trả về false nếu có lỗi xảy ra
         }
+        return n;
     }
 }

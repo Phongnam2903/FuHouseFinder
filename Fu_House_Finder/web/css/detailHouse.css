@@ -12,7 +12,9 @@
     color: #ddd; /* Màu xám mặc định */
     cursor: pointer;
 }
-
+.carousel-item img {
+    border-radius: 15px; /* Điều chỉnh giá trị bo góc theo nhu cầu */
+}
 /* Khi sao được chọn (màu vàng) */
 .star-rating .selected {
     color: #f4c542; /* Màu vàng */
@@ -73,4 +75,128 @@
     background-color: #007bff;
     border-radius: 5px;
     transition: width 1s linear;
+}
+.pagination-container {
+    margin-top: 7px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 5px;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    padding: 8px 12px;
+    color: #007bff;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 12px;
+}
+
+.page-link:hover {
+    background-color: #007bff;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+.page-item.disabled .page-link:hover {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: default;
+}
+
+.pagination-ellipsis {
+    padding: 8px 12px;
+    color: #6c757d;
+    border: none;
+}
+/* Đảm bảo username và description nằm trên cùng một dòng */
+.description-and-star {
+    display: inline;                  /* Sử dụng inline để giữ chúng cùng một dòng */
+}
+
+/* Căn chỉnh phần text và sao */
+.description-text {
+    display: inline;                  /* Cả phần mô tả cũng hiển thị inline */
+    margin-right: 10px;               /* Khoảng cách giữa description và star */
+}
+
+/* Ngôi sao cũng trên cùng dòng */
+.star-rating {
+    display: inline-block;            /* Giữ ngôi sao nằm trên cùng một dòng với description */
+}
+
+/* Định dạng cho ngày tạo (createdDate) */
+.created-date {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 12px;
+    color: gray;
+    white-space: nowrap;              /* Đảm bảo ngày luôn nằm trên một dòng */
+}
+
+/* Định dạng cho phần chứa thông tin đánh giá */
+.review-container {
+    position: relative;               /* Giữ vị trí tương đối cho createdDate */
+    margin-bottom: 10px;              /* Khoảng cách giữa các bình luận */
+    padding-right: 80px;              /* Đảm bảo không đè lên createdDate */
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table th, table td {
+    border-bottom: 1px solid #ddd; /* Chỉ hiển thị đường kẻ ngang */
+    padding: 8px;
+}
+
+table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+table td {
+    text-align: left;
+}
+
+table th, table td {
+    border-left: none;  /* Bỏ đường kẻ dọc */
+    border-right: none; /* Bỏ đường kẻ dọc */
+}
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    background-color: #f44336;
+    color: white;
+}
+.btn-custom {
+    background-color: #f44336;
+    color: white;
 }

@@ -1,6 +1,7 @@
 package Models;
 
 import java.util.Date;
+import java.util.List;
 
 public class House {
 
@@ -21,11 +22,19 @@ public class House {
     private String image;
     private double minPrice;
     private double maxPrice;
+    private int totalHouse;
+    private double totalPrice;
+    private int totalRooms;
+    private int totalAvailableRooms;
+    private String ownerName;
+    private String ownerPhoneNumber;
+    private double averageStar;
+    private List<Room> room;
 
     public House() {
     }
 
-    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice) {
+    public House(int id, String houseName, String address, String description, float distanceToSchool, int ownerId, double powerPrice, double waterPrice, double otherServicePrice, boolean fingerPrintLock, boolean camera, boolean parking, Date createdDate, Date lastModifiedDate, String image, double minPrice, double maxPrice, int totalHouse, double totalPrice, int totalRooms, int totalAvailableRooms, String ownerName, String ownerPhoneNumber, double averageStar, List<Room> room) {
         this.id = id;
         this.houseName = houseName;
         this.address = address;
@@ -43,6 +52,78 @@ public class House {
         this.image = image;
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
+        this.totalHouse = totalHouse;
+        this.totalPrice = totalPrice;
+        this.totalRooms = totalRooms;
+        this.totalAvailableRooms = totalAvailableRooms;
+        this.ownerName = ownerName;
+        this.ownerPhoneNumber = ownerPhoneNumber;
+        this.averageStar = averageStar;
+        this.room = room;
+    }
+
+    public List<Room> getRoom() {
+        return room;
+    }
+
+    public void setRoom(List<Room> room) {
+        this.room = room;
+    }
+
+    public double getAverageStar() {
+        return averageStar;
+    }
+
+    public void setAverageStar(double averageStar) {
+        this.averageStar = averageStar;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getOwnerPhoneNumber() {
+        return ownerPhoneNumber;
+    }
+
+    public void setOwnerPhoneNumber(String ownerPhoneNumber) {
+        this.ownerPhoneNumber = ownerPhoneNumber;
+    }
+
+    public int getTotalRooms() {
+        return totalRooms;
+    }
+
+    public void setTotalRooms(int totalRooms) {
+        this.totalRooms = totalRooms;
+    }
+
+    public int getTotalHouse() {
+        return totalHouse;
+    }
+
+    public void setTotalHouse(int totalHouse) {
+        this.totalHouse = totalHouse;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getTotalAvailableRooms() {
+        return totalAvailableRooms;
+    }
+
+    public void setTotalAvailableRooms(int totalAvailableRooms) {
+        this.totalAvailableRooms = totalAvailableRooms;
     }
 
     public double getMinPrice() {
@@ -60,8 +141,6 @@ public class House {
     public void setMaxPrice(double maxPrice) {
         this.maxPrice = maxPrice;
     }
-
-    
 
     public int getId() {
         return id;
