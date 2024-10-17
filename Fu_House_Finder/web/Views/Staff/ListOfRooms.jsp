@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -60,7 +61,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">No.</th>
-                                <th scope="col">Room Name</th>
+                                <th scope="col">Room Number</th>
                                 <th scope="col">Room Price (VND)</th>
                                 <th scope="col">Amenities</th>
                                 <th scope="col">Area (m²)</th>
@@ -79,7 +80,9 @@
                                             ${rooms.roomNumber}
                                         </a>
                                     </td>
-                                    <td>${rooms.price}</td>
+                                    <td>
+                                        <fmt:formatNumber value="${rooms.price}" type="number" minFractionDigits="0" maxFractionDigits="0" groupingUsed="true"/>
+                                    </td>
                                     <td>
                                         <!-- Display Dynamic Amenities -->
                                         <c:if test="${rooms.bed}">
