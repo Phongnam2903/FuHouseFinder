@@ -1,0 +1,113 @@
+/* Đặt màu nền và định dạng cho dropdown */
+.form-group {
+    margin: 20px 0;
+}
+
+/* Định dạng cho dropdown button */
+.dropdown-toggle {
+    width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 10px;
+    font-size: 16px; /* Tăng kích thước font cho dễ đọc */
+    background-color: grey; /* Màu nền sáng cho dropdown */
+}
+
+/* Định dạng cho dropdown menu */
+.dropdown-menu {
+    width: 100%; /* Chiều rộng của dropdown */
+    max-height: 300px; /* Giới hạn chiều cao dropdown */
+    overflow-y: auto; /* Thêm thanh cuộn nếu vượt quá chiều cao */
+}
+
+/* Định dạng cho các item trong dropdown */
+.dropdown-item {
+    padding: 10px 15px; /* Padding cho mỗi item */
+    white-space: normal; /* Ngăn không cho nội dung xuống dòng */
+    color: #343a40; /* Màu chữ tối */
+}
+
+/* Thay đổi màu sắc khi hover */
+.dropdown-item:hover {
+    background-color: #007bff; /* Màu nền khi hover */
+    color: #ffffff; /* Màu chữ trắng khi hover */
+}
+
+/* Định dạng label cho dropdown */
+label {
+    font-weight: bold; /* Đậm hơn cho nhãn */
+    margin-bottom: 5px; /* Khoảng cách dưới nhãn */
+    color: #495057; /* Màu chữ tối hơn */
+}
+
+/* Định dạng cho hr giữa các option */
+.option-divider {
+    border: none; /* Không hiển thị viền của hr */
+    border-top: 1px solid #ced4da; /* Viền trên cho hr */
+    margin: 5px 0; /* Khoảng cách giữa các hr */
+    height: 1px; /* Chiều cao hr */
+    background-color: #ced4da; /* Màu nền cho hr */
+}
+
+/* Tạo lớp cho các option để dễ dàng định dạng */
+.option-container {
+    padding: 10px; /* Thêm padding cho các option */
+    cursor: pointer; /* Thay đổi con trỏ chuột */
+}
+
+.option-container:hover {
+    background-color: #f8f9fa; /* Đổi màu nền khi hover */
+}
+#notificationModal {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 300px;
+    padding: 15px;
+    padding-right: 35px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    text-align: center; /* Căn giữa nội dung */
+}
+.notification-icon {
+    color: #dc3545; /* Màu cho biểu tượng notification */
+    font-size: 40px; /* Kích thước lớn hơn cho biểu tượng modal */
+    margin-top: 10px; /* Thêm khoảng cách nếu cần */
+}
+.order-icon {
+    color: blue; /* Màu cho biểu tượng order */
+    font-size: 20px; /* Kích thước của biểu tượng */
+}
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #6c757d;
+}
+
+#modalMessage {
+    margin: 0;
+    color: #495057;
+    padding-right: 20px;
+}
+
+#progressBar {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+#progress {
+    height: 3px;
+    background-color: #007bff;
+    border-radius: 5px;
+    transition: width 1s linear;
+}

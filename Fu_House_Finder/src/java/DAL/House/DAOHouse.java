@@ -15,12 +15,12 @@ public class DAOHouse extends DAO {
 
     public List<House> getHousesWithPricesAndStar() {
         List<House> houses = new ArrayList<>();
-        String sql = "SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, "
+        String sql = "SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, House.Description, "
                 + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice, AVG(CAST(Rates.Star AS FLOAT)) AS AvgStar "
                 + "FROM House "
                 + "JOIN Room ON House.ID = Room.HouseID "
                 + "LEFT JOIN Rates ON House.ID = Rates.HouseID "
-                + "GROUP BY House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName";
+                + "GROUP BY House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, House.Description";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -38,6 +38,7 @@ public class DAOHouse extends DAO {
                 house.setMaxPrice(rs.getDouble("MaxPrice"));
                 house.setAverageStar(rs.getDouble("AvgStar"));
                 house.setImage(rs.getString("image"));
+                house.setDescription(rs.getString("Description"));
                 houses.add(house);
             }
         } catch (SQLException ex) {

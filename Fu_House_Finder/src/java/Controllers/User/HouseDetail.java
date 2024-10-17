@@ -109,8 +109,9 @@ public class HouseDetail extends HttpServlet {
     }
 
     /**
-     * Handles POST requests to process comments and ratings submitted by users.
-     * Validates the input data and adds the comment/rating to the database.
+     * Handles POST requests to process comments and ratings submitted and
+     * REPORT House by users. Validates the input data and adds the
+     * comment/rating and report to the database.
      *
      * @param request the HttpServletRequest object that contains the request
      * made by the client
@@ -180,33 +181,33 @@ public class HouseDetail extends HttpServlet {
 
             //thiết lập thông báo vào yêu cầu trước khi chuyển hướng
             if (errorMessage != null) {
-                // Gửi thông báo lỗi qua URL với tham số "error"
+                //gửi thông báo lỗi qua URL với tham số "error"
                 response.sendRedirect(request.getContextPath() + "/houseDetail?id=" + houseId + "&status=error&message=" + errorMessage);
             } else if (successMessage != null) {
-                // Gửi thông báo thành công qua URL với tham số "success"
+                //gửi thông báo thành công qua URL với tham số "success"
                 response.sendRedirect(request.getContextPath() + "/houseDetail?id=" + houseId + "&status=success&message=" + successMessage);
             }
         }
-        
+
         if (service.equals("sendReport")) {
             //lấy thông tin từ form report
             String title = request.getParameter("title").trim();
             String reason = request.getParameter("reason").trim();
             int userId = Integer.parseInt(request.getParameter("userId"));
-            int houseId =  Integer.parseInt(request.getParameter("houseId"));
-            
+            int houseId = Integer.parseInt(request.getParameter("houseId"));
+
             User user = (User) request.getSession().getAttribute("user");  //lấy user từ session
-            
+
             //nếu không tìm thấy chủ trọ thì quay về trang đăng nhập
             if (user == null) {
                 response.sendRedirect("login");
                 return;
             }
-            
+
             //khởi tạo biến để lưu thông báo và hiển thị lên jsp
             String errorMessage = null;
             String successMessage = null;
-            
+
             if (reason.isEmpty()) {
                 errorMessage = "Reason you report this house can't be blank or white spaces!";
             } else {

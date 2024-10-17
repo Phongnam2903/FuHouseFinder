@@ -99,7 +99,8 @@ public class DAORate extends DAO {
         return totalRates;
     }
 
-    public boolean updateRateReply(int rateId, String replyText) {
+    public int updateRateReply(int rateId, String replyText) {
+        int n = 0;
         String sql = "UPDATE Rates SET HouseOwnerReply = ?, LastModifiedDate = ? WHERE ID = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -107,11 +108,10 @@ public class DAORate extends DAO {
             pre.setDate(2, new java.sql.Date(System.currentTimeMillis()));
             pre.setInt(3, rateId);
 
-            int rowsUpdated = pre.executeUpdate();
-            return rowsUpdated > 0;
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DAORate.class.getName()).log(Level.SEVERE, null, ex);
-            return false; // Trả về false nếu có lỗi xảy ra
         }
+        return n;
     }
 }
