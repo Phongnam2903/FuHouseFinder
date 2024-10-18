@@ -14,20 +14,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ManageAccount extends DBContext {
-
+    
     public User getAccountById(int id) {
         User user = null;
         String sql = "SELECT * FROM [User] WHERE id = ?";
         try {
-            // Chuẩn bị câu lệnh truy vấn
             PreparedStatement statement = connection.prepareStatement(sql);
-            // Thiết lập giá trị ID cho câu truy vấn
             statement.setInt(1, id);
-            // Thực thi truy vấn
             ResultSet rs = statement.executeQuery();
-            // Kiểm tra nếu có kết quả trả về
             if (rs.next()) {
-                // Lấy các giá trị từ kết quả truy vấn
                 String facebookUserid = rs.getString(2);
                 String googleUserid = rs.getString(3);
                 String username = rs.getString(4);
@@ -41,28 +36,23 @@ public class ManageAccount extends DBContext {
                 String avatar = rs.getString(12);
                 Date createdDate = rs.getDate(13);
                 int roomHistoriesID = rs.getInt(14);
-                int totalHouses = rs.getInt(15); // Assuming you have these fields
-                int totalRooms = rs.getInt(16);  // in your User class definition
-                int emptyRooms = rs.getInt(17);
-
-                // Tạo đối tượng User với các giá trị vừa lấy
+                
                 user = new User(id, facebookUserid, googleUserid, username, password, email, phone,
-                        dateOfBirth, address, statusID, roleID, avatar, createdDate, roomHistoriesID,
-                        totalHouses, totalRooms, emptyRooms);
+                        dateOfBirth, address, statusID, roleID, avatar, createdDate, roomHistoriesID
+                );
             }
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // Trả về đối tượng User hoặc null nếu không tìm thấy
         return user;
     }
-
+    
     public int updateAccount(User student) {
-        int n = 0;
+        int updateAcc = 0;
         String sql = "UPDATE [dbo].[User]"
                 + "   SET [FacebookUserId] = ?,[GoogleUserId] = ?,[FullName] = ?,[Email] = ?,[PhoneNumber] =?,[DateOfBirth] = ?,[Address] =?,"
                 + "[StatusID] =?,[Roleid] = ?,[Avatar] = ?,[CreatedDate] = ?,[RoomHistoriesID] = ? WHERE ID = ?";
-
+        
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, student.getFacebookUserid());
@@ -86,13 +76,13 @@ public class ManageAccount extends DBContext {
             }
             statement.setInt(12, student.getRoomHistoriesID());
             statement.setInt(13, student.getId());
-            n = statement.executeUpdate();
+            updateAcc = statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return n;
+        return updateAcc;
     }
-
+    
     public boolean deleteAccountById(int id) {
         String sql = "DELETE FROM [User] WHERE id = ?";
         try {
@@ -105,7 +95,7 @@ public class ManageAccount extends DBContext {
             return false; // Trả về false nếu có lỗi
         }
     }
-
+    
     public int insertAccount(User student) {
         int n = 0;
         String sql = "INSERT INTO [dbo].[User]\n"
@@ -123,7 +113,7 @@ public class ManageAccount extends DBContext {
                 + "           ,[CreatedDate]\n"
                 + "           ,[RoomHistoriesID])\n"
                 + "     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
+        
         PreparedStatement prestate = null;
         try {
             // Kiểm tra kết nối
@@ -136,7 +126,7 @@ public class ManageAccount extends DBContext {
 
             // Create a string of '*' with the same length as the original password
             String maskedPassword = "*".repeat(student.getPassword().length());
-
+            
             prestate = connection.prepareStatement(sql);
             prestate.setString(1, student.getFacebookUserid());
             prestate.setString(2, student.getGoogleUserid());
@@ -151,7 +141,7 @@ public class ManageAccount extends DBContext {
             } else {
                 prestate.setNull(7, java.sql.Types.DATE);
             }
-
+            
             prestate.setString(8, student.getAddress());
             prestate.setInt(9, student.getStatusID());
             prestate.setInt(10, student.getRoleID());
@@ -176,7 +166,7 @@ public class ManageAccount extends DBContext {
         }
         return n;
     }
-
+    
     private byte[] hashPasswordToBytes(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -187,7 +177,7 @@ public class ManageAccount extends DBContext {
             return null;
         }
     }
-
+    
     public int getAccountCount() {
         String sql = "SELECT COUNT(*) FROM [User] Where roleid = 4";
         try {
@@ -201,7 +191,7 @@ public class ManageAccount extends DBContext {
         }
         return 0;
     }
-
+    
     public List<User> getAccountsByPage(int page, int pageSize) {
         List<User> accounts = new ArrayList<>();
         String sql = """
@@ -227,13 +217,13 @@ public class ManageAccount extends DBContext {
                  OFFSET ? ROWS 
                  FETCH NEXT ? ROWS ONLY;
                  """;
-
+        
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, (page - 1) * pageSize);
             statement.setInt(2, pageSize);
             ResultSet rs = statement.executeQuery();
-
+            
             while (rs.next()) {
                 int id = rs.getInt("ID");
                 String facebookUserid = rs.getString("FacebookUserID");
@@ -265,30 +255,23 @@ public class ManageAccount extends DBContext {
         }
         return accounts;
     }
-
+    
     public static void main(String[] args) {
-//        User student = new User();
-//        student.setUsername("Phong Nguyễn");
-//        student.setEmail("phongnnhe176274@fpt.edu.vn");
-//        student.setPhone("0398601399");
-//        student.setAddress("Hiệp Hòa, Bắc Giang");
-//        student.setStatusID(1); // Ví dụ về trạng thái ID
-//        student.setRoleID(1);   // Ví dụ về role ID
-//        student.setCreatedDate(new Date()); // Ngày tạo hiện tại
-//        student.setId(19);
         ManageAccount manageAccount = new ManageAccount();
-        int page = 1;
-        int pageSize = 7;
-        int listaccount = manageAccount.getAccountCount();
-        List<User> listAcc = manageAccount.getAccountsByPage(page, pageSize);
-        System.out.println(listAcc.toString());
-//        int result = manageAccount.updateAccount(student);
-//
-//        if (listaccount > 0) {
-//            System.out.println(" thành công!");
-//        } else {
-//            System.out.println("Không có bản ghi nào được cập nhật.");
-//        }
+        User test = new User();
+        test.setId(53);
+        test.setUsername("Cun Con");
+        test.setEmail("ConCung@gmail.com");
+        test.setPhone("0389786548");
+        test.setAddress("Hà Nội");
+        test.setStatusID(1);
+        test.setRoleID(4);
+        int result = manageAccount.updateAccount(test);
+        if (result > 0) {
+            System.out.println("thành công");
+        } else {
+            System.out.println("thất bại ");
+        }
     }
-
+    
 }
