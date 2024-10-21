@@ -8,9 +8,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,32 +25,31 @@ public class AdminProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        User adminProfile = (User) request.getSession().getAttribute("user");
+
+        // Kiểm tra xem adminProfile có tồn tại trong session không
+        if (adminProfile == null) {
+            request.setAttribute("message", "User not found in session, please log in.");
+            request.getRequestDispatcher("Views/Login.jsp").forward(request, response);
+            return; // Chặn tiếp tục xử lý nếu không có user trong session
+        }
+
+        // Lấy thông tin từ form và cập nhật vào đối tượng adminProfile
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
-        String dateOfBirthStr = request.getParameter("dateOfBirth");
 
-        Date dateOfBirth = null;
-        if (dateOfBirthStr != null && !dateOfBirthStr.isEmpty()) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                dateOfBirth = dateFormat.parse(dateOfBirthStr);
-            } catch (ParseException ex) {
-                Logger.getLogger(AdminProfile.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        User adminProfile = (User) request.getSession().getAttribute("user");
+        adminProfile.getId();
         adminProfile.setUsername(username);
         adminProfile.setEmail(email);
         adminProfile.setPhone(phone);
         adminProfile.setAddress(address);
-        adminProfile.setDateOfBirth(dateOfBirth);
-        adminProfile.setStatusID(1);
-        adminProfile.setRoleID(1);
+        adminProfile.setStatusID(1); // Giả sử StatusID là 1 cho admin
+        adminProfile.setRoleID(1);   // Giả sử RoleID là 1 cho admin
+
         ManageAccount update = new ManageAccount();
-        int updatedRows = update.updateAccount(adminProfile); // Giả sử phương thức này trả về true/false
+        int updatedRows = update.updateAccount(adminProfile); // Cập nhật adminProfile
 
         if (updatedRows > 0) {
             // Cập nhật lại session nếu thành công
@@ -68,4 +64,5 @@ public class AdminProfile extends HttpServlet {
         request.setAttribute("admin", adminProfile);
         request.getRequestDispatcher("Views/Admin/AdminProfile.jsp").forward(request, response);
     }
+
 }
