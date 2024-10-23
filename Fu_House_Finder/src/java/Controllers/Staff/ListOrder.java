@@ -104,7 +104,7 @@ public class ListOrder extends HttpServlet {
             orderList = daoOrder.getAllOrders(pageNumber, pageSize);
             totalOrders = daoOrder.getTotalOrders();
         }
-        List<House> houseList = daoHouse.getHousesWithPricesAndStar();
+        List<House> houseList = daoHouse.getHousesWithPricesAndStar1();
 
         //tính tổng số trang
         int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
