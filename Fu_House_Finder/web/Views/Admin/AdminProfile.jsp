@@ -125,7 +125,6 @@
                                 <h3>Additional Details</h3>
                                 <ul>
                                     <li><strong>Address:</strong> ${admin.address}</li>
-                                    <li><strong>Date Of Birth:</strong> ${admin.dateOfBirth}</li>
                                 </ul>
                             </div>
                         </div>
@@ -165,11 +164,6 @@
                                         <div class="mb-3">
                                             <label for="address" class="form-label">Address</label>
                                             <input type="text" class="form-control" id="address" name="address" value="${admin.address}">
-                                        </div>
-                                        <!-- Date of Birth -->
-                                        <div class="mb-3">
-                                            <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                                            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" value="${admin.dateOfBirth}">
                                         </div>
                                         <!-- Submit Button -->
                                         <button type="submit" class="btn btn-primary">Save Changes</button>

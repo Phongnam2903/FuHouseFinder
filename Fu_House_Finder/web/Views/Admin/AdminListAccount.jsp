@@ -34,6 +34,17 @@
                     </div>
                 </nav>
                 <div class="main-content mt-5">
+                    <!-- Hiển thị Toast thông báo nếu có -->
+                    <c:if test="${not empty param.successMessage}">
+                        <div class="toast align-items-center text-bg-success border-0 position-fixed top-0 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true" id="successToast" style="z-index: 9999; color: #87bbf2">
+                            <div class="d-flex">
+                                <div class="toast-body" style="color: red">
+                                    ${param.successMessage}
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </c:if>
                     <h2 class="text-center">List Staff's Account</h2>
                     <div class="d-flex justify-content-between mt-3 mb-3">
                         <a href="./createAccount" class="btn btn-primary add-account-btn">+ Create New Account</a>
@@ -50,11 +61,8 @@
                                 <input type="radio" id="statusAll" name="status" value="" checked onclick="filterByStatus()"> All
                                 <input type="radio" id="statusActive" name="status" value="Active" onclick="filterByStatus()"> Active
                                 <input type="radio" id="statusInactive" name="status" value="InActive" onclick="filterByStatus()"> InActive
-                                <input type="radio" id="statusBan" name="status" value="Ban" onclick="filterByStatus()"> Ban
-                                <input type="radio" id="statusUnBan" name="status" value="UnBan" onclick="filterByStatus()"> UnBan
                             </div>
                         </div>
-
                     </div>
                     <div class="container-fluid mt-4">
                         <table class="table table-bordered table-hover" id="accountTable">
@@ -174,6 +182,12 @@
         <!-- Custom JS -->
         <script src="${pageContext.request.contextPath}/js/admin/admin.js"></script>
         <script src="${pageContext.request.contextPath}/js/admin/filterTable.js" type="text/javascript"></script> 
+        <script>
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    var successToast = new bootstrap.Toast(document.getElementById('successToast'));
+                                                    successToast.show();
+                                                });
+        </script>
     </body>
 
 </html>

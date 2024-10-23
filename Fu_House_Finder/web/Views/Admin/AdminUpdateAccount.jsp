@@ -85,8 +85,8 @@
                         <div class="col-md-6">
                             <label for="status">Status:</label>
                             <select class="form-control" id="status" name="status">
-                                <option value="1" ${user.statusID == 1 ? "selected" : ""}>Active</option>
-                                <option value="0" ${user.statusID == 0 ? "selected" : ""}>Inactive</option>
+                                <option value="1" ${user.statusID == 1 ? 'selected' : ''}>Active</option>
+                                <option value="2" ${user.statusID == 2 ? 'selected' : ''}>Inactive</option>
                             </select>
                         </div>
 

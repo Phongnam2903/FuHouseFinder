@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -60,7 +61,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">No.</th>
-                                <th scope="col">Room Name</th>
+                                <th scope="col">Room Number</th>
                                 <th scope="col">Room Price (VND)</th>
                                 <th scope="col">Amenities</th>
                                 <th scope="col">Area (m²)</th>
@@ -79,7 +80,9 @@
                                             ${rooms.roomNumber}
                                         </a>
                                     </td>
-                                    <td>${rooms.price}</td>
+                                    <td>
+                                        <fmt:formatNumber value="${rooms.price}" type="number" minFractionDigits="0" maxFractionDigits="0" groupingUsed="true"/>
+                                    </td>
                                     <td>
                                         <!-- Display Dynamic Amenities -->
                                         <c:if test="${rooms.bed}">
@@ -138,51 +141,7 @@
                     </table>
                     <!-- Phần này để hiển thị các nút phân trang -->
                     <div id="paginationControls" style="text-align: center"></div>
-
-                    <script>
-                        // Cấu hình số lượng phòng hiển thị trên mỗi trang
-                        const itemsPerPage = 5;
-                        const tableBody = document.getElementById('roomTableBody');
-                        const rows = tableBody.getElementsByTagName('tr');
-                        const totalItems = rows.length;
-
-                        // Tính toán số trang
-                        const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-                        function showPage(page) {
-                            // Ẩn tất cả các hàng
-                            for (let i = 0; i < totalItems; i++) {
-                                rows[i].style.display = 'none';
-                            }
-
-                            // Hiển thị các hàng trong phạm vi của trang hiện tại
-                            const start = (page - 1) * itemsPerPage;
-                            const end = start + itemsPerPage;
-                            for (let i = start; i < end && i < totalItems; i++) {
-                                rows[i].style.display = '';
-                            }
-
-                            // Cập nhật nút phân trang
-                            const paginationControls = document.getElementById('paginationControls');
-                            paginationControls.innerHTML = '';
-
-                            for (let i = 1; i <= totalPages; i++) {
-                                const button = document.createElement('button');
-                                button.innerText = i;
-                                button.classList.add('btn', 'btn-primary', 'mx-1');
-                                if (i === page) {
-                                    button.classList.add('active');
-                                }
-                                button.addEventListener('click', function () {
-                                    showPage(i);
-                                });
-                                paginationControls.appendChild(button);
-                            }
-                        }
-
-                        // Hiển thị trang đầu tiên khi tải trang
-                        showPage(1);
-                    </script>
+                    <script src="${pageContext.request.contextPath}/js/staff/pagenationListofRoom.js" type="text/javascript"></script>
                 </div>
             </div>
         </div>

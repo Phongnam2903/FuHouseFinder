@@ -45,6 +45,20 @@
                     </div>
 
                     <h3 class="text-center">List of Rental Houses</h3>
+                    <!-- Filter Section -->
+                    <form id="filterFormRentalHouse" class="mb-4" method="GET" action="listHouseOwnerDetail">
+                        <input type="hidden" name="id" value="${param.id}"/>
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <input type="text" id="filterHouseName" name="houseName" class="form-control" placeholder="Filter by House Name"/>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="filterAddress" name="address" class="form-control" placeholder="Filter by Address"/>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Filter</button>
+                    </form>
+
 
                     <table class="table table-bordered">
                         <thead class="thead-light">
@@ -57,18 +71,18 @@
                                 <th>Utilities</th>
                             </tr>
                         </thead>
-                        <c:forEach var="houseOwner" items="${listHouses}">
-                            <tbody>
+                        <c:forEach var="houseOwner" items="${listHouses}" varStatus="status">
+                            <tbody id="landlordDetailTableBody">
                                 <tr>
-                                    <td>${houseOwner.id}</td>
+                                    <th scope="row">${status.index + 1}</th>
                                     <td>
                                         <a href="${pageContext.request.contextPath}/listOfRoom?id=${houseOwner.id}"">${houseOwner.houseName}</a>
                                     </td>
                                     <td>
-                                        <fmt:formatNumber value="${houseOwner.powerPrice}" type="number" minFractionDigits="0" maxFractionDigits="0" groupingUsed="true"/> VND
+                                        <fmt:formatNumber value="${houseOwner.powerPrice}" type="number" minFractionDigits="0" maxFractionDigits="0" groupingUsed="true"/> 
                                     </td>
                                     <td>
-                                        <fmt:formatNumber value="${houseOwner.waterPrice}" type="number" minFractionDigits="0" maxFractionDigits="0" groupingUsed="true"/> VND
+                                        <fmt:formatNumber value="${houseOwner.waterPrice}" type="number" minFractionDigits="0" maxFractionDigits="0" groupingUsed="true"/> 
                                     </td>
                                     <td>${houseOwner.address}</td>
                                     <td>
@@ -95,7 +109,9 @@
                             </tbody>
                         </c:forEach>
                     </table>
-
+                    <!-- Phần này để hiển thị các nút phân trang -->
+                    <div id="paginationControls" style="text-align: center"></div>
+                    <script src="${pageContext.request.contextPath}/js/staff/pagenationListHouseOwnerDetail.js" type="text/javascript"></script>
                 </div>
             </div>
         </div>
