@@ -162,7 +162,7 @@ public class DAOOrder extends DAO {
             sql.append("AND o.statusID = ? ");
         }
 
-        //sắp xếp theo yêu cầu (Oldest to Newest hoặc Newest to Oldest)
+        //sắp xếp theo yêu cầu
         if (sortOrder != null && sortOrder.equals("asc")) {
             sql.append("ORDER BY o.orderedDate ASC ");
         } else {

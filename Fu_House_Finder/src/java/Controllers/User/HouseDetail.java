@@ -64,34 +64,52 @@ public class HouseDetail extends HttpServlet {
         DAORate daoRate = new DAORate();
         DAORoom daoRoom = new DAORoom();
 
-        //phân trang
-        int pageSize = 3;
-        String pageStr = request.getParameter("page");
-        int pageNumber = 1;
+        //phân trang cho rate
+        int ratepageSize = 3;
+        String ratepageStr = request.getParameter("ratePage");
+        int ratepageNumber = 1;
 
         //phân tích số trang
-        if (pageStr != null && !pageStr.isEmpty()) {
+        if (ratepageStr != null && !ratepageStr.isEmpty()) {
             try {
-                pageNumber = Integer.parseInt(pageStr);
+                ratepageNumber = Integer.parseInt(ratepageStr);
             } catch (NumberFormatException e) {
-                pageNumber = 1;
+                ratepageNumber = 1;
             }
         }
 
-        List<Rates> ratesList = daoRate.getRatesByHouse(houseId, pageNumber, pageSize);
-
-        House house = daoHouse.getHouseById(houseId);
-
-        List<Room> roomList = daoRoom.getRoomsByHouseId(houseId);
+        List<Rates> ratesList = daoRate.getRatesByHouse(houseId, ratepageNumber, ratepageSize);
 
         //tính tổng số trang cho phân trang
         int totalRates = daoRate.getTotalRatesByHouse(houseId);
-        int totalPages = (int) Math.ceil((double) totalRates / pageSize);
+        int totalRatePages = (int) Math.ceil((double) totalRates / ratepageSize);
 
         //đảm bảo có ít nhất 1 trang
-        if (totalPages < 1) {
-            totalPages = 1;
+        if (totalRatePages < 1) {
+            totalRatePages = 1;
         }
+
+        //phân trang cho room
+        int roomPageSize = 4;
+        String roomPageStr = request.getParameter("roomPage");
+        int roomPageNumber = 1;
+        if (roomPageStr != null && !roomPageStr.isEmpty()) {
+            try {
+                roomPageNumber = Integer.parseInt(roomPageStr);
+            } catch (NumberFormatException e) {
+                roomPageNumber = 1;
+            }
+        }
+
+        List<Room> roomList = daoRoom.getRoomsByHouseId(houseId, roomPageNumber, roomPageSize);
+        int totalRooms = daoRoom.getTotalRoomsByHouseId(houseId);
+        int totalRoomPages = (int) Math.ceil((double) totalRooms / roomPageSize);
+
+        if (totalRoomPages < 1) {
+            totalRoomPages = 1;
+        }
+
+        House house = daoHouse.getHouseById(houseId);
 
         //kiểm tra nhà trọ có hay không
         if (house != null) {
@@ -99,8 +117,10 @@ public class HouseDetail extends HttpServlet {
             request.setAttribute("roomList", roomList);
             request.setAttribute("images", house.getImage());
             request.setAttribute("ratesList", ratesList);
-            request.setAttribute("pageNumber", pageNumber);//trang hiện tại
-            request.setAttribute("totalPages", totalPages);//tổng trang
+            request.setAttribute("ratepageNumber", ratepageNumber);//trang hiện tại
+            request.setAttribute("totalRatePages", totalRatePages);//tổng trang
+            request.setAttribute("roomPageNumber", roomPageNumber);
+            request.setAttribute("totalRoomPages", totalRoomPages);
 
             request.getRequestDispatcher("/Views/User/HouseDetail.jsp").forward(request, response);
         } else {
