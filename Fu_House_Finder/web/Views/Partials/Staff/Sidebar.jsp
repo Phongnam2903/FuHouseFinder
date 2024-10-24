@@ -31,6 +31,10 @@
                 <a href="listOrder" class="list-group-item list-group-item-action bg-orange text-white">
                     <i class="fas fa-clipboard-list me-2"></i>Requests Orders Accommodation
                 </a>
+                <!-- Changed icon to clipboard-list to represent Feedbacks -->
+                <a href="ListFeedback" class="list-group-item list-group-item-action bg-orange text-white">
+                    <i class="fas fa-clipboard-list me-2"></i>List of Feedbacks
+                </a>
                 <!-- Log out icon remains the same -->
                 <a href="logout" class="list-group-item list-group-item-action bg-orange text-white">
                     <i class="fas fa-sign-out-alt me-2"></i>Log Out

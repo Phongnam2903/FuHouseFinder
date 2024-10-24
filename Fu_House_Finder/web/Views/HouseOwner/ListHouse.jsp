@@ -111,6 +111,9 @@
                                     <a href="javascript:void(0);" onclick="openDeleteModal(${house.id}, '${house.houseName}');" class="btn btn-danger">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
+                                        <a href="ListRoom?houseId=${house.id}" class="btn btn-outline-secondary" style="margin-left: 20px;">
+                                        <i class="fas fa-list"></i>
+                                    </a>
                                 </td>
                             </tr>
                         </c:forEach>

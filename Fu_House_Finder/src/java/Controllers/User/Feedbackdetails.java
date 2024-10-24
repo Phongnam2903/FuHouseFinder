@@ -3,12 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller.Room;
+package Controllers.User;
 
+import DAL.User.DAOFeedBack;
+import Models.Feedback;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import DAL.Room.DAORoom;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,8 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author My Lap
  */
-@WebServlet(name="DeleteRoom", urlPatterns={"/DeleteRoom"})
-public class DeleteRoom extends HttpServlet {
+@WebServlet(name="Feedbackdetails", urlPatterns={"/FeedBackdetails"})
+public class Feedbackdetails extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +37,10 @@ public class DeleteRoom extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteRoom</title>");  
+            out.println("<title>Servlet Feedbackdetails</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteRoom at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet Feedbackdetails at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,16 +57,21 @@ public class DeleteRoom extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
-       int id;
-       try{
-           id = Integer.parseInt(id_raw);
-           DAORoom dbRoom = new DAORoom();
-           dbRoom.deleteRoom(id);
-           response.sendRedirect("ListRoom?success=true");
-       }catch(NumberFormatException e){
+        //Lấy feedbackid
+        String feedbackID = request.getParameter("id");
+        if(feedbackID != null){
+            DAOFeedBack daoFeedBack = new DAOFeedBack();
+            Feedback feedback = daoFeedBack.getFeedbackById(Integer.parseInt(feedbackID));
+//            Feedback feedback = daoFeedBack.getFeedbackDetailsByID(Integer.parseInt(feedbackID));
+            request.setAttribute("feedback", feedback);
+            request.getRequestDispatcher("Views/Staff/FeedBackdetails.jsp").forward(request, response);
+
+        }
+
+        else {
+             request.getRequestDispatcher("Views/Staff/FeedBackdetails.jsp").forward(request, response);
+        }
         
-       }
     } 
 
     /** 

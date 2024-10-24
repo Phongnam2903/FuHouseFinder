@@ -209,9 +209,8 @@ public class DAOLogin extends DBContext {
 //        String email = "xuxumanh1@gmail.com";
 
 
-        login.saveUserPassword("DangPH", "dangphhe172554@fpt.edu.vn", "123", 1, 3);
+        login.saveUserPassword("DangPH", "dang542003@gmail.com", "123", 1, 4);
 
-        login.saveUserPassword("Trần Dương", "tdd177777@fpt.edu.vn", "duong4", 1, 4);
 
         System.out.println("Test saveUser completed.");
     }

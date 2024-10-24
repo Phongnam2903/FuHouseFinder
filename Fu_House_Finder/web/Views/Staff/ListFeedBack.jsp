@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Room List</title>
+        <title>Feedback List</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
@@ -26,6 +26,37 @@
 
                     <!-- Table Section -->
                     <h4 class="mb-3" style="text-align: center">Feedback List</h4>
+                    <!-- Thêm một alert để hiển thị thông báo xóa thành công -->
+                    <c:if test="${param.successFB eq 'true'}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Delete feedback successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
+                    <c:if test="${param.successFB eq 'false'}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Cannot delete this feedback it's did not slove!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
+                    <div id="searchForm">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title"><br><br>
+
+                        <label for="status">Status:</label>
+                        <input type="text" id="status" name="status"><br><br>
+
+                        <label for="createdDate">Created Date:</label>
+                        <input type="date" id="createdDate" name="createdDate"><br><br>
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email"><br><br>
+
+                        <label for="sentTime">Sent Time:</label>
+                        <input type="time" id="sentTime" name="sentTime"><br><br>
+
+                        <button type="button" onclick="filter()">Search</button>
+                    </div>
                     <table class="table table-striped table-hover">
                         <thead class="thead-dark">
                             <tr>
@@ -35,7 +66,7 @@
                                 <th scope="col">Status</th>
                                 <th scope="col">Sent Time</th>
                                 <th scope="col">Created Date</th>
-                                <th scope="col">Renter ID</th>
+                                <th scope="col">Email </th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -50,16 +81,32 @@
                                     <td>${feedbacks.status}</td>
                                     <td>${feedbacks.sentTime}</td>
                                     <td>${feedbacks.createdDate}</td>
-                                    <td>${feedbacks.renterId}</td>
+                                    <td>${feedbacks.renterEmail}</td>
                                     <td>
-                    <a href="${pageContext.request.contextPath}/feedbackDetail?id=${feedbacks.id}">
-                        Detail
-                    </a>
-                    <a href="${pageContext.request.contextPath}/feedbackDelete?id=${feedbacks.id}">
-                        Delete
-                    </a>
-                                </td>
-                                    
+
+                                        <a href="FeedBackdetails?id=${feedbacks.id}" class="btn btn-warning" style="margin-right: 20px;">
+                                            <i class="fas fa-list"></i>
+                                        </a>
+                                            
+                                        <a href="#" class="btn btn-facebook" style="margin-right: 20px;">
+                                            <i class="fas fa-comments"></i>
+                                        </a>
+
+                                        <c:if test="${feedbacks.status.equals('Solved')}">
+                                            <a href="javascript:void(0);" onclick="openDeleteModal(${feedbacks.id}, '${feedbacks.renterEmail}');" class="btn btn-danger">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${feedbacks.status.equals('Pending')}">
+                                            <a href="javascript:void(0);" onclick="cannotopenDeleteModal(${feedbacks.id}, '${feedbacks.renterEmail}');" class="btn btn-danger">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </c:if>
+
+
+
+                                    </td>
+
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -70,7 +117,7 @@
                     <script>
                         // Cấu hình số lượng phòng hiển thị trên mỗi trang
                         const itemsPerPage = 5;
-                        const tableBody = document.getElementById('roomTableBody');
+                        const tableBody = document.getElementById('feedbackTableBody');
                         const rows = tableBody.getElementsByTagName('tr');
                         const totalItems = rows.length;
 
@@ -110,25 +157,72 @@
 
                         // Hiển thị trang đầu tiên khi tải trang
                         showPage(1);
+
+                        function filter() {
+                            const title = document.getElementById('title').value.toLowerCase();
+                            const status = document.getElementById('status').value.toLowerCase();
+                            const createdDate = document.getElementById('createdDate').value;
+                            const email = document.getElementById('email').value.toLowerCase();
+                            const sentTime = document.getElementById('sentTime').value;
+
+                            const tableBody = document.getElementById('feedbackTableBody');
+                            const rows = tableBody.getElementsByTagName('tr');
+
+                            for (let i = 0; i < rows.length; i++) {
+                                const cells = rows[i].getElementsByTagName('td');
+                                const rowTitle = cells[0].textContent.toLowerCase();
+                                const rowStatus = cells[1].textContent.toLowerCase();
+                                const rowCreatedDate = cells[2].textContent;
+                                const rowEmail = cells[3].textContent.toLowerCase();
+                                const rowSentTime = cells[4].textContent;
+
+                                const matches = (!title || rowTitle.includes(title)) &&
+                                        (!status || rowStatus === status) &&
+                                        (!createdDate || rowCreatedDate === createdDate) &&
+                                        (!email || rowEmail === email) &&
+                                        (!sentTime || rowSentTime === sentTime);
+
+                                // Show or hide row based on matches
+                                rows[i].style.display = matches ? '' : 'none';
+                            }
+                        }
+
+
                     </script>
-                    
-                            <!-- Modal xác nhận xóa -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa phòng trọ</h5>
+
+                    <!-- Modal xác nhận xóa -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Confirm to feedback</h5>
+                                </div>
+                                <div class="modal-body">
+                                    Do you want to delete this feedback of <span id="feedbackToDelete"></span> or not ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                    <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Yes</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        Bạn có chắc chắn muốn xóa phòng số <span id="roomNumberToDelete"></span> không?
+
+                    <div class="modal fade" id="cannotdeleteModal" tabindex="-1" aria-labelledby="cannotdeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Confirm to feedback</h5>
+                                </div>
+                                <div class="modal-body">
+                                    You cannot delete this feedback of <span id="feedbackToDelete"></span> when it is pending!
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ỌK</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Xóa</a>
-                    </div>
-                </div>
-            </div>
-        </div>
                 </div>
             </div>
         </div>
@@ -136,5 +230,21 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/admin/admin.js"></script>
+        <script>
+                        function openDeleteModal(feedbackid, renterid) {
+                            document.getElementById('feedbackToDelete').textContent = renterid;
+                            document.getElementById('confirmDeleteBtn').href = 'ListFeedback?id=' + feedbackid;  // Link for deletion
+                            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+                            deleteModal.show();
+                        }
+        </script>
+        <script>
+            function cannotopenDeleteModal(feedbackid, renterid) {
+                document.getElementById('feedbackToDelete').textContent = renterid;
+                document.getElementById('confirmDeleteBtn').href = 'ListFeedback?id=' + feedbackid;  // Link for deletion
+                var deleteModal = new bootstrap.Modal(document.getElementById('cannotdeleteModal'));
+                deleteModal.show();
+            }
+        </script>
     </body>
 </html>
