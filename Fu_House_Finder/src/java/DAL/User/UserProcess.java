@@ -10,7 +10,7 @@ import java.sql.*;
 
 /**
  *
- * @author Tuan
+ * @author Phong
  */
 public class UserProcess extends DAO {
 
