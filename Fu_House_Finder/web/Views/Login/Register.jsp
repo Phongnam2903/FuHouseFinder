@@ -37,43 +37,50 @@
                     <% } %>
                     <form action="register" method="post" id="registerForm">
                         <div class="mb-3">
-                            <input type="text" name="fname" class="form-control" id="firstName" placeholder="First name">
+                            <input type="text" name="fname" class="form-control" id="firstName" placeholder="First name" 
+                                   value="<%= request.getAttribute("fname") != null ? request.getAttribute("fname") : "" %>">
                             <div class="error-message">
                                 <%= request.getAttribute("errorfNameMessage") != null ? request.getAttribute("errorfNameMessage") : "" %>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <input type="text" name="lname" class="form-control" id="lastName" placeholder="Last name">
+                            <input type="text" name="lname" class="form-control" id="lastName" placeholder="Last name"
+                                   value="<%= request.getAttribute("lname") != null ? request.getAttribute("lname") : "" %>">
                             <div class="error-message">
                                 <%= request.getAttribute("errorlNameMessage") != null ? request.getAttribute("errorlNameMessage") : "" %>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <input type="email" name="email" class="form-control" id="email" placeholder="Email">
+                            <input type="email" name="email" class="form-control" id="email" placeholder="Email"
+                                   value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>">
                             <div class="error-message">
                                 <%= request.getAttribute("errorEmailMessage") != null ? request.getAttribute("errorEmailMessage") : "" %>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone number">
+                            <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone number"
+                                   value="<%= request.getAttribute("phone") != null ? request.getAttribute("phone") : "" %>">
                             <div class="error-message">
                                 <%= request.getAttribute("errorPhoneMessage") != null ? request.getAttribute("errorPhoneMessage") : "" %>
                             </div>
                         </div>
                         <div class="mb-3 position-relative">
-                            <input type="password" name="pass" class="form-control" id="password" placeholder="Password">
+                            <input type="password" name="pass" class="form-control" id="password" placeholder="Password"
+                                   value="<%= request.getAttribute("password") != null ? request.getAttribute("password") : "" %>">
                             <div class="error-message">
                                 <%= request.getAttribute("errorPasswordMessage") != null ? request.getAttribute("errorPasswordMessage") : "" %>
                             </div>
                         </div>
                         <div class="mb-3 position-relative">
-                            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+                            <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" placeholder="Confirm Password" 
+                                   value="<%= request.getAttribute("confirmPassword") != null ? request.getAttribute("confirmPassword") : "" %>">
                             <div class="error-message">
                                 <%= request.getAttribute("errorConfirmMessage") != null ? request.getAttribute("errorConfirmMessage") : "" %>
                             </div>
                         </div>
                         <button type="submit" name="btnRegister" class="btn btn-warning w-100" style="color: white">Register</button>
                     </form>
+
                     <a href="./login" class="btn btn-outline-secondary w-100 mt-3">Already have an account</a>
                 </div>
             </div>

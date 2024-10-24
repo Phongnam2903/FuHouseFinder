@@ -24,7 +24,7 @@ public class RegisterController extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String password = request.getParameter("pass");
-        String confirmPassword = request.getParameter("confirmPass");
+        String confirmPassword = request.getParameter("confirmPassword");
 
         // Validation flags
         boolean hasError = false;
@@ -83,12 +83,22 @@ public class RegisterController extends HttpServlet {
 
         // If there is an error, set attributes for each error and forward back to form
         if (hasError) {
+            // Set error messages as request attributes
             request.setAttribute("errorfNameMessage", errorfNameMessage);
             request.setAttribute("errorlNameMessage", errorlNameMessage);
             request.setAttribute("errorEmailMessage", errorEmailMessage);
             request.setAttribute("errorPhoneMessage", errorPhoneMessage);
             request.setAttribute("errorPasswordMessage", errorPasswordMessage);
             request.setAttribute("errorConfirmMessage", errorConfirmMessage);
+
+            // Set previously entered values as request attributes
+            request.setAttribute("fname", fname);
+            request.setAttribute("lname", lname);
+            request.setAttribute("email", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("password", password);
+            request.setAttribute("confirmPassword", confirmPassword);
+
             request.getRequestDispatcher("Views/Login/Register.jsp").forward(request, response);
         } else {
             // If validation passes, proceed with user registration
