@@ -20,9 +20,6 @@
                 <a href="viewAccountList" class="list-group-item list-group-item-action bg-dark text-white active">
                     <i class="fas fa-list me-2"></i>List Account
                 </a>
-                <a href="settings.jsp" class="list-group-item list-group-item-action bg-dark text-white">
-                    <i class="fas fa-cog me-2"></i>Cài Đặt
-                </a>
                 <a href="logout" class="list-group-item list-group-item-action bg-dark text-white">
                     <i class="fas fa-sign-out-alt me-2"></i>Log Out
                 </a> 
