@@ -25,6 +25,10 @@
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/AddHouse.jsp</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/UpdateRoom.jsp</file>
             <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Room/DAORoomStatus.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/User/HomePage.jsp</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controllers/User/HomePage.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/House/DAOHouse.java</file>
+            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/DBContext.java</file>
         </group>
     </open-files>
 </project-private>

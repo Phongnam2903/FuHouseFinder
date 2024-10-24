@@ -25,7 +25,7 @@
         <section class="container-fluid-custom my-4">
             <div class="row">
                 <div class="col-lg-3">
-                    <form id="filterForm">
+                    <form id="filterForm" method="get" action="homePage">
                         <div class="d-flex justify-content-between align-items-center p-3" style="background-color: #f44336; padding: 10px;">
                             <h2 class="text-white mb-0">FILTER RESULTS</h2>
                             <button type="reset" class="btn btn-link text-white mb-0">Reset Filters</button>
@@ -35,9 +35,9 @@
                             <div class="mb-3">
                                 <label for="distance" class="form-label">Distance to School</label>
                                 <div class="d-flex align-items-center">
-                                    <input type="text" class="form-control me-2" id="distance-km" placeholder="From (km)">
+                                    <input type="text" class="form-control me-2" id="distance-km" name="distanceFrom" placeholder="From (km)">
                                     <span>-</span>
-                                    <input type="text" class="form-control ms-2" id="distance-miles" placeholder="To (km)">
+                                    <input type="text" class="form-control ms-2" id="distance-miles" name="distanceTo" placeholder="To (km)">
                                 </div>
                             </div>
 
@@ -46,9 +46,9 @@
                             <div class="mb-3">
                                 <label for="price" class="form-label">Price (VND/Month)</label>
                                 <div class="d-flex align-items-center">
-                                    <input type="text" class="form-control me-2" id="price-min" placeholder="From">
+                                    <input type="text" class="form-control me-2" id="price-min" name="priceMin" placeholder="From">
                                     <span>-</span>
-                                    <input type="text" class="form-control ms-2" id="price-max" placeholder="To">
+                                    <input type="text" class="form-control ms-2" id="price-max" name="priceMax" placeholder="To">
                                 </div>
                             </div>
 
@@ -57,16 +57,28 @@
                             <div class="mb-3">
                                 <label for="room-type" class="form-label">Room Type</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="privateRoom">
-                                    <label class="form-check-label" for="privateRoom">Private</label>
+                                    <input class="form-check-input" type="checkbox" name="singleRoom" id="singleRoom">
+                                    <label class="form-check-label" for="singleRoom">Single</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="sharedRoom">
-                                    <label class="form-check-label" for="sharedRoom">Shared</label>
+                                    <input class="form-check-input" type="checkbox" name="doubleRoom" id="doubleRoom">
+                                    <label class="form-check-label" for="doubleRoom">Double</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="miniApartment">
+                                    <input class="form-check-input" type="checkbox" name="tripleRoom" id="tripleRoom">
+                                    <label class="form-check-label" for="tripleRoom">Triple</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="quadRoom" id="quadRoom">
+                                    <label class="form-check-label" for="quadRoom">Quad</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="miniApartment" id="miniApartment">
                                     <label class="form-check-label" for="miniApartment">Mini Apartment</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="fullHouse" id="fullHouse">
+                                    <label class="form-check-label" for="fullHouse">Full House</label>
                                 </div>
                             </div>
 
@@ -75,35 +87,39 @@
                             <div class="mb-3">
                                 <label class="form-label">Additional Features</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="fingerprintLock">
+                                    <input class="form-check-input" type="checkbox" name="fingerprintLock" id="fingerprintLock">
                                     <label class="form-check-label" for="fingerprintLock">Fingerprint Lock</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="camera">
+                                    <input class="form-check-input" type="checkbox" name="camera" id="camera">
                                     <label class="form-check-label" for="camera">Security Camera</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="parking">
+                                    <input class="form-check-input" type="checkbox" name="parking" id="parking">
                                     <label class="form-check-label" for="parking">Parking Space</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="fridge">
-                                    <label class="form-check-label" for="fridge">Refrigerator</label>
+                                    <input class="form-check-input" type="checkbox" name="fridge" id="fridge">
+                                    <label class="form-check-label" for="fridge">Fridge</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="washingMachine">
+                                    <input class="form-check-input" type="checkbox" name="washingMachine" id="washingMachine">
                                     <label class="form-check-label" for="washingMachine">Washing Machine</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="stove">
-                                    <label class="form-check-label" for="stove">Stove</label>
+                                    <input class="form-check-input" type="checkbox" name="desk" id="desk">
+                                    <label class="form-check-label" for="desk">Desk</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="bed">
+                                    <input class="form-check-input" type="checkbox" name="kitchen" id="kitchen">
+                                    <label class="form-check-label" for="kitchen">Kitchen</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="bed" id="bed">
                                     <label class="form-check-label" for="bed">Bed</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="privateToilet">
+                                    <input class="form-check-input" type="checkbox" name="privateToilet" id="privateToilet">
                                     <label class="form-check-label" for="privateToilet">Private Toilet</label>
                                 </div>
                             </div>

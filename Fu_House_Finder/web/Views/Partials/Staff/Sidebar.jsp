@@ -20,7 +20,7 @@
                     <i class="fas fa-users me-2"></i>List of Landlords
                 </a>
                 <!-- Changed icon to home to represent houses -->
-                <a href="#" class="list-group-item list-group-item-action bg-orange text-white">
+                <a href="houseList" class="list-group-item list-group-item-action bg-orange text-white">
                     <i class="fas fa-home me-2"></i>List of Houses
                 </a>
                 <!-- Changed icon to chart-bar to represent reports -->

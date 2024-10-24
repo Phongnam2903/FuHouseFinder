@@ -40,7 +40,6 @@ public class User {
         this.avatar = avatar;
         this.createdDate = createdDate;
         this.roomHistoriesID = roomHistoriesID;
-
     }
 
     public User(int id, String facebookUserid, String googleUserid, String username, String password, String email, String phone, Date dateOfBirth, String address, int StatusID, int roleID, String avatar, Date createdDate, int roomHistoriesID, int totalHouses, int totalRooms, int emptyRooms) {

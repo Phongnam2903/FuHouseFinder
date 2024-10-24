@@ -45,8 +45,11 @@ function filterByStatus() {
         td = tr[i].getElementsByTagName("td")[3]; // Lấy ô trạng thái (cột thứ 4)
         if (td) {
             txtValue = td.textContent || td.innerText; // Lấy giá trị của ô
+            txtValue = txtValue.trim().toLowerCase(); // Loại bỏ khoảng trắng và chuyển về chữ thường
+            var normalizedSelectedStatus = selectedStatus.trim().toLowerCase(); // Chuẩn hóa giá trị được chọn
             // Hiển thị tất cả nếu chọn "All" hoặc khớp với trạng thái được chọn
-            tr[i].style.display = (selectedStatus === "" || txtValue === selectedStatus) ? "" : "none";
+            tr[i].style.display = (normalizedSelectedStatus === "" || txtValue === normalizedSelectedStatus) ? "" : "none";
         }
     }
 }
+

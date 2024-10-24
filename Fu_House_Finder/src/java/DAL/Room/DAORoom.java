@@ -14,12 +14,16 @@ import Models.Room;
 public class DAORoom extends DAO {
 
     // Lấy danh sách phòng thuộc một nhà (houseId)
-    public List<Room> getRoomsByHouseId(int houseId) {
+    public List<Room> getRoomsByHouseId(int houseId, int pageNumber, int pageSize) {
         List<Room> roomList = new ArrayList<>();
-        String query = "SELECT * FROM Room WHERE HouseID = ? AND Deleted = 0 AND StatusID = 1";
+        String sql = "SELECT * FROM Room WHERE HouseID = ? AND Deleted = 0 AND StatusID = 1 "
+                + "ORDER BY id "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, houseId);
+            ps.setInt(2, (pageNumber - 1) * pageSize);
+            ps.setInt(3, pageSize);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -52,6 +56,22 @@ public class DAORoom extends DAO {
         }
 
         return roomList;
+    }
+
+    public int getTotalRoomsByHouseId(int houseId) {
+        int totalRooms = 0;
+        String sql = "SELECT COUNT(*) FROM Room WHERE HouseID = ? AND Deleted = 0 AND StatusID = 1";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, houseId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                totalRooms = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalRooms;
     }
 
     public Room getRoomsById(int id) {

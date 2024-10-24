@@ -91,13 +91,13 @@
                                         </c:if>
                                     </div>
                                 </c:forEach>
-                                <!-- Phân trang -->
+                                <!-- Phân trang của rate -->
                                 <div class="pagination-container">
                                     <ul class="pagination">
                                         <!-- Nút Previous -->
-                                        <c:if test="${pageNumber > 1}">
+                                        <c:if test="${ratepageNumber > 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="?id=${house.id}&page=${pageNumber - 1}" aria-label="Previous">
+                                                <a class="page-link" href="?id=${house.id}&ratePage=${ratepageNumber - 1}" aria-label="Previous">
                                                     <span aria-hidden="true">&laquo;</span>
                                                 </a>
                                             </li>
@@ -105,52 +105,52 @@
 
                                         <!-- Hiển thị các số trang -->
                                         <c:choose>
-                                            <c:when test="${totalPages <= 4}">
+                                            <c:when test="${totalRatePages <= 4}">
                                                 <!-- Nếu tổng số trang <= 4, hiển thị tất cả các trang -->
-                                                <c:forEach var="i" begin="1" end="${totalPages}">
-                                                    <li class="page-item ${i == pageNumber ? 'active' : ''}">
-                                                        <a class="page-link" href="?id=${house.id}&page=${i}">${i}</a>
+                                                <c:forEach var="i" begin="1" end="${totalRatePages}">
+                                                    <li class="page-item ${i == ratepageNumber ? 'active' : ''}">
+                                                        <a class="page-link" href="?id=${house.id}&ratePage=${i}">${i}</a>
                                                     </li>
                                                 </c:forEach>
                                             </c:when>
                                             <c:otherwise>
                                                 <!-- Hiển thị trang đầu tiên -->
-                                                <li class="page-item ${pageNumber == 1 ? 'active' : ''}">
-                                                    <a class="page-link" href="?id=${house.id}&page=1">1</a>
+                                                <li class="page-item ${ratepageNumber == 1 ? 'active' : ''}">
+                                                    <a class="page-link" href="?id=${house.id}&ratePage=1">1</a>
                                                 </li>
 
                                                 <!-- Hiển thị dấu "..." nếu cần -->
-                                                <c:if test="${pageNumber > 3}">
+                                                <c:if test="${ratepageNumber > 3}">
                                                     <li class="page-item disabled">
                                                         <span class="page-link">...</span>
                                                     </li>
                                                 </c:if>
 
                                                 <!-- Hiển thị các trang xung quanh trang hiện tại -->
-                                                <c:forEach var="i" begin="${(pageNumber - 1 < 2) ? 2 : pageNumber - 1}" end="${(pageNumber + 1 > totalPages - 1) ? totalPages - 1 : pageNumber + 1}">
-                                                    <li class="page-item ${i == pageNumber ? 'active' : ''}">
-                                                        <a class="page-link" href="?id=${house.id}&page=${i}">${i}</a>
+                                                <c:forEach var="i" begin="${(ratepageNumber - 1 < 2) ? 2 : ratepageNumber - 1}" end="${(ratepageNumber + 1 > totalRatePages - 1) ? totalRatePages - 1 : ratepageNumber + 1}">
+                                                    <li class="page-item ${i == ratepageNumber ? 'active' : ''}">
+                                                        <a class="page-link" href="?id=${house.id}&ratePage=${i}">${i}</a>
                                                     </li>
                                                 </c:forEach>
 
                                                 <!-- Hiển thị dấu "..." trước trang cuối cùng nếu cần -->
-                                                <c:if test="${pageNumber < totalPages - 2}">
+                                                <c:if test="${ratepageNumber < totalRatePages - 2}">
                                                     <li class="page-item disabled">
                                                         <span class="page-link">...</span>
                                                     </li>
                                                 </c:if>
 
                                                 <!-- Hiển thị trang cuối cùng -->
-                                                <li class="page-item ${pageNumber == totalPages ? 'active' : ''}">
-                                                    <a class="page-link" href="?id=${house.id}&page=${totalPages}">${totalPages}</a>
+                                                <li class="page-item ${ratepageNumber == totalRatePages ? 'active' : ''}">
+                                                    <a class="page-link" href="?id=${house.id}&ratePage=${totalRatePages}">${totalRatePages}</a>
                                                 </li>
                                             </c:otherwise>
                                         </c:choose>
 
                                         <!-- Nút Next -->
-                                        <c:if test="${pageNumber < totalPages}">
+                                        <c:if test="${ratepageNumber < totalRatePages}">
                                             <li class="page-item">
-                                                <a class="page-link" href="?id=${house.id}&page=${pageNumber + 1}" aria-label="Next">
+                                                <a class="page-link" href="?id=${house.id}&ratePage=${ratepageNumber + 1}" aria-label="Next">
                                                     <span aria-hidden="true">&raquo;</span>
                                                 </a>
                                             </li>
@@ -274,6 +274,67 @@
                             </c:forEach>
                         </tbody>
                     </table>
+
+                    <div class="pagination-container">
+                        <ul class="pagination justify-content-end">
+                            <!-- Nút Previous -->
+                            <c:if test="${roomPageNumber > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="?id=${house.id}&roomPage=${roomPageNumber - 1}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo; Previous</span>
+                                    </a>
+                                </li>
+                            </c:if>
+                            <!-- Hiển thị các số trang -->
+                            <c:choose>
+                                <c:when test="${totalRoomPages <= 5}">
+                                    <!-- Nếu tổng số trang <= 5, hiển thị tất cả -->
+                                    <c:forEach var="i" begin="1" end="${totalRoomPages}">
+                                        <c:choose>
+                                            <c:when test="${i == roomPageNumber}">
+                                                <li class="page-item active"><span class="page-link">${i}</span></li>
+                                                </c:when>
+                                                <c:otherwise>
+                                                <li class="page-item"><a class="page-link" href="?id=${house.id}&roomPage=${i}">${i}</a></li>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                    <!-- Nếu tổng số trang > 5, hiển thị các trang đầu, cuối và dấu "..." -->
+                                    <c:if test="${roomPageNumber > 3}">
+                                        <li class="page-item"><a class="page-link" href="?id=${house.id}&roomPage=1">1</a></li>
+                                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                                        </c:if>
+
+                                    <c:forEach var="i" begin="${(roomPageNumber - 2 < 1) ? 1 : roomPageNumber - 2}" end="${(roomPageNumber + 2 > totalRoomPages) ? totalRoomPages : roomPageNumber + 2}">
+                                        <c:choose>
+                                            <c:when test="${i == roomPageNumber}">
+                                                <li class="page-item active"><span class="page-link">${i}</span></li>
+                                                </c:when>
+                                                <c:otherwise>
+                                                <li class="page-item"><a class="page-link" href="?id=${house.id}&roomPage=${i}">${i}</a></li>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+
+                                    <c:if test="${roomPageNumber < totalRoomPages - 2}">
+                                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                                        <li class="page-item"><a class="page-link" href="?id=${house.id}&roomPage=${totalRoomPages}">${totalRoomPages}</a></li>
+                                        </c:if>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            <!-- Nút Next -->
+                            <c:if test="${roomPageNumber < totalRoomPages}">
+                                <li class="page-item">
+                                    <a class="page-link" href="?id=${house.id}&roomPage=${roomPageNumber + 1}" aria-label="Next">
+                                        <span aria-hidden="true">Next &raquo;</span>
+                                    </a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

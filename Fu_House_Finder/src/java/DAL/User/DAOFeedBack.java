@@ -120,7 +120,7 @@ public class DAOFeedBack extends DAO {
                 + "    f.[CreatedDate],\n"
                 + "    f.[RenterID],\n"
                 + "    u.[FullName] AS RenterName, \n"
-                + "    u.[Email],                  \n"
+                + "    u.[Email] AS RenterEmail,                  \n"
                 + "    h.[HouseName],              \n"
                 + "    r.[RoomNumber]              \n"
                 + "FROM \n"

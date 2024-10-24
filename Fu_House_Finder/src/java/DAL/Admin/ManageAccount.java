@@ -19,15 +19,10 @@ public class ManageAccount extends DBContext {
         User user = null;
         String sql = "SELECT * FROM [User] WHERE id = ?";
         try {
-            // Chuẩn bị câu lệnh truy vấn
             PreparedStatement statement = connection.prepareStatement(sql);
-            // Thiết lập giá trị ID cho câu truy vấn
             statement.setInt(1, id);
-            // Thực thi truy vấn
             ResultSet rs = statement.executeQuery();
-            // Kiểm tra nếu có kết quả trả về
             if (rs.next()) {
-                // Lấy các giá trị từ kết quả truy vấn
                 String facebookUserid = rs.getString(2);
                 String googleUserid = rs.getString(3);
                 String username = rs.getString(4);
@@ -41,24 +36,19 @@ public class ManageAccount extends DBContext {
                 String avatar = rs.getString(12);
                 Date createdDate = rs.getDate(13);
                 int roomHistoriesID = rs.getInt(14);
-                int totalHouses = rs.getInt(15); // Assuming you have these fields
-                int totalRooms = rs.getInt(16);  // in your User class definition
-                int emptyRooms = rs.getInt(17);
 
-                // Tạo đối tượng User với các giá trị vừa lấy
                 user = new User(id, facebookUserid, googleUserid, username, password, email, phone,
-                        dateOfBirth, address, statusID, roleID, avatar, createdDate, roomHistoriesID,
-                        totalHouses, totalRooms, emptyRooms);
+                        dateOfBirth, address, statusID, roleID, avatar, createdDate, roomHistoriesID
+                );
             }
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // Trả về đối tượng User hoặc null nếu không tìm thấy
         return user;
     }
 
     public int updateAccount(User student) {
-        int n = 0;
+        int updateAcc = 0;
         String sql = "UPDATE [dbo].[User]"
                 + "   SET [FacebookUserId] = ?,[GoogleUserId] = ?,[FullName] = ?,[Email] = ?,[PhoneNumber] =?,[DateOfBirth] = ?,[Address] =?,"
                 + "[StatusID] =?,[Roleid] = ?,[Avatar] = ?,[CreatedDate] = ?,[RoomHistoriesID] = ? WHERE ID = ?";
@@ -86,11 +76,11 @@ public class ManageAccount extends DBContext {
             }
             statement.setInt(12, student.getRoomHistoriesID());
             statement.setInt(13, student.getId());
-            n = statement.executeUpdate();
+            updateAcc = statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return n;
+        return updateAcc;
     }
 
     public boolean deleteAccountById(int id) {
@@ -267,28 +257,21 @@ public class ManageAccount extends DBContext {
     }
 
     public static void main(String[] args) {
-//        User student = new User();
-//        student.setUsername("Phong Nguyễn");
-//        student.setEmail("phongnnhe176274@fpt.edu.vn");
-//        student.setPhone("0398601399");
-//        student.setAddress("Hiệp Hòa, Bắc Giang");
-//        student.setStatusID(1); // Ví dụ về trạng thái ID
-//        student.setRoleID(1);   // Ví dụ về role ID
-//        student.setCreatedDate(new Date()); // Ngày tạo hiện tại
-//        student.setId(19);
         ManageAccount manageAccount = new ManageAccount();
-        int page = 1;
-        int pageSize = 7;
-        int listaccount = manageAccount.getAccountCount();
-        List<User> listAcc = manageAccount.getAccountsByPage(page, pageSize);
-        System.out.println(listAcc.toString());
-//        int result = manageAccount.updateAccount(student);
-//
-//        if (listaccount > 0) {
-//            System.out.println(" thành công!");
-//        } else {
-//            System.out.println("Không có bản ghi nào được cập nhật.");
-//        }
+        User test = new User();
+        test.setId(19);
+        test.setUsername("Phong Nam");
+        test.setEmail("phongnnhe176274@fpt.edu.vn");
+        test.setPhone("0398601399");
+        test.setAddress("Hà Nội");
+        test.setStatusID(1);
+        test.setRoleID(1);
+        int result = manageAccount.updateAccount(test);
+        if (result > 0) {
+            System.out.println("thành công");
+        } else {
+            System.out.println("thất bại ");
+        }
     }
 
 }
