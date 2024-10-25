@@ -104,7 +104,8 @@ public class RegisterController extends HttpServlet {
             // If validation passes, proceed with user registration
             if (request.getParameter("btnRegister") != null) {
                 UserProcess.INSTANCE.create(fname, lname, email, phone, password);
-                response.sendRedirect(request.getContextPath() + "/homePage");
+                response.sendRedirect(request.getContextPath() + "/login?successMessage= Create account successfully");
+//                response.sendRedirect(request.getContextPath() + "/homePage");
             }
         }
     }

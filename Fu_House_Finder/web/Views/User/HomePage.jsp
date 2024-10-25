@@ -307,48 +307,48 @@
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                // Hiển thị modal với thông báo
-                function showModal(message, duration) {
-                    // Thiết lập thông điệp cho modal
-                    document.getElementById('modalMessage').innerText = message;
-                    document.getElementById('notificationModal').style.display = 'block'; // Hiển thị modal
+            // Hiển thị modal với thông báo
+            function showModal(message, duration) {
+                // Thiết lập thông điệp cho modal
+                document.getElementById('modalMessage').innerText = message;
+                document.getElementById('notificationModal').style.display = 'block'; // Hiển thị modal
 
-                    // Thiết lập thanh tiến trình
-                    const progressBar = document.getElementById('progress');
-                    const progressBarContainer = document.getElementById('progressBar');
-                    let timeLeft = duration / 1000; // Chuyển đổi từ milliseconds sang seconds
-                    const totalWidth = progressBarContainer.offsetWidth; // Chiều rộng tối đa của thanh tiến trình
+                // Thiết lập thanh tiến trình
+                const progressBar = document.getElementById('progress');
+                const progressBarContainer = document.getElementById('progressBar');
+                let timeLeft = duration / 1000; // Chuyển đổi từ milliseconds sang seconds
+                const totalWidth = progressBarContainer.offsetWidth; // Chiều rộng tối đa của thanh tiến trình
 
-                    // Cập nhật thanh tiến trình
-                    const interval = setInterval(() => {
-                        timeLeft--;
-                        const newWidth = (timeLeft / (duration / 1000)) * totalWidth; // Tính toán chiều rộng mới
+                // Cập nhật thanh tiến trình
+                const interval = setInterval(() => {
+                    timeLeft--;
+                    const newWidth = (timeLeft / (duration / 1000)) * totalWidth; // Tính toán chiều rộng mới
 
-                        progressBar.style.width = newWidth + 'px'; // Cập nhật chiều rộng
+                    progressBar.style.width = newWidth + 'px'; // Cập nhật chiều rộng
 
-                        if (timeLeft <= 0) {
-                            clearInterval(interval); // Dừng interval khi hết thời gian
-                            closeModal(); // Đóng modal khi hết thời gian
-                        }
-                    }, 1000); // Cập nhật mỗi giây
-                }
-
-                function closeModal() {
-                    const modal = document.getElementById('notificationModal');
-                    modal.style.display = 'none'; // Ẩn modal
-                    modal.style.opacity = 0; // Đặt độ mờ về 0
-                }
-
-                // Lấy tham số từ URL để hiển thị thông báo (nếu có)
-                window.onload = function () {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const status = urlParams.get('status');
-                    const message = urlParams.get('message');
-
-                    if (status && message) {
-                        showModal(message, 7000);
+                    if (timeLeft <= 0) {
+                        clearInterval(interval); // Dừng interval khi hết thời gian
+                        closeModal(); // Đóng modal khi hết thời gian
                     }
-                };
+                }, 1000); // Cập nhật mỗi giây
+            }
+
+            function closeModal() {
+                const modal = document.getElementById('notificationModal');
+                modal.style.display = 'none'; // Ẩn modal
+                modal.style.opacity = 0; // Đặt độ mờ về 0
+            }
+
+            // Lấy tham số từ URL để hiển thị thông báo (nếu có)
+            window.onload = function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const status = urlParams.get('status');
+                const message = urlParams.get('message');
+
+                if (status && message) {
+                    showModal(message, 7000);
+                }
+            };
         </script>
     </body>
 </html>
