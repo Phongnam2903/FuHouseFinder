@@ -55,7 +55,7 @@
             .message {
                 font-size: 15px;
                 color: #dc3545;
-                margin-top: 1rem;
+                margin-top: 0.5rem;
             }
         </style>
     </head>
@@ -75,14 +75,17 @@
                 <div class="col-md-7 right-panel">
                     <h3 class="text-center mb-4 text-primary">Reset Your Password</h3>
 
-                    <form action="${pageContext.request.contextPath}/resetpass" method="post" class="form-login mx-auto">
+                    <form action="${pageContext.request.contextPath}/resetPassword" method="post" class="form-login mx-auto">
                         <!-- Verification Code -->
                         <div class="mb-4">
                             <label for="code" class="fw-bold">Verification Code</label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-user fs-4'></i></span>
-                                <input type="text" name="code" id="code" placeholder="Enter Code" class="form-control border-0" >
+                                <input type="text" name="code" id="code" placeholder="Enter Code" class="form-control border-0">
                             </div>
+                            <c:if test="${not empty messageCode}">
+                                <div class="message">${messageCode}</div>
+                            </c:if>
                         </div>
 
                         <!-- New Password -->
@@ -90,8 +93,14 @@
                             <label for="newPassword" class="fw-bold">New Password</label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-lock fs-4'></i></span>
-                                <input type="password" name="newPassword" id="newPassword" placeholder="New Password" class="form-control border-0" >
+                                <input type="password" name="newPassword" id="newPassword" placeholder="New Password" class="form-control border-0">
                             </div>
+                            <c:if test="${not empty messageNewPassword}">
+                                <div class="message">${messageNewPassword}</div>
+                            </c:if>
+                            <c:if test="${not empty messagePattern}">
+                                <div class="message">${messagePattern}</div>
+                            </c:if>
                         </div>
 
                         <!-- Confirm New Password -->
@@ -99,9 +108,20 @@
                             <label for="confirmPassword" class="fw-bold">Confirm New Password</label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-lock fs-4'></i></span>
-                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control border-0" >
+                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control border-0">
                             </div>
+                            <c:if test="${not empty messageConfirmPassword}">
+                                <div class="message">${messageConfirmPassword}</div>
+                            </c:if>
+                            <c:if test="${not empty messageMatchPassword}">
+                                <div class="message">${messageMatchPassword}</div>
+                            </c:if>
                         </div>
+
+                        <!-- General Message for any other errors -->
+                        <c:if test="${not empty message}">
+                            <div class="message text-center">${message}</div>
+                        </c:if>
 
                         <!-- Submit Button -->
                         <div class="d-grid mt-4">

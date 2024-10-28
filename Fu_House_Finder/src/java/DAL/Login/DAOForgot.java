@@ -10,6 +10,19 @@ import java.util.logging.Logger;
 
 public class DAOForgot extends DBContext {
 
+    public void changePassword(int id, String newPass) {
+        String sql = "Update [User] [password] = ? Where id = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, newPass);
+            statement.setInt(2, id);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOForgot.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public User checkUsersForChangePass(String email) {
         String sql = "Select * from [User] Where email = ?";
 
