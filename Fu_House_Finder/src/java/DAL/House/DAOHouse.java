@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class DAOHouse extends DAO {
 
-    public List<House> getHousesWithPricesAndStar1() {
+    public List<House> getHousesWithPricesAndStar() {
         List<House> houses = new ArrayList<>();
         String sql = "SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, House.Description, "
                 + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice, AVG(CAST(Rates.Star AS FLOAT)) AS AvgStar "
@@ -48,138 +48,8 @@ public class DAOHouse extends DAO {
         return houses;
     }
 
-    
-    public List<House> getHousesWithPricesAndStar(Float minDistance, Float maxDistance, Double minPrice, Double maxPrice,
-            Boolean singleRoom, Boolean doubleRoom, Boolean tripleRoom, Boolean quadRoom,
-            Boolean miniApartment, Boolean fullHouse, Boolean fingerprintLock, Boolean camera,
-            Boolean parking, Boolean fridge, Boolean washingMachine, Boolean desk, Boolean kitchen,
-            Boolean bed, Boolean privateToilet, Integer minRating) {
-        List<House> houses = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, House.Description, "
-                + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice, AVG(CAST(Rates.Star AS FLOAT)) AS AvgStar "
-                + "FROM House "
-                + "JOIN Room ON House.ID = Room.HouseID "
-                + "LEFT JOIN Rates ON House.ID = Rates.HouseID "
-                + "WHERE 1=1 ");
-
-        //filter khoảng cách
-        if (minDistance != null) {
-            sql.append(" AND House.DistanceToSchool >= ? ");
-        }
-        if (maxDistance != null) {
-            sql.append(" AND House.DistanceToSchool <= ? ");
-        }
-
-        //filter giá
-        if (minPrice != null) {
-            sql.append(" AND Room.Price >= ? ");
-        }
-        if (maxPrice != null) {
-            sql.append(" AND Room.Price <= ? ");
-        }
-
-        //filter kiểu phòng
-        if (singleRoom != null && singleRoom) {
-            sql.append(" AND Room.RoomTypeID = 1 ");
-        }
-        if (doubleRoom != null && doubleRoom) {
-            sql.append(" AND Room.RoomTypeID = 2 ");
-        }
-        if (tripleRoom != null && tripleRoom) {
-            sql.append(" AND Room.RoomTypeID = 3 ");
-        }
-        if (quadRoom != null && quadRoom) {
-            sql.append(" AND Room.RoomTypeID = 4 ");
-        }
-        if (miniApartment != null && miniApartment) {
-            sql.append(" AND Room.RoomTypeID = 5 ");
-        }
-        if (fullHouse != null && fullHouse) {
-            sql.append(" AND Room.RoomTypeID = 6 ");
-        }
-
-        //filter tiện ích
-        if (fingerprintLock != null && fingerprintLock) {
-            sql.append(" AND House.FingerPrintLock = 1 ");
-        }
-        if (camera != null && camera) {
-            sql.append(" AND House.Camera = 1 ");
-        }
-        if (parking != null && parking) {
-            sql.append(" AND House.Parking = 1 ");
-        }
-        if (fridge != null && fridge) {
-            sql.append(" AND Room.Fridge = 1 ");
-        }
-        if (washingMachine != null && washingMachine) {
-            sql.append(" AND Room.WashingMachine = 1 ");
-        }
-        if (desk != null && desk) {
-            sql.append(" AND Room.Desk = 1 ");
-        }
-        if (bed != null && bed) {
-            sql.append(" AND Room.Bed = 1 ");
-        }
-        if (privateToilet != null && privateToilet) {
-            sql.append(" AND Room.ClosedToilet = 1 ");
-        }
-        if (kitchen != null && kitchen) {
-            sql.append(" AND Room.Kitchen = 1 ");
-        }
-
-        //filter đánh giá
-        if (minRating != null) {
-            sql.append(" AND Rates.Star >= ? ");
-        }
-
-        sql.append("GROUP BY House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, House.Description");
-
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql.toString());
-            int index = 1;
-
-            // Set parameters dynamically
-            if (minDistance != null) {
-                pre.setFloat(index++, minDistance);
-            }
-            if (maxDistance != null) {
-                pre.setFloat(index++, maxDistance);
-            }
-            if (minPrice != null) {
-                pre.setDouble(index++, minPrice);
-            }
-            if (maxPrice != null) {
-                pre.setDouble(index++, maxPrice);
-            }
-            if (minRating != null) {
-                pre.setInt(index++, minRating);
-            }
-            ResultSet rs = pre.executeQuery();
-
-            while (rs.next()) {
-                House house = new House();
-                house.setId(rs.getInt("ID"));
-                house.setHouseName(rs.getString("HouseName"));
-                house.setAddress(rs.getString("Address"));
-                house.setDistanceToSchool(rs.getFloat("DistanceToSchool"));
-
-                // Set giá từ bảng Room
-                house.setMinPrice(rs.getDouble("MinPrice"));
-                house.setMaxPrice(rs.getDouble("MaxPrice"));
-                house.setAverageStar(rs.getDouble("AvgStar"));
-                house.setImage(rs.getString("image"));
-                house.setDescription(rs.getString("Description"));
-                houses.add(house);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return houses;
-    }
-
     public House getHouseSummary(int ownerId) {
-        House houseSummary = new House();
+        House houseSummary = new House();  // Sử dụng House để lưu thông tin tổng hợp
         String sql = "SELECT COUNT(DISTINCT House.ID) AS TotalHouses, "
                 + "                 COUNT(Room.ID) AS TotalRooms, "
                 + "                 COUNT(CASE WHEN Room.StatusID = 1 THEN 1 END) AS TotalAvailableRooms "

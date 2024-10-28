@@ -81,7 +81,7 @@
                             <label for="code" class="fw-bold">Verification Code</label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-user fs-4'></i></span>
-                                <input type="text" name="code" id="code" placeholder="Enter Code" class="form-control border-0" required>
+                                <input type="text" name="code" id="code" placeholder="Enter Code" class="form-control border-0" >
                             </div>
                         </div>
 
@@ -90,7 +90,7 @@
                             <label for="newPassword" class="fw-bold">New Password</label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-lock fs-4'></i></span>
-                                <input type="password" name="newPassword" id="newPassword" placeholder="New Password" class="form-control border-0" required>
+                                <input type="password" name="newPassword" id="newPassword" placeholder="New Password" class="form-control border-0" >
                             </div>
                         </div>
 
@@ -99,7 +99,7 @@
                             <label for="confirmPassword" class="fw-bold">Confirm New Password</label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-lock fs-4'></i></span>
-                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control border-0" required>
+                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control border-0" >
                             </div>
                         </div>
 
