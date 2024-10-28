@@ -76,7 +76,6 @@
                     <h3 class="text-center mb-4 text-primary">Reset Your Password</h3>
 
                     <form action="${pageContext.request.contextPath}/resetpass" method="post" class="form-login mx-auto">
-
                         <!-- Verification Code -->
                         <div class="mb-4">
                             <label for="code" class="fw-bold">Verification Code</label>
@@ -103,14 +102,6 @@
                                 <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control border-0" required>
                             </div>
                         </div>
-
-                        <!-- Message Display -->
-                        <% String message = (String) request.getAttribute("message"); %>
-                        <c:if test="${not empty message}">
-                            <div class="message text-center">
-                                <%= message %>
-                            </div>
-                        </c:if>
 
                         <!-- Submit Button -->
                         <div class="d-grid mt-4">

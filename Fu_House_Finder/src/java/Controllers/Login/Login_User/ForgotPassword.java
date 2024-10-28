@@ -42,11 +42,15 @@ public class ForgotPassword extends HttpServlet {
             String subject = "Code Reset Resquest";
             String content = "<h1>Code to change pasword</h1>"
                     + "<p>Your Code is: <strong>" + newCode + "</strong></p>";
-            SendEmail.sendMail(content, subject, content);
-            
+            SendEmail.sendMail(email, subject, content);
+
             session.setAttribute("resetCode", code);
             session.setAttribute("userEmail", email);
-            
+            response.sendRedirect("Views/Login/ResetPassword.jsp");
+        } else {
+            message = "Account not exist!";
+            request.setAttribute("message", message);
+            request.getRequestDispatcher("Views/Login/ForgotPassword.jsp").forward(request, response);
         }
     }
 
