@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -12,10 +14,6 @@
 
         <style>
             /* Custom Styles */
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f6f9;
-            }
             .container-fluid {
                 max-width: 900px;
             }

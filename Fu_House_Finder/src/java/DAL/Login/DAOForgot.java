@@ -2,6 +2,7 @@ package DAL.Login;
 
 import DAL.DBContext;
 import Models.User;
+import Validations.DataEncryptionSHA256;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,11 +12,14 @@ import java.util.logging.Logger;
 public class DAOForgot extends DBContext {
 
     public void changePassword(int id, String newPass) {
-        String sql = "Update [User] [password] = ? Where id = ?";
+        String sql = "Update [User] set [Password] = ? Where id = ?";
 
         try {
+            // Hash the password before storing
+            String hashedPassword = DataEncryptionSHA256.hashPassword(newPass);
+
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, newPass);
+            statement.setString(1, hashedPassword);
             statement.setInt(2, id);
             statement.executeUpdate();
         } catch (SQLException ex) {
@@ -55,14 +59,24 @@ public class DAOForgot extends DBContext {
     }
 
     public static void main(String[] args) {
+//        DAOForgot dao = new DAOForgot();
+//        String email = "phongnnhe176274@fpt.edu.vn";
+//
+//        User user = dao.checkUsersForChangePass(email);
+//        if (user != null) {
+//            System.out.println("User found:" + email);
+//        } else {
+//            System.out.println("User not found!");
+//        }
         DAOForgot dao = new DAOForgot();
-        String email = "phongnnhe176274@fpt.edu.vn";
 
-        User user = dao.checkUsersForChangePass(email);
-        if (user != null) {
-            System.out.println("User found:" + email);
-        } else {
-            System.out.println("User not found!");
-        }
+        // Sample user ID and new password
+        int userId = 3; // replace with the actual user ID you want to update
+        String newPassword = "123"; // replace with the new password
+
+        // Call the changePassword method
+        dao.changePassword(userId, newPassword);
+
+        System.out.println("Password updated successfully.");
     }
 }
