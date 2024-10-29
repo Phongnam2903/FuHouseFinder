@@ -40,7 +40,7 @@ public class ForgotPassword extends HttpServlet {
 
             //Send Email
             String subject = "Code Reset Resquest";
-            String content = "<h1>Code to change pasword</h1>"
+            String content = "<h1>Code to Reset Password!!</h1>"
                     + "<p>Your Code is: <strong>" + newCode + "</strong></p>";
             SendEmail.sendMail(email, subject, content);
 

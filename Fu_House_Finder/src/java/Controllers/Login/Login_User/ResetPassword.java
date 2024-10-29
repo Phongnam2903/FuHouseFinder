@@ -99,7 +99,7 @@ public class ResetPassword extends HttpServlet {
                 if (user != null) {
                     daoForgot.changePassword(user.getId(), newPassword);
                     message = "Password changed successfully!";
-                    response.sendRedirect(request.getContextPath() + "/login");
+                    response.sendRedirect(request.getContextPath() + "/login?successMessage= Reset Password successfully!");
                 } else {
                     message = "Account not exist";
                     request.getRequestDispatcher("Views/Login/ResetPassword.jsp").forward(request, response);
