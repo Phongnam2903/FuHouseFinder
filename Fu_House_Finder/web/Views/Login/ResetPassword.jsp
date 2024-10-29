@@ -70,10 +70,10 @@
                 </div>
 
                 <!-- Right Panel -->
-                <div class="col-md-6 right-panel">
+                <div class="col-md-6 right-panel d-flex flex-column align-items-center justify-content-center">
                     <h3 class="text-center mb-4 text-dark">Reset Your Password</h3>
 
-                    <form action="${pageContext.request.contextPath}/resetPassword" method="post" class="form-login mx-auto">
+                    <form action="${pageContext.request.contextPath}/resetPassword" method="post" >
                         <div class="mb-4">
                             <c:if test="${not empty message}">
                                 <div class="message">${message}</div>
@@ -81,7 +81,7 @@
                         </div>
                         <!-- Verification Code -->
                         <div class="mb-4">
-                            <label for="code" class="fw-bold">Verification Code</label>
+                            <label for="code" class="fw-bold">Verification Code <span class="text-danger">*</span></label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-user fs-4'></i></span>
                                 <input type="text" name="code" id="code" placeholder="Enter Code" class="form-control border-0"
@@ -94,7 +94,7 @@
 
                         <!-- New Password -->
                         <div class="mb-4">
-                            <label for="newPassword" class="fw-bold">New Password</label>
+                            <label for="newPassword" class="fw-bold">New Password <span class="text-danger">*</span></label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-lock fs-4'></i></span>
                                 <input type="password" name="newPassword" id="newPassword" placeholder="New Password" class="form-control border-0"
@@ -110,7 +110,7 @@
 
                         <!-- Confirm New Password -->
                         <div class="mb-4">
-                            <label for="confirmPassword" class="fw-bold">Confirm New Password</label>
+                            <label for="confirmPassword" class="fw-bold">Confirm New Password <span class="text-danger">*</span></label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-lock fs-4'></i></span>
                                 <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control border-0"
