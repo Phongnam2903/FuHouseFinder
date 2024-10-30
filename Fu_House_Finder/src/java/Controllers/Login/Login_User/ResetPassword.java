@@ -4,7 +4,7 @@
  * FU House Finder
  * Record of change:
  * DATE            Version             AUTHOR           DESCRIPTION
- * 2024-10-18      1.0                PhongNN          Implement reset password functionality
+ * 2024-10-28      1.0                PhongNN          Implement reset password functionality
  */
 package Controllers.Login.Login_User;
 
