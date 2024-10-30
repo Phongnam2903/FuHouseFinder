@@ -33,15 +33,28 @@ public class RegisterController extends HttpServlet {
         String errorfNameMessage = "", errorlNameMessage = "", errorEmailMessage = "",
                 errorPhoneMessage = "", errorPasswordMessage = "", errorConfirmMessage = "";
 
+        // Define max length constraints
+        int maxFNameLength = 50;
+        int maxLNameLength = 50;
+        int maxEmailLength = 100;
+        int maxPhoneLength = 10;
+        int maxPasswordLength = 15;
+
         // Validate first name
         if (fname == null || fname.trim().isEmpty()) {
             errorfNameMessage = "First name is required.";
+            hasError = true;
+        } else if (fname.length() > maxFNameLength) {
+            errorfNameMessage = "First name can't exceed " + maxFNameLength + " characters.";
             hasError = true;
         }
 
         // Validate last name
         if (lname == null || lname.trim().isEmpty()) {
             errorlNameMessage = "Last name is required.";
+            hasError = true;
+        } else if (lname.length() > maxLNameLength) {
+            errorlNameMessage = "Last name can't exceed " + maxLNameLength + " characters.";
             hasError = true;
         }
 
@@ -52,6 +65,9 @@ public class RegisterController extends HttpServlet {
         } else if (!isValidEmail(email)) {
             errorEmailMessage = "Invalid email format.";
             hasError = true;
+        } else if (email.length() > maxEmailLength) {
+            errorEmailMessage = "Email can't exceed " + maxEmailLength + " characters.";
+            hasError = true;
         }
 
         // Validate phone number
@@ -61,6 +77,9 @@ public class RegisterController extends HttpServlet {
         } else if (!isValidPhone(phone)) {
             errorPhoneMessage = "Invalid phone number format.";
             hasError = true;
+        } else if (phone.length() > maxPhoneLength) {
+            errorPhoneMessage = "Phone number can't exceed " + maxPhoneLength + " characters.";
+            hasError = true;
         }
 
         // Validate password
@@ -69,6 +88,9 @@ public class RegisterController extends HttpServlet {
             hasError = true;
         } else if (password.length() < 6) {
             errorPasswordMessage = "Password must be at least 6 characters.";
+            hasError = true;
+        } else if (password.length() > maxPasswordLength) {
+            errorPasswordMessage = "Password can't exceed " + maxPasswordLength + " characters.";
             hasError = true;
         }
 
@@ -81,9 +103,8 @@ public class RegisterController extends HttpServlet {
             hasError = true;
         }
 
-        // If there is an error, set attributes for each error and forward back to form
+        // Handle errors or proceed with registration
         if (hasError) {
-            // Set error messages as request attributes
             request.setAttribute("errorfNameMessage", errorfNameMessage);
             request.setAttribute("errorlNameMessage", errorlNameMessage);
             request.setAttribute("errorEmailMessage", errorEmailMessage);
@@ -91,7 +112,6 @@ public class RegisterController extends HttpServlet {
             request.setAttribute("errorPasswordMessage", errorPasswordMessage);
             request.setAttribute("errorConfirmMessage", errorConfirmMessage);
 
-            // Set previously entered values as request attributes
             request.setAttribute("fname", fname);
             request.setAttribute("lname", lname);
             request.setAttribute("email", email);
@@ -101,11 +121,9 @@ public class RegisterController extends HttpServlet {
 
             request.getRequestDispatcher("Views/Login/Register.jsp").forward(request, response);
         } else {
-            // If validation passes, proceed with user registration
             if (request.getParameter("btnRegister") != null) {
                 UserProcess.INSTANCE.create(fname, lname, email, phone, password);
                 response.sendRedirect(request.getContextPath() + "/login?successMessage= Create account successfully");
-//                response.sendRedirect(request.getContextPath() + "/homePage");
             }
         }
     }
