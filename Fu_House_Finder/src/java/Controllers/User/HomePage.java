@@ -88,9 +88,34 @@ public class HomePage extends HttpServlet {
         Boolean bed = request.getParameter("bed") != null;
         Boolean privateToilet = request.getParameter("privateToilet") != null;
 
+        //thiết lập phân trang
+        int pageSize = 9;
+        String pageStr = request.getParameter("page");
+        int pageNumber = 1;
+
+        //phân tích số trang
+        if (pageStr != null && !pageStr.isEmpty()) {
+            try {
+                pageNumber = Integer.parseInt(pageStr);
+            } catch (NumberFormatException e) {
+                pageNumber = 1;
+            }
+        }
+
         List<House> houseList = daoHouse.getHousesWithPricesAndStar(minDistance, maxDistance, minPrice, maxPrice, singleRoom, doubleRoom,
                 tripleRoom, quadRoom, miniApartment, fullHouse, fingerprintLock,
+                camera, parking, fridge, washingMachine, desk, kitchen, bed, privateToilet, minRating, pageNumber, pageSize);
+
+        int totalHouses = daoHouse.getCountHousesWithPricesAndStar(minDistance, maxDistance, minPrice, maxPrice, singleRoom,
+                doubleRoom, tripleRoom, quadRoom, miniApartment, fullHouse, fingerprintLock,
                 camera, parking, fridge, washingMachine, desk, kitchen, bed, privateToilet, minRating);
+
+        int totalPages = (int) Math.ceil((double) totalHouses / pageSize);
+
+        //đảm bảo có ít nhất 1 trang
+        if (totalPages < 1) {
+            totalPages = 1;
+        }
 
         //duyệt danh sách nhà và tách ảnh cho mỗi nhà trọ
         for (House house : houseList) {
@@ -102,6 +127,8 @@ public class HomePage extends HttpServlet {
             }
         }
 
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("currentPage", pageNumber);
         request.setAttribute("houseList", houseList);
         request.setAttribute("user", user);
         request.getRequestDispatcher("/Views/User/HomePage.jsp").forward(request, response);

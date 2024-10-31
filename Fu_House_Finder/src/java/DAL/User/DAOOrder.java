@@ -236,20 +236,20 @@ public class DAOOrder extends DAO {
 
         try (PreparedStatement pre = connection.prepareStatement(sql.toString())) {
             String searchPattern = "%" + search + "%";
-            int paramIndex = 1;
-            pre.setString(paramIndex++, searchPattern);
-            pre.setString(paramIndex++, searchPattern);
-            pre.setString(paramIndex++, searchPattern);
+            int index = 1;
+            pre.setString(index++, searchPattern);
+            pre.setString(index++, searchPattern);
+            pre.setString(index++, searchPattern);
 
             // Thiết lập giá trị cho các bộ lọc
             if (fromDate != null && !fromDate.isEmpty()) {
-                pre.setDate(paramIndex++, Date.valueOf(fromDate));
+                pre.setDate(index++, Date.valueOf(fromDate));
             }
             if (toDate != null && !toDate.isEmpty()) {
-                pre.setDate(paramIndex++, Date.valueOf(toDate));
+                pre.setDate(index++, Date.valueOf(toDate));
             }
             if (filterStatus != null && !filterStatus.isEmpty()) {
-                pre.setInt(paramIndex++, Integer.parseInt(filterStatus));
+                pre.setInt(index++, Integer.parseInt(filterStatus));
             }
 
             ResultSet rs = pre.executeQuery();
