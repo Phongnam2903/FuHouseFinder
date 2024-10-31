@@ -11,7 +11,17 @@
         <link href="${pageContext.request.contextPath}/css/login/styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-
+        <!-- Hiển thị Toast thông báo nếu có -->
+        <c:if test="${not empty param.successMessage}">
+            <div class="toast align-items-center text-bg-success border-0 position-fixed top-0 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true" id="successToast" style="z-index: 9999; color: #87bbf2">
+                <div class="d-flex">
+                    <div class="toast-body" style="color: red">
+                        ${param.successMessage}
+                    </div>
+                    <button type="button" class="btn-close btn-close-black me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </c:if>
         <div class="container-fluid d-flex align-items-center vh-100">
             <!-- Left Section -->
             <div class="left-section d-flex flex-column justify-content-center align-items-center w-50 p-5">
@@ -66,7 +76,7 @@
 
                 <!-- Register link -->
                 <div class="register-links d-flex justify-content-between w-75 mt-3">
-                    <a href="#">Forgot Password</a>
+                    <a href="forgotPassword">Forgot Password</a>
                     <a href="./register">Sign Up</a>
                     <a href="homePage">Back</a>
                 </div>
@@ -74,5 +84,12 @@
             </div>
         </div>
         <script src="${pageContext.request.contextPath}/js/login/login.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var successToast = new bootstrap.Toast(document.getElementById('successToast'));
+                                successToast.show();
+                            });
+        </script>
     </body>
 </html>

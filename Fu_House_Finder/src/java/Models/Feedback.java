@@ -13,11 +13,15 @@ public class Feedback {
     private Date repliedTime;
     private Date createdDate;
     private int renterId;
+    private String renterEmail;
+    private String renterName;
+    private String houseName;
+    private int roomNumber;
 
     public Feedback() {
     }
 
-    public Feedback(int id, String title, String description, String status, String reply, Date sentTime, Date repliedTime, Date createdDate, int renterId) {
+    public Feedback(int id, String title, String description, String status, String reply, Date sentTime, Date repliedTime, Date createdDate, int renterId, String renterEmail, String renterName, String houseName, int roomNumber) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -27,6 +31,44 @@ public class Feedback {
         this.repliedTime = repliedTime;
         this.createdDate = createdDate;
         this.renterId = renterId;
+        this.renterEmail = renterEmail;
+        this.renterName = renterName;
+        this.houseName = houseName;
+        this.roomNumber = roomNumber;
+    }
+
+    public String getRenterName() {
+        return renterName;
+    }
+
+    public void setRenterName(String renterName) {
+        this.renterName = renterName;
+    }
+
+    public String getHouseName() {
+        return houseName;
+    }
+
+    public void setHouseName(String houseName) {
+        this.houseName = houseName;
+    }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    
+
+    public String getRenterEmail() {
+        return renterEmail;
+    }
+
+    public void setRenterEmail(String renterEmail) {
+        this.renterEmail = renterEmail;
     }
 
     public int getId() {

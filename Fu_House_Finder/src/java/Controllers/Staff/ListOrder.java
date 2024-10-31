@@ -1,11 +1,3 @@
-/*
- * Copyright(C) 2024, FU House Finder.
- * FHF : House Finder Application
- *
- * Record of change:
- * DATE                       Version             AUTHOR                       DESCRIPTION
- * 2024-10-21                 1.0                 DuongTD                      Initial implementation of Order Accommodation servlet
- */
 package Controllers.Staff;
 
 import DAL.House.DAOHouse;
@@ -22,29 +14,20 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * This servlet handles requests related to the order house of the order listing
- * application. It retrieves order house and displays them to the staff. It also
- * processes order to the user.
  *
- * <p>
- * Bugs: None
- *
- * @author DuongTD
+ * @author ADMIN
  */
 @WebServlet(name = "ListOrder", urlPatterns = {"/listOrder"})
 public class ListOrder extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles GET requests to retrieve and display a list of order. It fetches
-     * orders from the database and prepares the data for the view.
+     * Handles the HTTP <code>GET</code> method.
      *
-     * @param request the HttpServletRequest object that contains the request
-     * made by the client
-     * @param response the HttpServletResponse object that contains the response
-     * from the servlet
+     * @param request servlet request
+     * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an input or output error occurs while handling the
-     * request
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -104,7 +87,7 @@ public class ListOrder extends HttpServlet {
             orderList = daoOrder.getAllOrders(pageNumber, pageSize);
             totalOrders = daoOrder.getTotalOrders();
         }
-        List<House> houseList = daoHouse.getHousesWithPricesAndStar1();
+        List<House> houseList = daoHouse.getHousesWithPricesAndStar();
 
         //tính tổng số trang
         int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
@@ -127,16 +110,12 @@ public class ListOrder extends HttpServlet {
     }
 
     /**
-     * Handles POST requests to process order from the staff.
-     * Validates input data if the data is valid.
+     * Handles the HTTP <code>POST</code> method.
      *
-     * @param request the HttpServletRequest object that contains the request
-     * made by the client
-     * @param response the HttpServletResponse object that contains the response
-     * from the servlet
+     * @param request servlet request
+     * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an input or output error occurs while handling the
-     * request
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

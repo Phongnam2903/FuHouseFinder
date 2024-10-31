@@ -34,9 +34,9 @@
         <%@include file="../Partials/Header.jsp" %>
         <!--Màn hình thêm phòng-->
         <div class="container mt-4">    
-            <h2 class="text-center mb-4">Chỉnh sửa phòng trọ</h2>
+            <h2 class="text-center mb-4">Room Update</h2>
             <div class="mb-4">
-                <a href="ListRoom" class="btn btn-secondary">Hủy</a>
+                <a href="ListRoom" class="btn btn-secondary">Cancel</a>
             </div>
             <form action="UpdateRoom" method="post">
                 <c:set var="dbRoom" value="${requestScope.room}"/>
@@ -46,44 +46,44 @@
                     <input type="hidden" class="form-control" id="id" name="id" readonly value="${room.id}" required>
                 </div>
                 <div class="mb-3">
-                    <label for="roomNumber" class="form-label">Số phòng</label>
+                    <label for="roomNumber" class="form-label">Room number</label>
                     <input type="text" class="form-control" id="roomNumber" name="roomNumber" value="${room.roomNumber}" required>
                 </div>
                 <!--Text tầng-->
                 <div class="mb-3">
-                    <label for="floorNumber" class="form-label">Tầng</label>
+                    <label for="floorNumber" class="form-label">Floor</label>
                     <input type="text" class="form-control" id="floorNumber" name="floorNumber" value="${room.floorNumber}" required>
                 </div>
                 <!--Text tên phòng-->
                 <div class="mb-3">
-                    <label for="description" class="form-label">Mô tả</label>
+                    <label for="description" class="form-label">Description</label>
                     <input type="text" class="form-control" id="description" name="description" value="${room.description}" required>
                 </div>
                 <!--Text giá-->
                 <div class="mb-3">
-                    <label for="price" class="form-label">Giá</label>
+                    <label for="price" class="form-label">Price</label>
                     <input type="text" class="form-control" id="price" name="price" value="${room.price}" required>
                 </div>
                 <!--Text diện tích-->
                 <div class="mb-3">
-                    <label for="area" class="form-label">Diện tích</label>
+                    <label for="area" class="form-label">Area</label>
                     <input type="text" class="form-control" id="area" name="area" value="${room.area}" required>
                 </div>
-                <div class="mb-3">
-                    <label for="houseId" class="form-label">Tên tòa nhà</label>
-                    <select class="form-select" id="houseId" name="houseId">
-                        <c:forEach items="${houseList}" var="house">
+                <div class="mb-3" >
+                    <label for="houseId" class="form-label" hidden>House name</label>
+                    <select class="form-select" id="houseId" name="houseId" hidden>
+                        <c:forEach items="${houseList}" var="house"  >
                             <c:if test="${room.houseId eq house.id}">
-                                <option selected value="${house.id}">${house.houseName}</option>
+                                <option selected value="${house.id}" hidden>${house.houseName}</option>
                             </c:if>
                             <c:if test="${room.houseId ne house.id}">
-                                <option  value="${house.id}">${house.houseName}</option>
+                                <option  value="${house.id}" hidden>${house.houseName}</option>
                             </c:if>
                         </c:forEach>
                     </select>
                     <!--Chọn loại phòng-->
                     <div class="mb-3">
-                        <label for="roomTypeId" class="form-label">Loại phòng</label>
+                        <label for="roomTypeId" class="form-label">Room Type</label>
                         <select class="form-select" id="roomTypeId" name="roomTypeId">
                             <c:forEach items="${roomTypeList}" var="roomType">
                                 <c:if test="${room.roomTypeId eq roomType.roomTypeID}">
@@ -98,7 +98,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="statusId" class="form-label">Tình trạng</label>
+                        <label for="statusId" class="form-label">Status</label>
                         <select class="form-select" id="statusId" name="statusId">
                             <c:forEach items="${roomStatusList}" var="roomStatus">
                                 <c:if test="${room.statusId eq roomStatus.statusID}">
@@ -115,46 +115,48 @@
 
                     <!--Checkbox tiện ích: Tủ lanh, Bếp, Máy giặt, Bàn, Giường, Không chung chủ, Vệ sinh khép kín -->
                     <div class="mb-3">
-                        <label for="facilities" class="form-label">Tìm kiếm</label>
+                        <label for="facilities" class="form-label">Services</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="fridge">
+                                
+                            <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="fridge"  <c:if test="${room.fridge}">checked="true"</c:if>>
                             <label class="form-check-label" for="fridge">
-                                Tủ lạnh
+                                Fridge
                             </label>
                         </div>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="kitchen">
+                            <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="kitchen" <c:if test="${room.kitchen}">checked="true"</c:if>>
                             <label class="form-check-label" for="kitchen">
-                                Bếp
+                                Kitchen
                             </label>
                         </div>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="washingMachine">
+                            <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="washingMachine" <c:if test="${room.washingMachine}">checked="true"</c:if>>
                             <label class="form-check-label" for="washingMachine">
-                                Máy giặt
+                                Washing machine
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="bed">
+                            <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="bed" <c:if test="${room.bed}">checked="true"</c:if>>
                             <label class="form-check-label" for="bed">
-                                Giường
+                                Bed
                             </label>
                         </div>
                         <div class="form-check"></div>
-                        <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="liveInHouseOwner">
+                        <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="liveInHouseOwner" <c:if test="${room.liveInHouseOwner}">checked="true"</c:if>>
                         <label class="form-check-label" for="liveInHouseOwner">
-                            Không chung chủ
+                            Live in house owner
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="closedToilet">
+                        <input class="form-check-input" type="checkbox" id="facilities" name="facilities" value="closedToilet" <c:if test="${room.closedToilet}">checked="true"</c:if>>
                         <label class="form-check-label" for="closedToilet">
-                            Vé sinh khép kín
+                            Closed toilet
+
                         </label>
                     </div>
 
                     <div class="mb-3">
-                        <button type="submit" class="btn btn-secondary">Chỉnh sửa</button>
+                        <button type="submit" class="btn btn-secondary">Update</button>
                     </div>
 
                 </div>

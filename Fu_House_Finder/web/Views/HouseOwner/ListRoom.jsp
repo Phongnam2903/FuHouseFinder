@@ -33,48 +33,52 @@
     <body>
         <%@include file="../Partials/Header.jsp" %>
         <div class="container mt-4">
-            <h2 class="text-center mb-4">Danh sách phòng trọ</h2>
-            <!-- Thêm một alert để hiển thị thông báo xóa thành công -->
-            <c:if test="${param.success eq 'true'}">
+            <h2 class="text-center mb-4">Room list</h2>
+
+            <!-- Thêm một alert để hiển thị thông báo xóa phòng thành công -->
+            <c:if test="${param.successDelete eq 'true'}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Phòng đã được xóa thành công!
+                    Delete room successfully!
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </c:if>
-
             <!-- Thêm một alert để hiển thị thông báo thêm phòng thành công -->
             <c:if test="${param.successAdd eq 'true'}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Phòng đã được thêm thành công!
+                    Add new room successfully!
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </c:if>
 
-            <!-- Thêm một alert để hiển thị thông báo thêm phòng thành công -->
+            <!-- Thêm một alert để hiển thị thông báo Sửa phòng thành công -->
             <c:if test="${param.successUpdate eq 'true'}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Phòng đã được sửa thành công!
+                    Update room successfully!
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </c:if>
 
             <div class="mb-4">
-                <a href="AddRoom" class="btn btn-secondary">+ Thêm phòng mới</a>
+                <a href="ListHouse" class="btn btn-secondary">Back</a>
+            </div>
+
+            <div class="mb-4">
+                <a href="AddRoom" class="btn btn-secondary">+ Add new room</a>
             </div>
 
             <c:if test="${not empty roomList}">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Số phòng</th>
-                            <th scope="col">Tầng</th>
-                            <th scope="col">Mô tả</th>
-                            <th scope="col">Hình ảnh</th>
+                            <th scope="col">Room Number</th>
+                            <th scope="col">Floor</th>
+                            <th scope="col">Description</th>
 
-                            <th scope="col">Giá</th>
-                            <th scope="col">Diện tích</th>
-                            <th scope="col">Tiện ích</th>
-                            <th scope="col">Tùy chọn</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Area</th>
+                            <th scope="col">Service</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Options</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,7 +87,6 @@
                                 <td>${room.roomNumber}</td>
                                 <td>${room.floorNumber}</td>
                                 <td>${room.description}</td>
-                                <td><img src="${room.image}" alt="Ảnh phòng" style="width: 100px; height: auto;"></td>
                                 <td>${room.price} đ</td>
                                 <td>${room.area} m²</td>
                                 <td>
@@ -106,13 +109,29 @@
                                         <i class="fas fa-washer" title="Máy giặt" style="font-size: 2rem;"></i>
                                     </c:if>
                                 </td>
+                                <!-- Room status -->
+                                <td>
+                                    <c:if test="${room.statusId == 1}">
+                                        <i title="Available" > Avaliable</i>
+                                    </c:if>
+                                    <c:if test="${room.statusId == 2}">
+                                        <i title="Occupied"> Occupied</i>
+                                    </c:if>
+                                </td>
                                 <td>
                                     <a href="UpdateRoom?id=${room.id}" class="btn btn-warning" style="margin-right: 20px;">
                                         <i class="fas fa-tools"></i>
                                     </a>
-                                    <a href="javascript:void(0);" onclick="openDeleteModal(${room.id}, '${room.roomNumber}');" class="btn btn-danger">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
+                                    <c:if test="${room.statusId == 1}">
+                                        <a href="javascript:void(0);" onclick="openDeleteModal(${room.id}, '${room.roomNumber}');" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </c:if>
+                                    <c:if test="${room.statusId == 2}">
+                                        <a href="javascript:void(0);" onclick="cannotopenDeleteModal(${room.id}, '${room.roomNumber}');" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -207,14 +226,31 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa phòng trọ</h5>
+                        <h5 class="modal-title" id="deleteModalLabel">Delete room</h5>
                     </div>
                     <div class="modal-body">
-                        Bạn có chắc chắn muốn xóa phòng số <span id="roomNumberToDelete"></span> không?
+                        Do you want to delete room number <span id="roomNumberToDelete"></span>?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Xóa</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Yes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal thông báo không thể xóa -->
+        <div class="modal fade" id="cannotdeleteModal" tabindex="-1" aria-labelledby="cannotdeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cannotdeleteModalLabel">Delete room</h5>
+                    </div>
+                    <div class="modal-body">
+                        You can not delete room <span id="roomNumberToDelete"></span> when the room status is occupied !
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
                     </div>
                 </div>
             </div>
@@ -224,12 +260,21 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                                        function openDeleteModal(roomId, roomNumber) {
-                                            document.getElementById('roomNumberToDelete').textContent = roomNumber;
-                                            document.getElementById('confirmDeleteBtn').href = 'ListRoom?id=' + roomId;  // Link for deletion
-                                            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-                                            deleteModal.show();
-                                        }
+                                            function openDeleteModal(roomId, roomNumber) {
+                                                document.getElementById('roomNumberToDelete').textContent = roomNumber;
+                                                document.getElementById('confirmDeleteBtn').href = 'ListRoom?id=' + roomId;  // Link for deletion
+                                                var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+                                                deleteModal.show();
+                                            }
+
+        </script>
+        <script>
+            function cannotopenDeleteModal(roomId, roomNumber) {
+                document.getElementById('roomNumberToDelete').textContent = roomNumber;
+                document.getElementById('confirmDeleteBtn').href = 'ListRoom?id=' + roomId;  // Link for deletion
+                var cannotdeleteModal = new bootstrap.Modal(document.getElementById('cannotdeleteModal'));
+                cannotdeleteModal.show();
+            }
 
         </script>
     </body>

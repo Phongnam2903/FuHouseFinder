@@ -89,32 +89,32 @@ public class CreateAccount extends HttpServlet {
 
         // Validate the username
         if (username == null || username.trim().isEmpty()) {
-            errorUsername = "Tên người dùng không được để trống!";
+            errorUsername = "Username don't empty!";
             hasError = true;
         }
 
         // Validate the password and confirm password
         if (password == null || confirmPassword == null || password.isEmpty() || confirmPassword.isEmpty()) {
-            errorPassword = "Mật khẩu và xác nhận mật khẩu không được để trống!";
+            errorPassword = "Password and ConfirmPassword can't be empty!";
             hasError = true;
         } else if (!password.equals(confirmPassword)) {
-            errorPassword = "Mật khẩu không khớp!";
+            errorPassword = "Password don't match!";
             hasError = true;
         } else if (password.length() < 8 || !Pattern.compile("[A-Za-z]").matcher(password).find()
                 || !Pattern.compile("[0-9]").matcher(password).find()) {
-            errorPassword = "Mật khẩu phải ít nhất 8 ký tự và bao gồm cả chữ cái và số.";
+            errorPassword = "Password must be at least 8 characters and include both letters and numbers.";
             hasError = true;
         }
 
         // Validate the email format
         if (email == null || email.trim().isEmpty()) {
-            errorEmail = "Email không được để trống!";
+            errorEmail = "Email can't be empty!";
             hasError = true;
         } else if (!Pattern.matches(EMAIL_REGEX, email)) {
-            errorEmail = "Định dạng email không hợp lệ!";
+            errorEmail = "Email format is invalid!";
             hasError = true;
         } else if (!Pattern.matches(DOMAIN_REGEX, email)) {
-            errorEmail = "Email phải kết thúc bằng @gmail.com hoặc @fpt.edu.vn!";
+            errorEmail = "Email must end with @gmail.com or @fpt.edu.vn!";
             hasError = true;
         }
 
@@ -144,10 +144,10 @@ public class CreateAccount extends HttpServlet {
             int rowsAffected = manageAccount.insertAccount(user); // Returns the number of affected rows
 
             if (rowsAffected > 0) {
-                successMessage = "Tạo tài khoản thành công!";
+                successMessage = "Create account successfully!";
             } else {
                 // If insertion fails
-                errorPassword = "Không thể tạo tài khoản. Vui lòng thử lại!";
+                errorPassword = "Unable to create account, Please try again!";
             }
         }
 

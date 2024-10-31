@@ -38,43 +38,43 @@
         <%@include file="../Partials/Header.jsp" %>
         <!--Màn hình thêm phòng-->
         <div class="container mt-4">    
-            <h2 class="text-center mb-4">Thêm phòng trọ</h2>
+            <h2 class="text-center mb-4">Add new room</h2>
             <div class="mb-4">
-                <a href="ListRoom" class="btn btn-secondary">Hủy</a>
+                <a href="ListRoom" class="btn btn-secondary">Cancel</a>
             </div>
             <form action="AddRoom" method="post" onsubmit="return validateForm()">
                 <!--Text điền tòa nhà-->
                 <div class="mb-3">
-                    <label for="roomNumber" class="form-label">Số phòng</label>
+                    <label for="roomNumber" class="form-label">Room number</label>
                     <input type="text" class="form-control" id="roomNumber" name="roomNumber" required>
                     <div id="roomNumberError" class="error-message"></div>
                 </div>
                 <!--Text tầng-->
                 <div class="mb-3">
-                    <label for="floorNumber" class="form-label">Tầng</label>
+                    <label for="floorNumber" class="form-label">Floor</label>
                     <input type="number" class="form-control" id="floorNumber" name="floorNumber" required min="1">
                     <div id="floorNumberError" class="error-message"></div>
                 </div>
                 <!--Text tên phòng-->
                 <div class="mb-3">
-                    <label for="description" class="form-label">Mô tả</label>
+                    <label for="description" class="form-label">Description</label>
                     <input type="text" class="form-control" id="description" name="description" required>
                     <div id="descriptionError" class="error-message"></div>
                 </div>
                 <!--Text giá-->
                 <div class="mb-3">
-                    <label for="price" class="form-label">Giá</label>
+                    <label for="price" class="form-label">Price</label>
                     <input type="number" class="form-control" id="price" name="price" required min="0" step="0.01">
                     <div id="priceError" class="error-message"></div>
                 </div>
                 <!--Text diện tích-->
                 <div class="mb-3">
-                    <label for="area" class="form-label">Diện tích</label>
+                    <label for="area" class="form-label">Area</label>
                     <input type="number" class="form-control" id="area" name="area" required min="0" step="0.01">
                     <div id="areaError" class="error-message"></div>
                 </div>
-                <div class="mb-3">
-                    <label for="houseId" class="form-label">Tên tòa nhà</label>
+                <div class="mb-3" hidden>
+                    <label for="houseId" class="form-label" >Tên tòa nhà</label>
                     <select class="form-select" id="houseId" name="houseId" required>
                         <c:forEach items="${houseList}" var="house">
                             <option value="${house.id}">${house.houseName}</option>
@@ -84,7 +84,7 @@
                 </div>
                 <!--Chọn loại phòng-->
                 <div class="mb-3">
-                    <label for="roomTypeId" class="form-label">Loại phòng</label>
+                    <label for="roomTypeId" class="form-label">Room Type</label>
                     <select class="form-select" id="roomTypeId" name="roomTypeId" required>
                         <c:forEach items="${roomTypeList}" var="roomType">
                             <option value="${roomType.roomTypeID}">${roomType.roomTypeName}</option>
@@ -93,7 +93,7 @@
                     <div id="roomTypeIdError" class="error-message"></div>
                 </div>
                 <div class="mb-3">
-                    <label for="statusId" class="form-label">Tình trạng</label>
+                    <label for="statusId" class="form-label">Status</label>
                     <select class="form-select" id="statusId" name="statusId" required>
                         <c:forEach items="${roomStatusList}" var="roomStatus">
                             <option value="${roomStatus.statusID}">${roomStatus.statusName}</option>
@@ -104,45 +104,37 @@
 
                 <!--Checkbox tiện ích: Tủ lanh, Bếp, Máy giặt, Bàn, Giường, Không chung chủ, Vệ sinh khép kín -->
                 <div class="mb-3">
-                    <label class="form-label">Tiện ích</label>
+                    <label class="form-label">Services</label>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="fridge" name="facilities" value="fridge">
-                        <label class="form-check-label" for="fridge">Tủ lạnh</label>
+                        <label class="form-check-label" for="fridge">Fridge</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="kitchen" name="facilities" value="kitchen">
-                        <label class="form-check-label" for="kitchen">Bếp</label>
+                        <label class="form-check-label" for="kitchen">Kitchen</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="washingMachine" name="facilities" value="washingMachine">
-                        <label class="form-check-label" for="washingMachine">Máy giặt</label>
+                        <label class="form-check-label" for="washingMachine">Washing machine</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="bed" name="facilities" value="bed">
-                        <label class="form-check-label" for="bed">Giường</label>
+                        <label class="form-check-label" for="bed">Bed</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="liveInHouseOwner" name="facilities" value="liveInHouseOwner">
-                        <label class="form-check-label" for="liveInHouseOwner">Không chung chủ</label>
+                        <label class="form-check-label" for="liveInHouseOwner">Live in house owner</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="closedToilet" name="facilities" value="closedToilet">
-                        <label class="form-check-label" for="closedToilet">Vệ sinh khép kín</label>
+                        <label class="form-check-label" for="closedToilet">Closed toilet</label>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-secondary">Thêm mới</button>
+                    <button type="submit" class="btn btn-secondary">Add new</button>
                 </div>
             </form>
-                    <!-- Thêm một alert để hiển thị thông báo thêm thành công -->
-        <c:if test="${param.successAdd eq 'true'}">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Phòng đã được thêm thành công!
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </c:if>
-        </div>
 
         <%@include file="../Partials/Footer.jsp" %>
 

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class DAOHouse extends DAO {
 
-    public List<House> getHousesWithPricesAndStar1() {
+    public List<House> getHousesWithPricesAndStar() {
         List<House> houses = new ArrayList<>();
         String sql = "SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, House.Description, "
                 + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice, AVG(CAST(Rates.Star AS FLOAT)) AS AvgStar "
@@ -328,7 +328,7 @@ public class DAOHouse extends DAO {
     }
 
     public House getHouseSummary(int ownerId) {
-        House houseSummary = new House();
+        House houseSummary = new House();  // Sử dụng House để lưu thông tin tổng hợp
         String sql = "SELECT COUNT(DISTINCT House.ID) AS TotalHouses, "
                 + "                 COUNT(Room.ID) AS TotalRooms, "
                 + "                 COUNT(CASE WHEN Room.StatusID = 1 THEN 1 END) AS TotalAvailableRooms "

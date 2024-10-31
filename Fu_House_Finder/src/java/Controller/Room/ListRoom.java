@@ -47,7 +47,7 @@ public class ListRoom extends HttpServlet {
         if (roomId != null) {
             DAORoom roomDAO = new DAORoom();
             roomDAO.deleteRoom(Integer.parseInt(roomId));
-            response.sendRedirect("ListRoom?success=true?houseId=" + houseId);
+            response.sendRedirect("ListRoom?successDelete=true?houseId=" + houseId);
         } else {
             request.getRequestDispatcher("/Views/HouseOwner/ListRoom.jsp").forward(request, response);
         }
