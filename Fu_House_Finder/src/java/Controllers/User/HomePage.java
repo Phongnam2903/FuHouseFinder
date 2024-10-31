@@ -56,7 +56,66 @@ public class HomePage extends HttpServlet {
         //lấy thông tin người dùng từ session
         User user = (User) request.getSession().getAttribute("user");
 
-        List<House> houseList = daoHouse.getHousesWithPricesAndStar();
+        String minDistanceParam = request.getParameter("distanceFrom");
+        String maxDistanceParam = request.getParameter("distanceTo");
+        String minPriceParam = request.getParameter("priceMin");
+        String maxPriceParam = request.getParameter("priceMax");
+        String minRatingParam = request.getParameter("rating");
+
+        // Convert to appropriate types (null if not provided)
+        Float minDistance = (minDistanceParam != null && !minDistanceParam.isEmpty()) ? Float.valueOf(minDistanceParam) : null;
+        Float maxDistance = (maxDistanceParam != null && !maxDistanceParam.isEmpty()) ? Float.valueOf(maxDistanceParam) : null;
+        Double minPrice = (minPriceParam != null && !minPriceParam.isEmpty()) ? Double.valueOf(minPriceParam) : null;
+        Double maxPrice = (maxPriceParam != null && !maxPriceParam.isEmpty()) ? Double.valueOf(maxPriceParam) : null;
+        Integer minRating = (minRatingParam != null && !minRatingParam.isEmpty()) ? Integer.valueOf(minRatingParam) : null;
+
+        // Room type filter (convert to Boolean values)
+        Boolean singleRoom = request.getParameter("singleRoom") != null;
+        Boolean doubleRoom = request.getParameter("doubleRoom") != null;
+        Boolean tripleRoom = request.getParameter("tripleRoom") != null;
+        Boolean quadRoom = request.getParameter("quadRoom") != null;
+        Boolean miniApartment = request.getParameter("miniApartment") != null;
+        Boolean fullHouse = request.getParameter("fullHouse") != null;
+
+        // Features filter (convert to Boolean values)
+        Boolean fingerprintLock = request.getParameter("fingerprintLock") != null;
+        Boolean camera = request.getParameter("camera") != null;
+        Boolean parking = request.getParameter("parking") != null;
+        Boolean fridge = request.getParameter("fridge") != null;
+        Boolean washingMachine = request.getParameter("washingMachine") != null;
+        Boolean desk = request.getParameter("desk") != null;
+        Boolean kitchen = request.getParameter("kitchen") != null;
+        Boolean bed = request.getParameter("bed") != null;
+        Boolean privateToilet = request.getParameter("privateToilet") != null;
+
+        //thiết lập phân trang
+        int pageSize = 9;
+        String pageStr = request.getParameter("page");
+        int pageNumber = 1;
+
+        //phân tích số trang
+        if (pageStr != null && !pageStr.isEmpty()) {
+            try {
+                pageNumber = Integer.parseInt(pageStr);
+            } catch (NumberFormatException e) {
+                pageNumber = 1;
+            }
+        }
+
+        List<House> houseList = daoHouse.getHousesWithPricesAndStar(minDistance, maxDistance, minPrice, maxPrice, singleRoom, doubleRoom,
+                tripleRoom, quadRoom, miniApartment, fullHouse, fingerprintLock,
+                camera, parking, fridge, washingMachine, desk, kitchen, bed, privateToilet, minRating, pageNumber, pageSize);
+
+        int totalHouses = daoHouse.getCountHousesWithPricesAndStar(minDistance, maxDistance, minPrice, maxPrice, singleRoom,
+                doubleRoom, tripleRoom, quadRoom, miniApartment, fullHouse, fingerprintLock,
+                camera, parking, fridge, washingMachine, desk, kitchen, bed, privateToilet, minRating);
+
+        int totalPages = (int) Math.ceil((double) totalHouses / pageSize);
+
+        //đảm bảo có ít nhất 1 trang
+        if (totalPages < 1) {
+            totalPages = 1;
+        }
 
         //duyệt danh sách nhà và tách ảnh cho mỗi nhà trọ
         for (House house : houseList) {
@@ -68,6 +127,8 @@ public class HomePage extends HttpServlet {
             }
         }
 
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("currentPage", pageNumber);
         request.setAttribute("houseList", houseList);
         request.setAttribute("user", user);
         request.getRequestDispatcher("/Views/User/HomePage.jsp").forward(request, response);

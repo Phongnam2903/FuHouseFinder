@@ -28,16 +28,16 @@
                     <form id="filterForm" method="get" action="homePage">
                         <div class="d-flex justify-content-between align-items-center p-3" style="background-color: #f44336; padding: 10px;">
                             <h2 class="text-white mb-0">FILTER RESULTS</h2>
-                            <button type="reset" class="btn btn-link text-white mb-0">Reset Filters</button>
+                            <button type="reset" class="btn btn-link text-white mb-0" onclick="window.location.href='homePage';">Reset Filters</button>
                         </div>
                         <div class="card p-3">
                             <!-- Distance Filter -->
                             <div class="mb-3">
                                 <label for="distance" class="form-label">Distance to School</label>
                                 <div class="d-flex align-items-center">
-                                    <input type="text" class="form-control me-2" id="distance-km" name="distanceFrom" placeholder="From (km)">
+                                    <input type="text" class="form-control me-2" id="distance-km" name="distanceFrom" placeholder="From (km)" value="${param.distanceFrom}">
                                     <span>-</span>
-                                    <input type="text" class="form-control ms-2" id="distance-miles" name="distanceTo" placeholder="To (km)">
+                                    <input type="text" class="form-control ms-2" id="distance-miles" name="distanceTo" placeholder="To (km)" value="${param.distanceTo}">
                                 </div>
                             </div>
 
@@ -46,38 +46,38 @@
                             <div class="mb-3">
                                 <label for="price" class="form-label">Price (VND/Month)</label>
                                 <div class="d-flex align-items-center">
-                                    <input type="text" class="form-control me-2" id="price-min" name="priceMin" placeholder="From">
+                                    <input type="text" class="form-control me-2" id="price-min" name="priceMin" placeholder="From" value="${param.priceMin}">
                                     <span>-</span>
-                                    <input type="text" class="form-control ms-2" id="price-max" name="priceMax" placeholder="To">
+                                    <input type="text" class="form-control ms-2" id="price-max" name="priceMax" placeholder="To" value="${param.priceMax}">
                                 </div>
                             </div>
-
+ 
                             <hr>
                             <!-- Room Type Filter -->
                             <div class="mb-3">
                                 <label for="room-type" class="form-label">Room Type</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="singleRoom" id="singleRoom">
+                                    <input class="form-check-input" type="checkbox" name="singleRoom" id="singleRoom" ${param.singleRoom != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="singleRoom">Single</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="doubleRoom" id="doubleRoom">
+                                    <input class="form-check-input" type="checkbox" name="doubleRoom" id="doubleRoom" ${param.doubleRoom != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="doubleRoom">Double</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="tripleRoom" id="tripleRoom">
+                                    <input class="form-check-input" type="checkbox" name="tripleRoom" id="tripleRoom" ${param.tripleRoom != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="tripleRoom">Triple</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="quadRoom" id="quadRoom">
+                                    <input class="form-check-input" type="checkbox" name="quadRoom" id="quadRoom" ${param.quadRoom != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="quadRoom">Quad</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="miniApartment" id="miniApartment">
+                                    <input class="form-check-input" type="checkbox" name="miniApartment" id="miniApartment" ${param.miniApartment != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="miniApartment">Mini Apartment</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="fullHouse" id="fullHouse">
+                                    <input class="form-check-input" type="checkbox" name="fullHouse" id="fullHouse" ${param.fullHouse != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="fullHouse">Full House</label>
                                 </div>
                             </div>
@@ -87,39 +87,39 @@
                             <div class="mb-3">
                                 <label class="form-label">Additional Features</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="fingerprintLock" id="fingerprintLock">
+                                    <input class="form-check-input" type="checkbox" name="fingerprintLock" id="fingerprintLock" ${param.fingerprintLock != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="fingerprintLock">Fingerprint Lock</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="camera" id="camera">
+                                    <input class="form-check-input" type="checkbox" name="camera" id="camera" ${param.camera != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="camera">Security Camera</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="parking" id="parking">
+                                    <input class="form-check-input" type="checkbox" name="parking" id="parking" ${param.parking != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="parking">Parking Space</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="fridge" id="fridge">
+                                    <input class="form-check-input" type="checkbox" name="fridge" id="fridge" ${param.fridge != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="fridge">Fridge</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="washingMachine" id="washingMachine">
+                                    <input class="form-check-input" type="checkbox" name="washingMachine" id="washingMachine" ${param.washingMachine != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="washingMachine">Washing Machine</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="desk" id="desk">
+                                    <input class="form-check-input" type="checkbox" name="desk" id="desk" ${param.desk != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="desk">Desk</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="kitchen" id="kitchen">
+                                    <input class="form-check-input" type="checkbox" name="kitchen" id="kitchen" ${param.kitchen != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="kitchen">Kitchen</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="bed" id="bed">
+                                    <input class="form-check-input" type="checkbox" name="bed" id="bed" ${param.bed != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="bed">Bed</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="privateToilet" id="privateToilet">
+                                    <input class="form-check-input" type="checkbox" name="privateToilet" id="privateToilet" ${param.privateToilet != null ? 'checked' : ''}>
                                     <label class="form-check-label" for="privateToilet">Private Toilet</label>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@
                                 <label for="rating" class="form-label">Rating</label>
                                 <div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating5" value="5">
+                                        <input class="form-check-input" type="radio" name="rating" id="rating5" value="5" ${param.rating == '5' ? 'checked' : ''}>
                                         <label class="form-check-label" for="rating5">
                                             <i class="fas fa-star text-warning"></i>
                                             <i class="fas fa-star text-warning"></i>
@@ -140,7 +140,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating4" value="4">
+                                        <input class="form-check-input" type="radio" name="rating" id="rating4" value="4" ${param.rating == '4' ? 'checked' : ''}>
                                         <label class="form-check-label" for="rating4">
                                             <i class="fas fa-star text-warning"></i>
                                             <i class="fas fa-star text-warning"></i>
@@ -150,7 +150,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating3" value="3">
+                                        <input class="form-check-input" type="radio" name="rating" id="rating3" value="3" ${param.rating == '3' ? 'checked' : ''}>
                                         <label class="form-check-label" for="rating3">
                                             <i class="fas fa-star text-warning"></i>
                                             <i class="fas fa-star text-warning"></i>
@@ -159,7 +159,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating2" value="2">
+                                        <input class="form-check-input" type="radio" name="rating" id="rating2" value="2" ${param.rating == '2' ? 'checked' : ''}>
                                         <label class="form-check-label" for="rating2">
                                             <i class="fas fa-star text-warning"></i>
                                             <i class="fas fa-star text-warning"></i>
@@ -167,7 +167,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating1" value="1">
+                                        <input class="form-check-input" type="radio" name="rating" id="rating1" value="1" ${param.rating == '1' ? 'checked' : ''}>
                                         <label class="form-check-label" for="rating1">
                                             <i class="fas fa-star text-warning"></i>
                                             and above
@@ -243,6 +243,84 @@
                                 </a>
                             </div>
                         </c:forEach>
+
+                        <!--Phân Trang -->
+                        <div class="pagination-container">
+                            <ul class="pagination justify-content-end">
+                                <!-- Nút Previous -->
+                                <c:if test="${currentPage > 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/homePage?page=${currentPage - 1}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo; Previous</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${currentPage == 1}">
+                                    <li class="page-item disabled">
+                                        <span class="page-link" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo; Previous</span>
+                                        </span>
+                                    </li>
+                                </c:if>
+
+                                <!-- Hiển thị các số trang -->
+                                <c:choose>
+                                    <c:when test="${totalPages <= 5}">
+                                        <!-- Nếu tổng số trang <= 5, hiển thị tất cả -->
+                                        <c:forEach var="i" begin="1" end="${totalPages}">
+                                            <c:choose>
+                                                <c:when test="${i == currentPage}">
+                                                    <li class="page-item active"><span class="page-link">${i}</span></li>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/homePage?page=${i}">${i}</a></li>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                        <!-- Nếu tổng số trang > 5, hiển thị các trang đầu, cuối và dấu "..." -->
+                                        <c:if test="${currentPage > 3}">
+                                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/homePage?page=1">1</a></li>
+                                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                                            </c:if>
+
+                                        <c:forEach var="i" begin="${(currentPage - 2 < 2) ? 2 : currentPage - 2}" end="${(currentPage + 2 > totalPages - 1) ? totalPages - 1 : currentPage + 2}">
+                                            <c:choose>
+                                                <c:when test="${i == currentPage}">
+                                                    <li class="page-item active"><span class="page-link">${i}</span></li>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/homePage?page=${i}">${i}</a></li>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+
+                                        <c:if test="${currentPage < totalPages - 2}">
+                                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/homePage?page=${totalPages}">${totalPages}</a></li>
+                                            </c:if>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                <!-- Nút Next -->
+                                <c:if test="${currentPage < totalPages}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/homePage?page=${currentPage + 1}" aria-label="Next">
+                                            <span aria-hidden="true">Next &raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${currentPage == totalPages}">
+                                    <li class="page-item disabled">
+                                        <span class="page-link" aria-label="Next">
+                                            <span aria-hidden="true">Next &raquo;</span>
+                                        </span>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
             </div>
