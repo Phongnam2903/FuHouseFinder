@@ -2,6 +2,7 @@ package DAL.Admin;
 
 import DAL.DBContext;
 import Models.User;
+import Validations.DataEncryptionSHA256;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
@@ -98,21 +99,11 @@ public class ManageAccount extends DBContext {
 
     public int insertAccount(User student) {
         int n = 0;
-        String sql = "INSERT INTO [dbo].[User]\n"
-                + "           ([FacebookUserId]\n"
-                + "           ,[GoogleUserId]\n"
-                + "           ,[FullName]\n"
-                + "           ,[Password]\n"
-                + "           ,[Email]\n"
-                + "           ,[PhoneNumber]\n"
-                + "           ,[DateOfBirth]\n"
-                + "           ,[Address]\n"
-                + "           ,[StatusID]\n"
-                + "           ,[Roleid]\n"
-                + "           ,[Avatar]\n"
-                + "           ,[CreatedDate]\n"
-                + "           ,[RoomHistoriesID])\n"
-                + "     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO [dbo].[User] "
+                + "([FacebookUserId], [GoogleUserId], [FullName], [Password], "
+                + "[Email], [PhoneNumber], [DateOfBirth], [Address], "
+                + "[StatusID], [Roleid], [Avatar], [CreatedDate], [RoomHistoriesID]) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement prestate = null;
         try {
@@ -121,17 +112,14 @@ public class ManageAccount extends DBContext {
                 throw new SQLException("Database connection is not available.");
             }
 
-            // Hash the password using SHA-256 (assuming hashPasswordToBytes returns byte[])
-            byte[] hashedPassword = hashPasswordToBytes(student.getPassword());
-
-            // Create a string of '*' with the same length as the original password
-            String maskedPassword = "*".repeat(student.getPassword().length());
+            // Băm mật khẩu sử dụng SHA-256
+            String hashedPassword = DataEncryptionSHA256.hashPassword(student.getPassword());
 
             prestate = connection.prepareStatement(sql);
             prestate.setString(1, student.getFacebookUserid());
             prestate.setString(2, student.getGoogleUserid());
             prestate.setString(3, student.getUsername());
-            prestate.setString(4, maskedPassword);  // Use masked password here
+            prestate.setString(4, hashedPassword);  // Sử dụng mật khẩu đã băm
             prestate.setString(5, student.getEmail());
             prestate.setString(6, student.getPhone());
 
@@ -165,17 +153,6 @@ public class ManageAccount extends DBContext {
             }
         }
         return n;
-    }
-
-    private byte[] hashPasswordToBytes(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return digest.digest(password.getBytes());
-        } catch (NoSuchAlgorithmException e) {
-            // Handle exception
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public int getAccountCount() {

@@ -51,6 +51,12 @@ public class CreateAccount extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Check Session
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login");
+            return;
+        }
         // Forward the request to the account creation JSP
         request.getRequestDispatcher("Views/Admin/AdminCreateAccount.jsp").forward(request, response);
     }
@@ -69,6 +75,11 @@ public class CreateAccount extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Check Session
+        if (request.getSession(false) == null || request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("login");
+            return;
+        }
         // Retrieve form data from the HTML form
         String fullName = request.getParameter("username");
         String email = request.getParameter("email");
