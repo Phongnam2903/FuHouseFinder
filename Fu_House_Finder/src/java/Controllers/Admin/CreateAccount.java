@@ -31,8 +31,8 @@ public class CreateAccount extends HttpServlet {
 
     // Regular expression to validate basic email format
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-    // Regular expression to check specific email domains (gmail.com and fpt.edu.vn)
-    private static final String DOMAIN_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(gmail\\.com|fpt\\.edu\\.vn)$";
+    // Regular expression to check specific email format 
+    private static final String DOMAIN_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     // Logger to log any issues or important information
     private static final Logger LOGGER = Logger.getLogger(CreateAccount.class.getName());
@@ -70,7 +70,7 @@ public class CreateAccount extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Retrieve form data from the HTML form
-        String username = request.getParameter("username");
+        String fullName = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
@@ -78,24 +78,30 @@ public class CreateAccount extends HttpServlet {
         String address = request.getParameter("address");
 
         // Initialize error and success messages
-        String errorUsername = "";
+        String errorFullName = "";
         String errorPassword = "";
+        String errorConfirmPassword = "";
         String errorEmail = "";
         String errorPhoneNumber = "";
+        String errorAddress = "";
         String successMessage = "";
 
         // Flag to check if there is any error
         boolean hasError = false;
 
         // Validate the username
-        if (username == null || username.trim().isEmpty()) {
-            errorUsername = "Username don't empty!";
+        if (fullName == null || fullName.trim().isEmpty()) {
+            errorFullName = "Full Name don't empty!";
             hasError = true;
         }
 
+        if (phone == null || phone.trim().isEmpty()) {
+            errorPhoneNumber = "Phone Number don't empty!";
+            hasError = true;
+        }
         // Validate the password and confirm password
-        if (password == null || confirmPassword == null || password.isEmpty() || confirmPassword.isEmpty()) {
-            errorPassword = "Password and ConfirmPassword can't be empty!";
+        if (password == null || password.isEmpty()) {
+            errorPassword = "Password can't be empty!";
             hasError = true;
         } else if (!password.equals(confirmPassword)) {
             errorPassword = "Password don't match!";
@@ -103,6 +109,16 @@ public class CreateAccount extends HttpServlet {
         } else if (password.length() < 8 || !Pattern.compile("[A-Za-z]").matcher(password).find()
                 || !Pattern.compile("[0-9]").matcher(password).find()) {
             errorPassword = "Password must be at least 8 characters and include both letters and numbers.";
+            hasError = true;
+        }
+
+        if (confirmPassword == null || confirmPassword.isEmpty()) {
+            errorConfirmPassword = "ConfirmPassword can't be empty";
+            hasError = true;
+        }
+
+        if (address == null || address.trim().isEmpty()) {
+            errorAddress = "Address don't empty!";
             hasError = true;
         }
 
@@ -114,7 +130,7 @@ public class CreateAccount extends HttpServlet {
             errorEmail = "Email format is invalid!";
             hasError = true;
         } else if (!Pattern.matches(DOMAIN_REGEX, email)) {
-            errorEmail = "Email must end with @gmail.com or @fpt.edu.vn!";
+            errorEmail = "Email format is invalid!";
             hasError = true;
         }
 
@@ -123,7 +139,7 @@ public class CreateAccount extends HttpServlet {
         if (!hasError) {
             // Create a new User object
             User user = new User();
-            user.setUsername(username);
+            user.setUsername(fullName);
             user.setEmail(email);
             user.setPassword(password); // Assuming ManageAccount handles password encryption
             user.setPhone(phone);
@@ -144,7 +160,10 @@ public class CreateAccount extends HttpServlet {
             int rowsAffected = manageAccount.insertAccount(user); // Returns the number of affected rows
 
             if (rowsAffected > 0) {
-                successMessage = "Create account successfully!";
+                successMessage = "Create account successfully!. Back to "
+                        + "<span>"
+                        + "<a href = 'viewAccountList' style='font-size: 15px; text-decoration: none'>ListAccount</a>"
+                        + "</span>";
             } else {
                 // If insertion fails
                 errorPassword = "Unable to create account, Please try again!";
@@ -153,10 +172,12 @@ public class CreateAccount extends HttpServlet {
 
         // Set the attributes to be used in the JSP
         request.setAttribute("successMessage", successMessage);
-        request.setAttribute("errorUsername", errorUsername);
+        request.setAttribute("errorFullName", errorFullName);
         request.setAttribute("errorPassword", errorPassword);
         request.setAttribute("errorEmail", errorEmail);
         request.setAttribute("errorPhoneNumber", errorPhoneNumber);
+        request.setAttribute("errorConfirmPassword", errorConfirmPassword);
+        request.setAttribute("errorAddress", errorAddress);
 
         // Forward the request back to the account creation JSP
         request.getRequestDispatcher("Views/Admin/AdminCreateAccount.jsp").forward(request, response);

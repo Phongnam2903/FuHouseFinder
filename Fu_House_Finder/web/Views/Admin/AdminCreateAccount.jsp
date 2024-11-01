@@ -50,28 +50,20 @@
                                 ${successMessage}
                             </div>
                         </c:if>
-                        <!-- Hiển thị Thông báo Lỗi -->
-
-                        <c:if test="${not empty errorPassword}">
-                            <div class="alert alert-danger" role="alert">
-                                ${errorPassword}
-                            </div>
-                        </c:if>
-
                         <!-- Full Name -->
                         <div class="mb-3">
-                            <label for="username" class="form-label">Full Name</label>
+                            <label for="username" class="form-label">Full Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="username" name="username" placeholder="Enter Full Name" 
                                    value="${param.username != null ? param.username : ''}">
                         </div>
-                        <c:if test="${not empty errorUsername}">
+                        <c:if test="${not empty errorFullName}">
                             <div class="alert alert-danger" role="alert">
-                                ${errorUsername}
+                                ${errorFullName}
                             </div>
                         </c:if>
                         <!-- Email -->
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                             <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" 
                                    value="${param.email != null ? param.email : ''}">
                         </div>
@@ -82,32 +74,48 @@
                         </c:if>
                         <!-- Phone Number -->
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" required pattern="[0-9]{10}"
+                            <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number"  pattern="[0-9]{10}"
                                    value="${param.phone != null ? param.phone : ''}">
                             <div class="form-text">Please enter a 10-digit phone number.</div>
                         </div>
-
+                        <c:if test="${not empty errorPhoneNumber}">
+                            <div class="alert alert-danger" role="alert">
+                                ${errorPhoneNumber}
+                            </div>
+                        </c:if>
                         <!-- Password -->
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
                             <input type="password" class="form-control" id="password" name="password"
-                                   placeholder="Enter Password" required minlength="8" title="Password must be at least 8 characters long and include letters and numbers.">
+                                   placeholder="Enter Password" value="${param.password != null ? param.password : ''}">
                         </div>
-
+                        <c:if test="${not empty errorPassword}">
+                            <div class="alert alert-danger" role="alert">
+                                ${errorPassword}
+                            </div>
+                        </c:if>
                         <!-- Confirm Password -->
                         <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Re-enter Password</label>
+                            <label for="confirmPassword" class="form-label">Re-enter Password <span class="text-danger">*</span></label>
                             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                                   placeholder="Re-enter Password" >
+                                   placeholder="Re-enter Password" value="${param.confirmPassword != null ? param.confirmPassword: ''}">
                         </div>
-
+                        <c:if test="${not empty errorConfirmPassword}">
+                            <div class="alert alert-danger" role="alert">
+                                ${errorConfirmPassword}
+                            </div>
+                        </c:if>
                         <!-- Address -->
                         <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter Address" required>${param.address != null ? param.address : ''}</textarea>
+                            <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter Address" >${param.address != null ? param.address : ''}</textarea>
                         </div>
-
+                        <c:if test="${not empty errorAddress}">
+                            <div class="alert alert-danger" role="alert">
+                                ${errorAddress}
+                            </div>
+                        </c:if>
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary w-100">Create Account</button>
                     </form>
