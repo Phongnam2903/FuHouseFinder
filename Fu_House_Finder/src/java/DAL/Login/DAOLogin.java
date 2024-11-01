@@ -2,6 +2,7 @@ package DAL.Login;
 
 import DAL.DBContext;
 import Models.User;
+import Validations.DataEncryptionSHA256;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -156,9 +157,10 @@ public class DAOLogin extends DBContext {
                         rs.getDate(13),
                         rs.getInt(14)
                 );
-                // Kiểm tra mật khẩu
+                // băm mật khẩu vào
+                String hashedInputPassword = DataEncryptionSHA256.hashPassword(password);
                 // Nếu mật khẩu đã băm không trùng với dấu * thì xác nhận thành công
-                if (password.length() > 0 && student.getPassword().equals("*".repeat(password.length()))) {
+                if (hashedInputPassword.equals(student.getPassword())) {
                     // Đăng nhập thành công
                     return student;
                 } else {
@@ -208,9 +210,7 @@ public class DAOLogin extends DBContext {
 //        String name = "Phong Nguyễn Nam";
 //        String email = "xuxumanh1@gmail.com";
 
-
         login.saveUserPassword("DangPH", "dang542003@gmail.com", "123", 1, 4);
-
 
         System.out.println("Test saveUser completed.");
     }

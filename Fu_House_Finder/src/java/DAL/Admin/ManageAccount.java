@@ -112,7 +112,7 @@ public class ManageAccount extends DBContext {
                 throw new SQLException("Database connection is not available.");
             }
 
-            // Băm mật khẩu sử dụng SHA-256
+            // Băm mật khẩu 
             String hashedPassword = DataEncryptionSHA256.hashPassword(student.getPassword());
 
             prestate = connection.prepareStatement(sql);
