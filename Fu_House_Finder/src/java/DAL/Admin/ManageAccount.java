@@ -1,10 +1,9 @@
 package DAL.Admin;
 
 import DAL.DBContext;
+import DAL.Login.DAOForgot;
 import Models.User;
 import Validations.DataEncryptionSHA256;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +14,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ManageAccount extends DBContext {
+
+    public boolean checkUserPhoneNumber(String phone) {
+        String sql = "Select * from [User] Where PhoneNumber = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, phone);
+            ResultSet rs = statement.executeQuery();
+
+            // Nếu có kết quả trả về từ database, tức là số điện thoại đã tồn tại
+            return rs.next();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOForgot.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // Nếu có lỗi hoặc không tìm thấy kết quả, trả về false
+        return false;
+    }
 
     public User getAccountById(int id) {
         User user = null;
@@ -231,24 +247,6 @@ public class ManageAccount extends DBContext {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
         return accounts;
-    }
-
-    public static void main(String[] args) {
-        ManageAccount manageAccount = new ManageAccount();
-        User test = new User();
-        test.setId(19);
-        test.setUsername("Phong Nam");
-        test.setEmail("phongnnhe176274@fpt.edu.vn");
-        test.setPhone("0398601399");
-        test.setAddress("Hà Nội");
-        test.setStatusID(1);
-        test.setRoleID(1);
-        int result = manageAccount.updateAccount(test);
-        if (result > 0) {
-            System.out.println("thành công");
-        } else {
-            System.out.println("thất bại ");
-        }
     }
 
 }

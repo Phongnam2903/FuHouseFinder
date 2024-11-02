@@ -168,19 +168,23 @@ public class CreateAccount extends HttpServlet {
 
             // Insert the new account into the database
             ManageAccount manageAccount = new ManageAccount();
-            int rowsAffected = manageAccount.insertAccount(user); // Returns the number of affected rows
 
-            if (rowsAffected > 0) {
-                successMessage = "Create account successfully!. Back to "
-                        + "<span>"
-                        + "<a href = 'viewAccountList' style='font-size: 15px; text-decoration: none'>ListAccount</a>"
-                        + "</span>";
+            if (manageAccount.checkUserPhoneNumber(phone)) {
+                errorPassword = "Phone number already exists! Please use a different phone number.";
             } else {
-                // If insertion fails
-                errorPassword = "Unable to create account, Please try again!";
+                int rowsAffected = manageAccount.insertAccount(user); // Returns the number of affected rows
+
+                if (rowsAffected > 0) {
+                    successMessage = "Create account successfully!. Back to "
+                            + "<span>"
+                            + "<a href = 'viewAccountList' style='font-size: 15px; text-decoration: none'>ListAccount</a>"
+                            + "</span>";
+                } else {
+                    // If insertion fails
+                    errorPassword = "Unable to create account, Please try again!";
+                }
             }
         }
-
         // Set the attributes to be used in the JSP
         request.setAttribute("successMessage", successMessage);
         request.setAttribute("errorFullName", errorFullName);
@@ -193,4 +197,5 @@ public class CreateAccount extends HttpServlet {
         // Forward the request back to the account creation JSP
         request.getRequestDispatcher("Views/Admin/AdminCreateAccount.jsp").forward(request, response);
     }
+
 }
