@@ -32,8 +32,7 @@ public class CreateAccount extends HttpServlet {
     // Regular expression to validate basic email format
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     // Regular expression to check specific email format 
-    private static final String DOMAIN_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-
+    private static final String Phone_Regex = "^[0-9]{10,12}$";
     // Logger to log any issues or important information
     private static final Logger LOGGER = Logger.getLogger(CreateAccount.class.getName());
 
@@ -109,6 +108,9 @@ public class CreateAccount extends HttpServlet {
         if (phone == null || phone.trim().isEmpty()) {
             errorPhoneNumber = "Phone Number don't empty!";
             hasError = true;
+        } else if (!Pattern.matches(Phone_Regex, phone)) {
+            errorPhoneNumber = "Phone Number format is invalid!";
+            hasError = true;
         }
         // Validate the password and confirm password
         if (password == null || password.isEmpty()) {
@@ -138,9 +140,6 @@ public class CreateAccount extends HttpServlet {
             errorEmail = "Email can't be empty!";
             hasError = true;
         } else if (!Pattern.matches(EMAIL_REGEX, email)) {
-            errorEmail = "Email format is invalid!";
-            hasError = true;
-        } else if (!Pattern.matches(DOMAIN_REGEX, email)) {
             errorEmail = "Email format is invalid!";
             hasError = true;
         }

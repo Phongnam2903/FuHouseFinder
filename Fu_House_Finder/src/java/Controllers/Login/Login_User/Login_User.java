@@ -77,7 +77,7 @@ public class Login_User extends HttpServlet {
             } else {
                 // Validate if emailOrPhone is an email or phone number
                 String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-                String phoneRegex = "^[0-9]{10,12}$";  // Change this according to your required phone format
+                String phoneRegex = "^(\\+84|0)\\d{9}$";
 
                 if (!emailOrPhone.matches(emailRegex) && !emailOrPhone.matches(phoneRegex)) {
                     request.setAttribute("emailFormatError", "Invalid email or phone number format");
