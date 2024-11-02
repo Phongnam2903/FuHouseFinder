@@ -55,15 +55,14 @@
                 </c:if>
                 <!-- Login Form -->
                 <form action="${pageContext.request.contextPath}/login" method="POST" class="w-75">
-                    <!-- Email input -->
+                    <!-- Email or Phone input -->
                     <div class="form-group mb-3">
-                        <input type="email" name="email" class="form-control form-control-lg" placeholder="Email or Phone Number" value="${param.email}" required>
-
+                        <input type="text" name="emailOrPhone" class="form-control form-control-lg" placeholder="Email or Phone Number" value="${param.emailOrPhone}">
                     </div>
 
                     <!-- Password input -->
                     <div class="form-group mb-3">
-                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" required>
+                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" >
                         <span id="togglePassword" onclick="togglePasswordVisibility()">👁 Show Password️</span>
                     </div>
 
