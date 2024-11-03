@@ -171,21 +171,23 @@ public class ManageAccount extends DBContext {
         return n;
     }
 
-    public int getAccountCount() {
-        String sql = "SELECT COUNT(*) FROM [User] Where roleid = 4";
+    public int getAccountCount(String searchKeyword) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM [User] Where roleid = 4 AND FullName LIKE ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, "%" + searchKeyword + "%");
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1);
+                count = rs.getInt(1);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0;
+        return count;
     }
 
-    public List<User> getAccountsByPage(int page, int pageSize) {
+    public List<User> getAccountsByPage(int page, int pageSize, String searchKeyword) {
         List<User> accounts = new ArrayList<>();
         String sql = """
                  SELECT 
@@ -200,7 +202,8 @@ public class ManageAccount extends DBContext {
                  LEFT JOIN 
                     Room r ON h.ID = r.HouseID
                  WHERE 
-                    u.RoleID = 4
+                    u.RoleID = 4 AND
+                    u.FullName LIKE ?
                  GROUP BY 
                     u.ID, u.FacebookUserID, u.GoogleUserID, u.FullName, u.Password, u.Email, 
                     u.PhoneNumber, u.DateOfBirth, u.Address, u.StatusID, u.RoleID, u.Avatar, 
@@ -213,8 +216,10 @@ public class ManageAccount extends DBContext {
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, (page - 1) * pageSize);
-            statement.setInt(2, pageSize);
+
+            statement.setString(1, "%" + searchKeyword + "%");
+            statement.setInt(2, (page - 1) * pageSize);
+            statement.setInt(3, pageSize);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
