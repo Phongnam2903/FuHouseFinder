@@ -103,6 +103,9 @@ public class CreateAccount extends HttpServlet {
         if (fullName == null || fullName.trim().isEmpty()) {
             errorFullName = "Full Name don't empty!";
             hasError = true;
+        } else if (fullName.length() > 50) {
+            errorFullName = "Full Name must be at least 50 characters";
+            hasError = true;
         }
 
         if (phone == null || phone.trim().isEmpty()) {
@@ -132,6 +135,9 @@ public class CreateAccount extends HttpServlet {
 
         if (address == null || address.trim().isEmpty()) {
             errorAddress = "Address don't empty!";
+            hasError = true;
+        } else if (address.length() > 255) {
+            errorAddress = "Address must be at least 255 characters.";
             hasError = true;
         }
 
