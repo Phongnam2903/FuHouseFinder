@@ -8,17 +8,17 @@ function filterTable() {
     let selectedStatus = "";
     for (let radio of statusRadios) {
         if (radio.checked) {
-            selectedStatus = radio.value.trim().toLowerCase();
+            selectedStatus = radio.value;
             break;
         }
     }
 
     for (let i = 1; i < rows.length; i++) { // Bỏ qua hàng tiêu đề
         const cells = rows[i].getElementsByTagName("td");
-        const name = cells[0].textContent.toLowerCase().replace(/\s+/g, ' ').trim();
-        const email = cells[1].textContent.toLowerCase().replace(/\s+/g, ' ').trim();
-        const phone = cells[2].textContent.toLowerCase().replace(/\s+/g, ' ').trim();
-        const status = cells[3].textContent.toLowerCase().replace(/\s+/g, ' ').trim();
+        const name = cells[0].textContent.toLowerCase();
+        const email = cells[1].textContent.toLowerCase();
+        const phone = cells[2].textContent.toLowerCase();
+        const status = cells[3].textContent.toLowerCase();
 
         // Kiểm tra nếu tên, email hoặc số điện thoại khớp với input tìm kiếm
         const matchesSearch = name.includes(searchInput) || email.includes(searchInput) || phone.includes(searchInput);
