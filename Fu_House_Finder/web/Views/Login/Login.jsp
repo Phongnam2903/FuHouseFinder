@@ -44,26 +44,26 @@
                         ${exceptionError}
                     </div>
                 </c:if>
+                <c:if test="${not empty emailError}">
+                    <div class="alert alert-danger w-75 mb-3 error-message" style="border-radius: 20px">${emailError}</div>
+                </c:if>
+                <c:if test="${not empty emailFormatError}">
+                    <div class="alert alert-danger w-75 mb-3 error-message" style="border-radius: 20px">${emailFormatError}</div>
+                </c:if>
+                <c:if test="${not empty passwordError}">
+                    <div class="alert alert-danger w-75 mb-3 error-message" style="border-radius: 20px">${passwordError}</div>
+                </c:if>
                 <!-- Login Form -->
                 <form action="${pageContext.request.contextPath}/login" method="POST" class="w-75">
-                    <!-- Email input -->
+                    <!-- Email or Phone input -->
                     <div class="form-group mb-3">
-                        <input type="email" name="email" class="form-control form-control-lg" placeholder="Email or Phone Number" value="${param.email}" required>
-                        <c:if test="${not empty emailError}">
-                            <div class="error-message">${emailError}</div>
-                        </c:if>
-                        <c:if test="${not empty emailFormatError}">
-                            <div class="error-message">${emailFormatError}</div>
-                        </c:if>
+                        <input type="text" name="emailOrPhone" class="form-control form-control-lg" placeholder="Email or Phone Number" value="${param.emailOrPhone}">
                     </div>
 
                     <!-- Password input -->
                     <div class="form-group mb-3">
-                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" required>
+                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" >
                         <span id="togglePassword" onclick="togglePasswordVisibility()">👁 Show Password️</span>
-                        <c:if test="${not empty passwordError}">
-                            <div class="error-message">${passwordError}</div>
-                        </c:if>
                     </div>
 
                     <!-- Login button -->

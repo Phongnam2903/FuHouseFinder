@@ -117,7 +117,7 @@ public class ListHouse extends HttpServlet {
 
         //lấy danh sách nhà dựa trên tên nhà trọ hoặc toàn bộ nhà của chủ sở hữu
         if (search != null && !search.isEmpty()) {
-            houseList = daoHouse.searchHouses(ownerId, search, pageNumber, pageSize);
+            houseList = daoHouse.searchHouses(ownerId, search.trim().replaceAll("\\s+", " "), pageNumber, pageSize);
             totalHouses = daoHouse.getTotalHouseBySearch(ownerId, search);
         } else {
             houseList = daoHouse.getHousesByOwnerId(ownerId, pageNumber, pageSize);

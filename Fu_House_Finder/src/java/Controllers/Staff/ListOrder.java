@@ -32,81 +32,87 @@ public class ListOrder extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOOrder daoOrder = new DAOOrder();
-        DAOHouse daoHouse = new DAOHouse();
-
-        //lấy giá trị tìm kiếm
-        String search = request.getParameter("search");
-
-        //lấy các giá trị từ form để lọc
-        String fromDate = request.getParameter("fromDate");
-        String toDate = request.getParameter("toDate");
-        String filterStatus = request.getParameter("filterStatus");
-        String sortOrder = request.getParameter("sortOrder");
-
-        //xử lý lấy thông tin chi tiết order
-        String orderIdParam = request.getParameter("orderId");
-        Order selectedOrder = null;
-        if (orderIdParam != null) {
-            try {
-                int orderId = Integer.parseInt(orderIdParam);
-                selectedOrder = daoOrder.getOrderById(orderId);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //lấy số trang hiện tại từ request, nếu không có thì mặc định là trang 1
-        String pageStr = request.getParameter("page");
-        int pageNumber = 1;
-        if (pageStr != null) {
-            try {
-                pageNumber = Integer.parseInt(pageStr);
-            } catch (NumberFormatException e) {
-                pageNumber = 1; //trang mặc định nếu có lỗi
-            }
-        }
-
-        //số lượng order hiển thị trên mỗi trang
-        int pageSize = 10;
-        int itemsPerPage = 10;
-
-        //lấy danh sách các order nếu có search hoặc filter
-        List<Order> orderList;
-        int totalOrders;
-        if ((search != null && !search.trim().isEmpty())
-                || (fromDate != null && !fromDate.isEmpty())
-                || (toDate != null && !toDate.isEmpty())
-                || (filterStatus != null && !filterStatus.isEmpty())
-                || (sortOrder != null && !sortOrder.isEmpty())) {
-            // Tìm kiếm dựa trên từ khóa và filter
-            orderList = daoOrder.searchOrdersByQueryAndFilter(search, fromDate, toDate, filterStatus, sortOrder, pageNumber, pageSize);
-            totalOrders = daoOrder.getTotalOrdersSearchAndFilter(search, fromDate, toDate, filterStatus);
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login");
+            return;
         } else {
-            // Lấy toàn bộ đơn đặt hàng nếu không có tìm kiếm
-            orderList = daoOrder.getAllOrders(pageNumber, pageSize);
-            totalOrders = daoOrder.getTotalOrders();
+            DAOOrder daoOrder = new DAOOrder();
+            DAOHouse daoHouse = new DAOHouse();
+
+            //lấy giá trị tìm kiếm
+            String search = request.getParameter("search");
+
+            //lấy các giá trị từ form để lọc
+            String fromDate = request.getParameter("fromDate");
+            String toDate = request.getParameter("toDate");
+            String filterStatus = request.getParameter("filterStatus");
+            String sortOrder = request.getParameter("sortOrder");
+
+            //xử lý lấy thông tin chi tiết order
+            String orderIdParam = request.getParameter("orderId");
+            Order selectedOrder = null;
+            if (orderIdParam != null) {
+                try {
+                    int orderId = Integer.parseInt(orderIdParam);
+                    selectedOrder = daoOrder.getOrderById(orderId);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //lấy số trang hiện tại từ request, nếu không có thì mặc định là trang 1
+            String pageStr = request.getParameter("page");
+            int pageNumber = 1;
+            if (pageStr != null) {
+                try {
+                    pageNumber = Integer.parseInt(pageStr);
+                } catch (NumberFormatException e) {
+                    pageNumber = 1; //trang mặc định nếu có lỗi
+                }
+            }
+
+            //số lượng order hiển thị trên mỗi trang
+            int pageSize = 10;
+            int itemsPerPage = 10;
+
+            //lấy danh sách các order nếu có search hoặc filter
+            List<Order> orderList;
+            int totalOrders;
+            if ((search != null && !search.trim().isEmpty())
+                    || (fromDate != null && !fromDate.isEmpty())
+                    || (toDate != null && !toDate.isEmpty())
+                    || (filterStatus != null && !filterStatus.isEmpty())
+                    || (sortOrder != null && !sortOrder.isEmpty())) {
+                // Tìm kiếm dựa trên từ khóa và filter
+                orderList = daoOrder.searchOrdersByQueryAndFilter(search, fromDate, toDate, filterStatus, sortOrder, pageNumber, pageSize);
+                totalOrders = daoOrder.getTotalOrdersSearchAndFilter(search, fromDate, toDate, filterStatus);
+            } else {
+                // Lấy toàn bộ đơn đặt hàng nếu không có tìm kiếm
+                orderList = daoOrder.getAllOrders(pageNumber, pageSize);
+                totalOrders = daoOrder.getTotalOrders();
+            }
+            List<House> houseList = daoHouse.getHousesWithPricesAndStarStaff();
+
+            //tính tổng số trang
+            int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
+
+            //đặt các thuộc tính cho request để hiển thị trên JSP
+            request.setAttribute("itemsPerPage", itemsPerPage);
+            request.setAttribute("orderList", orderList);
+            request.setAttribute("houseList", houseList);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("currentPage", pageNumber);
+            request.setAttribute("selectedOrder", selectedOrder);
+            request.setAttribute("search", search);
+            request.setAttribute("fromDate", fromDate);
+            request.setAttribute("toDate", toDate);
+            request.setAttribute("filterStatus", filterStatus);
+            request.setAttribute("sortOrder", sortOrder);
+
+            //điều hướng đến JSP
+            request.getRequestDispatcher("/Views/Staff/ListOrder.jsp").forward(request, response);
         }
-        List<House> houseList = daoHouse.getHousesWithPricesAndStarStaff();
-
-        //tính tổng số trang
-        int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
-
-        //đặt các thuộc tính cho request để hiển thị trên JSP
-        request.setAttribute("itemsPerPage", itemsPerPage);
-        request.setAttribute("orderList", orderList);
-        request.setAttribute("houseList", houseList);
-        request.setAttribute("totalPages", totalPages);
-        request.setAttribute("currentPage", pageNumber);
-        request.setAttribute("selectedOrder", selectedOrder);
-        request.setAttribute("search", search);
-        request.setAttribute("fromDate", fromDate);
-        request.setAttribute("toDate", toDate);
-        request.setAttribute("filterStatus", filterStatus);
-        request.setAttribute("sortOrder", sortOrder);
-
-        //điều hướng đến JSP
-        request.getRequestDispatcher("/Views/Staff/ListOrder.jsp").forward(request, response);
     }
 
     /**

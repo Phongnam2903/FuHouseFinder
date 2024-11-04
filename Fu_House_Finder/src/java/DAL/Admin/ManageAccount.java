@@ -1,10 +1,9 @@
 package DAL.Admin;
 
 import DAL.DBContext;
+import DAL.Login.DAOForgot;
 import Models.User;
 import Validations.DataEncryptionSHA256;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +14,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ManageAccount extends DBContext {
+
+    public boolean checkUserPhoneNumber(String phone) {
+        String sql = "Select * from [User] Where PhoneNumber = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, phone);
+            ResultSet rs = statement.executeQuery();
+
+            // Nếu có kết quả trả về từ database, tức là số điện thoại đã tồn tại
+            return rs.next();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOForgot.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // Nếu có lỗi hoặc không tìm thấy kết quả, trả về false
+        return false;
+    }
 
     public User getAccountById(int id) {
         User user = null;
@@ -99,21 +115,11 @@ public class ManageAccount extends DBContext {
 
     public int insertAccount(User student) {
         int n = 0;
-        String sql = "INSERT INTO [dbo].[User]\n"
-                + "           ([FacebookUserId]\n"
-                + "           ,[GoogleUserId]\n"
-                + "           ,[FullName]\n"
-                + "           ,[Password]\n"
-                + "           ,[Email]\n"
-                + "           ,[PhoneNumber]\n"
-                + "           ,[DateOfBirth]\n"
-                + "           ,[Address]\n"
-                + "           ,[StatusID]\n"
-                + "           ,[Roleid]\n"
-                + "           ,[Avatar]\n"
-                + "           ,[CreatedDate]\n"
-                + "           ,[RoomHistoriesID])\n"
-                + "     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO [dbo].[User] "
+                + "([FacebookUserId], [GoogleUserId], [FullName], [Password], "
+                + "[Email], [PhoneNumber], [DateOfBirth], [Address], "
+                + "[StatusID], [Roleid], [Avatar], [CreatedDate], [RoomHistoriesID]) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement prestate = null;
         try {
@@ -122,17 +128,14 @@ public class ManageAccount extends DBContext {
                 throw new SQLException("Database connection is not available.");
             }
 
-            // Hash the password using SHA-256 (assuming hashPasswordToBytes returns byte[])
-            byte[] hashedPassword = hashPasswordToBytes(student.getPassword());
-
-            // Create a string of '*' with the same length as the original password
-            String maskedPassword = "*".repeat(student.getPassword().length());
+            // Băm mật khẩu 
+            String hashedPassword = DataEncryptionSHA256.hashPassword(student.getPassword());
 
             prestate = connection.prepareStatement(sql);
             prestate.setString(1, student.getFacebookUserid());
             prestate.setString(2, student.getGoogleUserid());
             prestate.setString(3, student.getUsername());
-            prestate.setString(4, maskedPassword);  // Use masked password here
+            prestate.setString(4, hashedPassword);  // Sử dụng mật khẩu đã băm
             prestate.setString(5, student.getEmail());
             prestate.setString(6, student.getPhone());
 
@@ -168,32 +171,23 @@ public class ManageAccount extends DBContext {
         return n;
     }
 
-    private byte[] hashPasswordToBytes(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return digest.digest(password.getBytes());
-        } catch (NoSuchAlgorithmException e) {
-            // Handle exception
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public int getAccountCount() {
-        String sql = "SELECT COUNT(*) FROM [User] Where roleid = 4";
+    public int getAccountCount(String searchKeyword) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM [User] Where roleid = 4 AND FullName LIKE ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, "%" + searchKeyword + "%");
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1);
+                count = rs.getInt(1);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0;
+        return count;
     }
 
-    public List<User> getAccountsByPage(int page, int pageSize) {
+    public List<User> getAccountsByPage(int page, int pageSize, String searchKeyword) {
         List<User> accounts = new ArrayList<>();
         String sql = """
                  SELECT 
@@ -208,7 +202,8 @@ public class ManageAccount extends DBContext {
                  LEFT JOIN 
                     Room r ON h.ID = r.HouseID
                  WHERE 
-                    u.RoleID = 4
+                    u.RoleID = 4 AND
+                    u.FullName LIKE ?
                  GROUP BY 
                     u.ID, u.FacebookUserID, u.GoogleUserID, u.FullName, u.Password, u.Email, 
                     u.PhoneNumber, u.DateOfBirth, u.Address, u.StatusID, u.RoleID, u.Avatar, 
@@ -221,8 +216,10 @@ public class ManageAccount extends DBContext {
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, (page - 1) * pageSize);
-            statement.setInt(2, pageSize);
+
+            statement.setString(1, "%" + searchKeyword + "%");
+            statement.setInt(2, (page - 1) * pageSize);
+            statement.setInt(3, pageSize);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {

@@ -9,6 +9,7 @@
 package Controllers.Admin;
 
 import DAL.Admin.ManageAccount;
+import Models.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -40,6 +41,12 @@ public class DeleteAccount extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Check Session 
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login");
+            return;
+        }
         // Retrieve the account ID from the request parameter
         String idStr = request.getParameter("id");
 

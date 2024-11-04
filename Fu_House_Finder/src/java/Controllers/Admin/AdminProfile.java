@@ -8,8 +8,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @WebServlet(name = "AdminProfile", urlPatterns = {"/admin_profile"})
 public class AdminProfile extends HttpServlet {

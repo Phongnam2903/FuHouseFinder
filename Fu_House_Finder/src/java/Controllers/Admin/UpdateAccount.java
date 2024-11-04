@@ -46,7 +46,12 @@ public class UpdateAccount extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        //Check Session
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login");
+            return;
+        }
         // Retrieve the "id" parameter from the request
         String idParam = request.getParameter("id");
 
@@ -70,7 +75,7 @@ public class UpdateAccount extends HttpServlet {
 
         // Fetch the user details from the database using the ID
         ManageAccount manager = new ManageAccount();
-        User user = manager.getAccountById(id);
+        user = manager.getAccountById(id);
 
         // If no user is found, set an error message and forward to the view
         if (user == null) {
