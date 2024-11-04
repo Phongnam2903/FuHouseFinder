@@ -11,7 +11,7 @@
             <div class="navbar">
                 <ul class="navbar-nav">
                     <li class="nav-item"><a href="homePage" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Order</a></li>
+                    <li class="nav-item"><a href="Order" class="nav-link">Order</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">Introduce</a></li>
                 </ul>
             </div>

@@ -36,7 +36,7 @@
             <h2 class="text-center mb-4">Room list</h2>
 
             <!-- Thêm một alert để hiển thị thông báo xóa phòng thành công -->
-            <c:if test="${param.successDelete eq 'true'}">
+            <c:if test="${param.successDeleteR eq 'true'}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     Delete room successfully!
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -63,7 +63,7 @@
             </div>
 
             <div class="mb-4">
-                <a href="AddRoom" class="btn btn-secondary">+ Add new room</a>
+                <a href="AddRoom?houseId=${houseId}" class="btn btn-secondary">+ Add new room</a>
             </div>
 
             <c:if test="${not empty roomList}">
@@ -73,6 +73,7 @@
                             <th scope="col">Room Number</th>
                             <th scope="col">Floor</th>
                             <th scope="col">Description</th>
+                            <th scope="col">Image</th>
 
                             <th scope="col">Price</th>
                             <th scope="col">Area</th>
@@ -87,6 +88,7 @@
                                 <td>${room.roomNumber}</td>
                                 <td>${room.floorNumber}</td>
                                 <td>${room.description}</td>
+                                <td><img src="${room.image}" width="50px" height="50ps" /></td>
                                 <td>${room.price} đ</td>
                                 <td>${room.area} m²</td>
                                 <td>
@@ -198,7 +200,7 @@
                         <!-- Nút Next -->
                         <c:if test="${currentPage < totalPages}">
                             <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/ListRoom?page=${currentPage + 1}&houseId=${houseId}" aria-label="Next">
+                                <a class="page-link" href="${pageContext.request.contextPath}/ListRoom?page=${currentPage + 1}&houseId=${houseId}"  aria-label="Next">
                                     <span aria-hidden="true">Next &raquo;</span>
                                 </a>
                             </li>
@@ -233,11 +235,32 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                        <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Yes</a>
+                        <a id="confirmDeleteBtn" href="#" onclick="openDeleteSuccessModal(${room.id}, '${room.roomNumber}')" class="btn btn-danger">Yes</a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Modal xóa thành công -->
+        <c:if test="${param.successDelete eq 'true'}">
+            <div class="modal fade" id="deletesuccessModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Delete room</h5>
+                        </div>
+                        <div class="modal-body">
+                            Delete room number <span id="roomNumberToDelete"></span> success!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
 
         <!-- Modal thông báo không thể xóa -->
         <div class="modal fade" id="cannotdeleteModal" tabindex="-1" aria-labelledby="cannotdeleteModalLabel" aria-hidden="true">
@@ -260,12 +283,21 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                                            function openDeleteModal(roomId, roomNumber) {
-                                                document.getElementById('roomNumberToDelete').textContent = roomNumber;
-                                                document.getElementById('confirmDeleteBtn').href = 'ListRoom?id=' + roomId;  // Link for deletion
-                                                var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-                                                deleteModal.show();
-                                            }
+                            function openDeleteModal(roomId, roomNumber) {
+                                document.getElementById('roomNumberToDelete').textContent = roomNumber;
+                                document.getElementById('confirmDeleteBtn').href = 'ListRoom?id=' + roomId;  // Link for deletion
+                                var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+                                deleteModal.show();
+                            }
+
+        </script>
+        <script>
+            function openDeleteSuccessModal(roomId, roomNumber) {
+                document.getElementById('roomNumberToDelete').textContent = roomNumber;
+                document.getElementById('confirmDeleteBtn').href = 'ListRoom?id=' + roomId;  // Link for deletion
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteSuccess'));
+                deleteSuccess.show();
+            }
 
         </script>
         <script>
