@@ -2,6 +2,7 @@ package DAL.Login;
 
 import DAL.DBContext;
 import Models.User;
+import Validations.DataEncryptionSHA256;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -128,13 +129,14 @@ public class DAOLogin extends DBContext {
         }
     }
 
-    public User loginUser(String email, String password) {
-        String sql = "SELECT * FROM [User] WHERE Email = ?";
+    public User loginUser(String emailOrPhone, String password) {
+        String sql = "SELECT * FROM [User] WHERE Email = ? OR PhoneNumber = ?";
         User student = null;
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, email);
+            statement.setString(1, emailOrPhone);
+            statement.setString(2, emailOrPhone);
             ResultSet rs = statement.executeQuery();
 
             // Kiểm tra nếu người dùng tồn tại với email đó
@@ -156,9 +158,10 @@ public class DAOLogin extends DBContext {
                         rs.getDate(13),
                         rs.getInt(14)
                 );
-                // Kiểm tra mật khẩu
+                // băm mật khẩu vào
+                String hashedInputPassword = DataEncryptionSHA256.hashPassword(password);
                 // Nếu mật khẩu đã băm không trùng với dấu * thì xác nhận thành công
-                if (password.length() > 0 && student.getPassword().equals("*".repeat(password.length()))) {
+                if (hashedInputPassword.equals(student.getPassword())) {
                     // Đăng nhập thành công
                     return student;
                 } else {
@@ -208,9 +211,12 @@ public class DAOLogin extends DBContext {
 //        String name = "Phong Nguyễn Nam";
 //        String email = "xuxumanh1@gmail.com";
 
+<<<<<<< HEAD
 
         login.saveUserPassword("DangMomo", "dangmomo542003@gmail.com", "123", 1, 3);
-
+=======
+        login.saveUserPassword("DangPH", "dang542003@gmail.com", "123", 1, 4);
+>>>>>>> ed6fb94a006b909c8a24cf33c214327c2704d8d7
 
         System.out.println("Test saveUser completed.");
     }

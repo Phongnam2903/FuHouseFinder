@@ -63,27 +63,27 @@
                         <input type="hidden" name="id" value="${param.id != null ? param.id : user.id}" />
 
                         <div class="col-md-6">
-                            <label for="username">Full Name:</label>
+                            <label for="username">Full Name:<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="username" name="username" value="${user != null ? user.username : param.username}" >
                         </div>
 
                         <div class="col-md-6">
-                            <label for="email">Email:</label>
+                            <label for="email">Email:<span class="text-danger">*</span></label>
                             <input type="email" class="form-control" id="email" name="email" value="${user != null ? user.email : param.email}" >
                         </div>
 
                         <div class="col-md-6">
-                            <label for="phone">Phone:</label>
+                            <label for="phone">Phone:<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="phone" name="phone" value="${user != null ? user.phone : param.phone}" >
                         </div>
 
                         <div class="col-md-6">
-                            <label for="address">Address:</label>
+                            <label for="address">Address:<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="address" name="address" value="${user != null ? user.address : param.address}">
                         </div>
 
                         <div class="col-md-6">
-                            <label for="status">Status:</label>
+                            <label for="status">Status:<span class="text-danger">*</span></label>
                             <select class="form-control" id="status" name="status">
                                 <option value="1" ${user.statusID == 1 ? 'selected' : ''}>Active</option>
                                 <option value="2" ${user.statusID == 2 ? 'selected' : ''}>Inactive</option>

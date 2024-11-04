@@ -56,7 +56,7 @@ public class Login_User extends HttpServlet {
         DAOLogin login = new DAOLogin();
 
         // Retrieve form parameters
-        String email = request.getParameter("email");
+        String emailOrPhone = request.getParameter("emailOrPhone");
         String password = request.getParameter("password");
         String submit = request.getParameter("submit");
 
@@ -70,13 +70,19 @@ public class Login_User extends HttpServlet {
             request.removeAttribute("loginError");
             request.removeAttribute("exceptionError");
 
-            // Validate Email
-            if (email == null || email.trim().isEmpty()) {
-                request.setAttribute("emailError", "Email can't be empty");
+            // Check if emailOrPhone is empty
+            if (emailOrPhone == null || emailOrPhone.trim().isEmpty()) {
+                request.setAttribute("emailError", "Email or phone number can't be empty");
                 hasError = true;
-            } else if (!email.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
-                request.setAttribute("emailFormatError", "Invalid email format! Please check your email.");
-                hasError = true;
+            } else {
+                // Validate if emailOrPhone is an email or phone number
+                String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+                String phoneRegex = "^(\\+84|0)\\d{9}$";
+
+                if (!emailOrPhone.matches(emailRegex) && !emailOrPhone.matches(phoneRegex)) {
+                    request.setAttribute("emailFormatError", "Invalid email or phone number format");
+                    hasError = true;
+                }
             }
 
             // Validate Password
@@ -92,12 +98,11 @@ public class Login_User extends HttpServlet {
             }
 
             try {
-                // Attempt to authenticate the user
-                User account = login.loginUser(email, password);
+                // Attempt to authenticate the user with either email or phone
+                User account = login.loginUser(emailOrPhone, password);
                 if (account != null) {
-                    //Check account status
+                    // Check account status
                     int statusID = account.getStatusID();
-                    //Inactive
                     switch (statusID) {
                         case 2 -> {
                             request.setAttribute("loginError", "Your account is inactive. Please contact support.");
@@ -129,7 +134,7 @@ public class Login_User extends HttpServlet {
                     }
                 } else {
                     // Authentication failed
-                    request.setAttribute("loginError", "Email or Password is incorrect!");
+                    request.setAttribute("loginError", "Email/Phone or Password is incorrect!");
                     request.getRequestDispatcher("Views/Login/Login.jsp").forward(request, response);
                 }
             } catch (Exception e) {

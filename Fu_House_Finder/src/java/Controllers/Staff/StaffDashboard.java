@@ -9,6 +9,7 @@
 package Controllers.Staff;
 
 import DAL.Staff.DAOStaff;
+import Models.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -39,38 +40,24 @@ public class StaffDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login");
+            return;
+        } else {
+            DAOStaff daoStaff = new DAOStaff();
 
-        DAOStaff daoStaff = new DAOStaff();
+            int totalHouse = daoStaff.getHouseCount();
+            int totalRoom = daoStaff.getRoomCount();
+            int totalLandlord = daoStaff.getUserCountByRole(5);
+            int totalCapacity = daoStaff.getTotalCapacity();
 
-        int totalHouse = daoStaff.getHouseCount();
-        int totalRoom = daoStaff.getRoomCount();
-        int totalLandlord = daoStaff.getUserCountByRole(5);
-        int totalCapacity = daoStaff.getTotalCapacity();
+            request.setAttribute("totalLandlord", totalLandlord);
+            request.setAttribute("totalRoom", totalRoom);
+            request.setAttribute("totalHouse", totalHouse);
+            request.setAttribute("totalCapacity", totalCapacity);
 
-        request.setAttribute("totalLandlord", totalLandlord);
-        request.setAttribute("totalRoom", totalRoom);
-        request.setAttribute("totalHouse", totalHouse);
-        request.setAttribute("totalCapacity", totalCapacity);
-
-        request.getRequestDispatcher("Views/Staff/StaffDashboard.jsp").forward(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method. Since this servlet only
-     * forwards requests to the staff dashboard page, both GET and POST requests
-     * are handled the same way by calling <code>doGet</code>.
-     *
-     * @param request The HttpServletRequest object that contains the client's
-     * request.
-     * @param response The HttpServletResponse object that contains the
-     * servlet's response.
-     * @throws ServletException if a servlet-specific error occurs.
-     * @throws IOException if an input or output error is detected.
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Forward POST requests to doGet to handle them in the same way
-        doGet(request, response);
+            request.getRequestDispatcher("Views/Staff/StaffDashboard.jsp").forward(request, response);
+        }
     }
 }

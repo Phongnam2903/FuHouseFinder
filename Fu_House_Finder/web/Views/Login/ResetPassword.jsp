@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -12,10 +14,6 @@
 
         <style>
             /* Custom Styles */
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f6f9;
-            }
             .container-fluid {
                 max-width: 900px;
             }
@@ -55,57 +53,80 @@
             .message {
                 font-size: 15px;
                 color: #dc3545;
-                margin-top: 1rem;
+                margin-top: 0.5rem;
             }
         </style>
     </head>
 
     <body>
         <div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
-            <div class="row shadow-lg" style="width: 90%; max-width: 800px; height: 80%;">
+            <div class="row shadow-lg" style="width: 100%; max-width: 100%; height: 80%;">
 
                 <!-- Left Panel -->
-                <div class="col-md-5 left-panel d-flex flex-column align-items-center justify-content-center">
+                <div class="col-md-6 left-panel d-flex flex-column align-items-center justify-content-center">
                     <img src="${pageContext.request.contextPath}/images/logo/logo_house_finder.jpg" alt="FU House Finder Logo" class="img-fluid mb-3">
                     <h2 class="text-danger">FU HOUSE FINDER</h2>
                     <p class="text-muted text-center">Accommodation search application for FPT students</p>
                 </div>
 
                 <!-- Right Panel -->
-                <div class="col-md-7 right-panel">
-                    <h3 class="text-center mb-4 text-primary">Reset Your Password</h3>
+                <div class="col-md-6 right-panel d-flex flex-column align-items-center justify-content-center">
+                    <h3 class="text-center mb-4 text-dark">Reset Your Password</h3>
 
-                    <form action="${pageContext.request.contextPath}/resetpass" method="post" class="form-login mx-auto">
+                    <form action="${pageContext.request.contextPath}/resetPassword" method="post" >
+                        <div class="mb-4">
+                            <c:if test="${not empty message}">
+                                <div class="message">${message}</div>
+                            </c:if>
+                        </div>
                         <!-- Verification Code -->
                         <div class="mb-4">
-                            <label for="code" class="fw-bold">Verification Code</label>
+                            <label for="code" class="fw-bold">Verification Code <span class="text-danger">*</span></label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-user fs-4'></i></span>
-                                <input type="text" name="code" id="code" placeholder="Enter Code" class="form-control border-0" >
+                                <input type="text" name="code" id="code" placeholder="Enter Code" class="form-control border-0"
+                                       value="<c:out value='${param.code}'/>">
                             </div>
+                            <c:if test="${not empty messageCode}">
+                                <div class="message">${messageCode}</div>
+                            </c:if>
                         </div>
 
                         <!-- New Password -->
                         <div class="mb-4">
-                            <label for="newPassword" class="fw-bold">New Password</label>
+                            <label for="newPassword" class="fw-bold">New Password <span class="text-danger">*</span></label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-lock fs-4'></i></span>
-                                <input type="password" name="newPassword" id="newPassword" placeholder="New Password" class="form-control border-0" >
+                                <input type="password" name="newPassword" id="newPassword" placeholder="New Password" class="form-control border-0"
+                                       value="<c:out value='${param.newPassword}'/>">
                             </div>
+                            <c:if test="${not empty messageNewPassword}">
+                                <div class="message">${messageNewPassword}</div>
+                            </c:if>
+                            <c:if test="${not empty messagePattern}">
+                                <div class="message">${messagePattern}</div>
+                            </c:if>
                         </div>
 
                         <!-- Confirm New Password -->
                         <div class="mb-4">
-                            <label for="confirmPassword" class="fw-bold">Confirm New Password</label>
+                            <label for="confirmPassword" class="fw-bold">Confirm New Password <span class="text-danger">*</span></label>
                             <div class="input-group mt-2">
                                 <span class="input-group-text bg-light border-0"><i class='bx bx-lock fs-4'></i></span>
-                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control border-0" >
+                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control border-0"
+                                       value="<c:out value='${param.confirmPassword}'/>">
                             </div>
+                            <c:if test="${not empty messageConfirmPassword}">
+                                <div class="message">${messageConfirmPassword}</div>
+                            </c:if>
+                            <c:if test="${not empty messageMatchPassword}">
+                                <div class="message">${messageMatchPassword}</div>
+                            </c:if>
                         </div>
 
                         <!-- Submit Button -->
                         <div class="d-grid mt-4">
-                            <button type="submit" name="btnreset" class="btn-submit">Submit</button>
+                            <button type="submit" name="btnreset" class="btn-submit" style="border-radius: 15px">Submit</button>
                         </div>
                     </form>
                 </div>
