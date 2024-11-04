@@ -46,14 +46,12 @@
                         <label for="status">Status:</label>
                         <input type="text" id="status" name="status"><br><br>
 
-                        <label for="createdDate">Created Date:</label>
-                        <input type="date" id="createdDate" name="createdDate"><br><br>
+                        <label for="sentTime">Sent Time:</label>
+                        <input type="date" id="sentTime" name="sentTime"><br><br>
 
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email"><br><br>
 
-                        <label for="sentTime">Sent Time:</label>
-                        <input type="time" id="sentTime" name="sentTime"><br><br>
 
                         <button type="button" onclick="filter()">Search</button>
                     </div>
@@ -65,7 +63,6 @@
                                 <th scope="col">Description</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Sent Time</th>
-                                <th scope="col">Created Date</th>
                                 <th scope="col">Email </th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -80,7 +77,6 @@
                                     <td>${feedbacks.description}</td>
                                     <td>${feedbacks.status}</td>
                                     <td>${feedbacks.sentTime}</td>
-                                    <td>${feedbacks.createdDate}</td>
                                     <td>${feedbacks.renterEmail}</td>
                                     <td>
 

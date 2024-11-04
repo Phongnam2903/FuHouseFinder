@@ -45,11 +45,7 @@
                                     <i class="fas fa-arrow-left"></i> Back to Feedback List
                                 </a>
                             </div>
-                            <div class="d-flex justify-content-between">
-                                <a href="#" class="btn btn-warning">
-                                    <i class="fas fa-tools"></i> Edit
-                                </a>
-                            </div>
+
                         </div>
                     </div>
 

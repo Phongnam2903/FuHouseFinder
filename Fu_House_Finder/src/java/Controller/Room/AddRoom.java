@@ -100,6 +100,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     String roomNumberStr = request.getParameter("roomNumber");
     String floorNumberStr = request.getParameter("floorNumber");
     String description = request.getParameter("description");
+    String image = request.getParameter("image");
     String priceStr = request.getParameter("price");
     String areaStr = request.getParameter("area");
     String roomTypeIDStr = request.getParameter("roomTypeId");
@@ -206,7 +207,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     boolean liveInHouseOwner = faciliList.contains("liveInHouseOwner");
     boolean closedToilet = faciliList.contains("closedToilet");
     
-    String image = ""; // Handle image as needed
+    
 
     Room room = new Room();
     room.setRoomNumber(Integer.parseInt(roomNumberStr));
@@ -234,7 +235,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         request.setAttribute("message", "Thêm phòng trọ thất bại!");
         request.setAttribute("alertClass", "alert-danger");
     }
-    response.sendRedirect("ListRoom?successAdd=true");
+    response.sendRedirect("ListRoom?successAdd=true&houseId="+houseId);
 
 }
 
