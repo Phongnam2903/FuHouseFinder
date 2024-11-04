@@ -5,23 +5,23 @@
 
 package Controllers.User;
 
-import DAL.User.DAOFeedBack;
-import Models.Feedback;
+import DAL.User.DAOOrder;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
+import Models.Order;
 
 /**
  *
  * @author My Lap
  */
-@WebServlet(name="ListFeedBack", urlPatterns={"/ListFeedback"})
-public class ListFeedBack extends HttpServlet {
+@WebServlet(name="OrderServlet", urlPatterns={"/Order"})
+public class OrderServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +38,10 @@ public class ListFeedBack extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListFeedBack</title>");  
+            out.println("<title>Servlet Order</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListFeedBack at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet Order at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,27 +55,14 @@ public class ListFeedBack extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-        
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        DAOFeedBack daoFeedback = new DAOFeedBack();
-        
-        List<Feedback> feedbackList = daoFeedback.getAllFeedback();
-        
-        request.setAttribute("feedbackList", feedbackList);
-        
-        String feedbackId = request.getParameter("id");
-        if(feedbackId != null){
-            daoFeedback.deleteFeedbackById(Integer.parseInt(feedbackId));
-            response.sendRedirect("ListFeedback?successFB=true");
-        }else{
-            request.getRequestDispatcher("/Views/Staff/ListFeedBack.jsp").forward(request, response);
-        }
-        
-    }
-
+        DAOOrder daoOrder = new DAOOrder();
+        List<Order> orderList = daoOrder.getAllOrders9();
+        request.setAttribute("orderL", orderList);
+        request.getRequestDispatcher("/Views/User/Order.jsp").forward(request, response);
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -94,5 +81,9 @@ public class ListFeedBack extends HttpServlet {
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
 
 }

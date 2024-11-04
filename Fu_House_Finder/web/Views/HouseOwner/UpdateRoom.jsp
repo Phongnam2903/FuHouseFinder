@@ -59,6 +59,10 @@
                     <label for="description" class="form-label">Description</label>
                     <input type="text" class="form-control" id="description" name="description" value="${room.description}" required>
                 </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event, 'previewImage')" value="${room.image}" required>
+                </div>
                 <!--Text giá-->
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
@@ -172,6 +176,25 @@
         <%@include file="../Partials/Footer.jsp" %>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+                                    function previewImage(event, imgId) {
+                                        const file = event.target.files[0];
+                                        const previewImg = document.getElementById(imgId);
 
+                                        if (file) {
+                                            const reader = new FileReader();
+
+                                            reader.onload = function (e) {
+                                                previewImg.src = e.target.result;  // Thiết lập đường dẫn ảnh cho img
+                                                previewImg.style.display = 'block'; // Hiển thị ảnh
+                                            }
+
+                                            reader.readAsDataURL(file); // Đọc tệp ảnh và chuyển đổi thành URL
+                                        } else {
+                                            previewImg.src = ""; // Xóa đường dẫn nếu không có tệp
+                                            previewImg.style.display = 'none'; // Ẩn ảnh
+                                        }
+                                    }
+        </script>
     </body>
 </html>

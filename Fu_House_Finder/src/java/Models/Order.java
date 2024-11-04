@@ -18,11 +18,12 @@ public class Order {
     private String solvedByName;
     private String houseName;
     private String houseDescription;
+    private String suggestHouseName;
 
     public Order() {
     }
 
-    public Order(int id, int userID, String FullName, String phoneNumber, String email, String orderContent, int statusID, Date orderedDate, Date solvedDate, int solvedBy, int houseID, String solvedByName, String houseName, String houseDescription) {
+    public Order(int id, int userID, String FullName, String phoneNumber, String email, String orderContent, int statusID, Date orderedDate, Date solvedDate, int solvedBy, int houseID, String solvedByName, String houseName, String houseDescription, String suggestHouseName) {
         this.id = id;
         this.userID = userID;
         this.FullName = FullName;
@@ -37,7 +38,18 @@ public class Order {
         this.solvedByName = solvedByName;
         this.houseName = houseName;
         this.houseDescription = houseDescription;
+        this.suggestHouseName = suggestHouseName;
     }
+
+    public String getSuggestHouseName() {
+        return suggestHouseName;
+    }
+
+    public void setSuggestHouseName(String suggestHouseName) {
+        this.suggestHouseName = suggestHouseName;
+    }
+    
+    
 
     public String getSolvedByName() {
         return solvedByName;

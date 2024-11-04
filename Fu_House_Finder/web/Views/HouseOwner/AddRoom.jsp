@@ -61,6 +61,11 @@
                     <input type="text" class="form-control" id="description" name="description" required>
                     <div id="descriptionError" class="error-message"></div>
                 </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image <span class="text-danger">*</span></label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event, 'previewImage')" required>
+                    <img id="previewImage" src="" alt="Preview Image" style="display:none; max-width: 650px; margin-top: 10px;">
+                </div>
                 <!--Text giá-->
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
@@ -73,8 +78,8 @@
                     <input type="number" class="form-control" id="area" name="area" required min="0" step="0.01">
                     <div id="areaError" class="error-message"></div>
                 </div>
-                <div class="mb-3" hidden>
-                    <label for="houseId" class="form-label" >Tên tòa nhà</label>
+                <div class="mb-3">
+                    <label for="houseId" class="form-label" >House name</label>
                     <select class="form-select" id="houseId" name="houseId" required>
                         <c:forEach items="${houseList}" var="house">
                             <option value="${house.id}">${house.houseName}</option>
@@ -82,6 +87,13 @@
                     </select>
                     <div id="houseIdError" class="error-message"></div>
                 </div>
+
+                <div class="mb-3">
+                    <label for="houseId" class="form-label">House Name</label>
+                    <input type="text" class="form-control" id="floorNumber" name="floorNumber" required min="1" readonly="">
+                    <div id="floorNumberError" class="error-message"></div>
+                </div>
+
                 <!--Chọn loại phòng-->
                 <div class="mb-3">
                     <label for="roomTypeId" class="form-label">Room Type</label>
@@ -136,62 +148,83 @@
                 </div>
             </form>
 
-        <%@include file="../Partials/Footer.jsp" %>
+            <%@include file="../Partials/Footer.jsp" %>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-                function validateForm() {
-                    // Clear previous error messages
-                    document.getElementById('roomNumberError').innerText = '';
-                    document.getElementById('floorNumberError').innerText = '';
-                    document.getElementById('descriptionError').innerText = '';
-                    document.getElementById('priceError').innerText = '';
-                    document.getElementById('areaError').innerText = '';
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                        function validateForm() {
+                            // Clear previous error messages
+                            document.getElementById('roomNumberError').innerText = '';
+                            document.getElementById('floorNumberError').innerText = '';
+                            document.getElementById('descriptionError').innerText = '';
+                            document.getElementById('priceError').innerText = '';
+                            document.getElementById('areaError').innerText = '';
 
-                    const roomNumber = document.getElementById('roomNumber').value;
-                    const floorNumber = document.getElementById('floorNumber').value;
-                    const description = document.getElementById('description').value;
-                    const price = document.getElementById('price').value;
-                    const area = document.getElementById('area').value;
+                            const roomNumber = document.getElementById('roomNumber').value;
+                            const floorNumber = document.getElementById('floorNumber').value;
+                            const description = document.getElementById('description').value;
+                            const price = document.getElementById('price').value;
+                            const area = document.getElementById('area').value;
 
-                    let isValid = true; // Track overall validity
+                            let isValid = true; // Track overall validity
 
-                    if (!roomNumber) {
-                        document.getElementById('roomNumberError').innerText = "Số phòng không được để trống.";
-                        isValid = false;
+                            if (!roomNumber) {
+                                document.getElementById('roomNumberError').innerText = "Số phòng không được để trống.";
+                                isValid = false;
+                            }
+
+                            if (floorNumber <= 0) {
+                                document.getElementById('floorNumberError').innerText = "Tầng phải lớn hơn 0.";
+                                isValid = false;
+                            }
+
+                            if (!description) {
+                                document.getElementById('descriptionError').innerText = "Mô tả không được để trống.";
+                                isValid = false;
+                            }
+
+                            if (price < 0) {
+                                document.getElementById('priceError').innerText = "Giá không được âm.";
+                                isValid = false;
+                            }
+
+                            if (area < 0) {
+                                document.getElementById('areaError').innerText = "Diện tích không được âm.";
+                                isValid = false;
+                            }
+
+                            return isValid; // Prevent form submission if invalid
+
+                        }
+
+                        // Check if the message attribute exists
+                        if (document.getElementById('message')) {
+                            const message = document.getElementById('message').getAttribute('message');
+                            if (message) {
+                                alert(message);
+                            }
+                        }
+            </script>
+            <script>
+                function previewImage(event, imgId) {
+                    const file = event.target.files[0];
+                    const previewImg = document.getElementById(imgId);
+
+                    if (file) {
+                        const reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            previewImg.src = e.target.result;  // Thiết lập đường dẫn ảnh cho img
+                            previewImg.style.display = 'block'; // Hiển thị ảnh
+                        }
+
+                        reader.readAsDataURL(file); // Đọc tệp ảnh và chuyển đổi thành URL
+                    } else {
+                        previewImg.src = ""; // Xóa đường dẫn nếu không có tệp
+                        previewImg.style.display = 'none'; // Ẩn ảnh
                     }
-
-                    if (floorNumber <= 0) {
-                        document.getElementById('floorNumberError').innerText = "Tầng phải lớn hơn 0.";
-                        isValid = false;
-                    }
-
-                    if (!description) {
-                        document.getElementById('descriptionError').innerText = "Mô tả không được để trống.";
-                        isValid = false;
-                    }
-
-                    if (price < 0) {
-                        document.getElementById('priceError').innerText = "Giá không được âm.";
-                        isValid = false;
-                    }
-
-                    if (area < 0) {
-                        document.getElementById('areaError').innerText = "Diện tích không được âm.";
-                        isValid = false;
-                    }
-
-                    return isValid; // Prevent form submission if invalid
-
                 }
+            </script>
 
-                // Check if the message attribute exists
-                if (document.getElementById('message')) {
-                    const message = document.getElementById('message').getAttribute('message');
-                    if (message) {
-                        alert(message);
-                    }
-                }
-        </script>
     </body>
 </html>

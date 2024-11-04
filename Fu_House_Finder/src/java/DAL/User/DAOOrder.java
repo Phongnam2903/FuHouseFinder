@@ -85,6 +85,139 @@ public class DAOOrder extends DAO {
         return orderList;
     }
 
+    public List<Order> getAllOrders2(int userID, int currentPage, int itemsPerPage) {
+        List<Order> orderList = new ArrayList<>();
+        String sql = "SELECT * FROM Orders WHERE userID = ? LIMIT ? OFFSET ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userID);
+            stmt.setInt(2, itemsPerPage);
+            stmt.setInt(3, (currentPage - 1) * itemsPerPage);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // Populate your order list here
+                // orderList.add(...);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orderList;
+    }
+
+    public List<Order> getAllOrders3(int userID) {
+        List<Order> orderList = new ArrayList<>();
+        String sql = "SELECT * FROM Orders WHERE userID = ? LIMIT ? OFFSET ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userID);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // Populate your order list here
+                // orderList.add(...);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orderList;
+    }
+
+    // Phương thức để đếm tổng số đơn đặt hàng của người dùng theo userID
+    public int getTotalOrdersByUserId(int userId) {
+        int totalOrders = 0;
+        String query = "SELECT COUNT(*) AS total FROM [Order] WHERE userID = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    totalOrders = rs.getInt("total");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalOrders;
+    }
+
+    public List<Order> getAllOrders5(int userId) {
+        List<Order> orderList = new ArrayList<>();
+        String sql = "SELECT o.ID, \n"
+                + "       o.UserID, \n"
+                + "       o.OrderContent, \n"
+                + "       o.OrderedDate, \n"
+                + "       o.StatusID, \n"
+                + "       o.SolvedDate, \n"
+                + "       h.HouseName AS SuggestHouse \n"
+                + "FROM [fu_house_finder].[dbo].[Order] o \n"
+                + "JOIN [fu_house_finder].[dbo].[House] h ON o.HouseID = h.ID \n"
+                + "WHERE o.UserID = ?\n"
+                + "ORDER BY o.OrderedDate;";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, userId);
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("ID"));
+                order.setUserID(userId);
+                order.setOrderContent(rs.getString("OrderContent"));
+                order.setOrderedDate(rs.getDate("OrderedDate"));
+                order.setSolvedDate(rs.getDate("SolvedDate"));
+                order.setStatusID(rs.getInt("StatusID"));
+                order.setSolvedByName(rs.getString("StatusName"));
+                order.setHouseName(rs.getString("SuggestHouseName"));
+
+                orderList.add(order);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orderList;
+    }
+    
+    public List<Order> getAllOrders9() {
+        List<Order> orderList = new ArrayList<>();
+        String sql = "SELECT o.ID, \n"
+                + "       o.UserID, \n"
+                + "       o.OrderContent, \n"
+                + "       o.OrderedDate, \n"
+                + "       o.StatusID, \n"
+                + "       o.SolvedDate, \n"
+                + "       h.HouseName AS SuggestHouse \n"
+                + "FROM [fu_house_finder].[dbo].[Order] o \n"
+                + "JOIN [fu_house_finder].[dbo].[House] h ON o.HouseID = h.ID \n"
+                + "ORDER BY o.OrderedDate;";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("id"));
+                order.setUserID(rs.getInt("userID"));
+                order.setOrderContent(rs.getString("orderContent"));
+                order.setOrderedDate(rs.getDate("orderedDate"));
+                order.setSolvedDate(rs.getDate("solvedDate"));
+                order.setStatusID(rs.getInt("statusID"));
+                order.setHouseName(rs.getString("suggestHouseName"));
+
+                orderList.add(order);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orderList;
+    }
+    
+    
+
     public int getTotalOrders() {
         int totalOrders = 0;
         String sql = "SELECT COUNT(*) AS total FROM [dbo].[Order]";

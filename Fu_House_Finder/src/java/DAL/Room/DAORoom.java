@@ -284,50 +284,62 @@ public class DAORoom extends DAO {
 
     //Thêm phòng
     public int addRoom(Room room) {
-        int result = 0;
-        String sql = "INSERT INTO [dbo].[room]\n"
-                + "           ([roomNumber]\n"
-                + "           ,[floorNumber]\n"
-                + "           ,[houseId]\n"
-                + "           ,[description]\n"
-                + "           ,[image]\n"
-                + "           ,[price]\n"
-                + "           ,[area]\n"
-                + "           ,[liveInHouseOwner]\n"
-                + "           ,[fridge]\n"
-                + "           ,[bed]\n"
-                + "           ,[desk]\n"
-                + "           ,[kitchen]\n"
-                + "           ,[closedToilet]\n"
-                + "           ,[washingMachine]\n"
-                + "           ,[createdDate]\n"
-                + "           ,[lastModifiedDate]\n"
-                + "           ,[statusID]\n"
-                + "           ,[roomTypeID]\n"
-                + "           ,[deleted])\n"
-                + "     VALUES\n"
-                + "           (?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?"
-                + "           ,GETDATE()"
-                + "           ,GETDATE()"
-                + "           ,?"
-                + "           ,?"
-                + "           ,?)";
+    int result = 0;
 
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
+    // SQL để kiểm tra xem houseId có tồn tại không
+    String checkHouseSql = "SELECT COUNT(*) FROM [dbo].[house] WHERE houseId = ?";
+    
+    // SQL để thêm phòng
+    String insertRoomSql = "INSERT INTO [dbo].[room]\n"
+            + "           ([roomNumber]\n"
+            + "           ,[floorNumber]\n"
+            + "           ,[houseId]\n"
+            + "           ,[description]\n"
+            + "           ,[image]\n"
+            + "           ,[price]\n"
+            + "           ,[area]\n"
+            + "           ,[liveInHouseOwner]\n"
+            + "           ,[fridge]\n"
+            + "           ,[bed]\n"
+            + "           ,[desk]\n"
+            + "           ,[kitchen]\n"
+            + "           ,[closedToilet]\n"
+            + "           ,[washingMachine]\n"
+            + "           ,[createdDate]\n"
+            + "           ,[lastModifiedDate]\n"
+            + "           ,[statusID]\n"
+            + "           ,[roomTypeID]\n"
+            + "           ,[deleted])\n"
+            + "     VALUES\n"
+            + "           (?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?"
+            + "           ,GETDATE()"
+            + "           ,GETDATE()"
+            + "           ,?"
+            + "           ,?"
+            + "           ,?)";
+
+    try {
+        // Kiểm tra xem houseId có tồn tại không
+        PreparedStatement checkHouseStmt = connection.prepareStatement(checkHouseSql);
+        checkHouseStmt.setInt(1, room.getHouseId());
+        ResultSet rs = checkHouseStmt.executeQuery();
+
+        if (rs.next() && rs.getInt(1) > 0) {
+            // Nếu houseId tồn tại, thực hiện thêm phòng
+            PreparedStatement pre = connection.prepareStatement(insertRoomSql);
             pre.setInt(1, room.getRoomNumber());
             pre.setInt(2, room.getFloorNumber());
             pre.setInt(3, room.getHouseId());
@@ -345,11 +357,16 @@ public class DAORoom extends DAO {
             pre.setInt(15, room.getStatusId());
             pre.setInt(16, room.getRoomTypeId());
             pre.setBoolean(17, room.isDeleted());
+
             result = pre.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(DAORoom.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            System.out.println("House ID không tồn tại, không thể thêm phòng.");
         }
-        return result;
+    } catch (SQLException ex) {
+        Logger.getLogger(DAORoom.class.getName()).log(Level.SEVERE, null, ex);
     }
+    return result;
+}
+
 
 }
