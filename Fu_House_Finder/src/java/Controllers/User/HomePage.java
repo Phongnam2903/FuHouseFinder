@@ -56,6 +56,7 @@ public class HomePage extends HttpServlet {
         //lấy thông tin người dùng từ session
         User user = (User) request.getSession().getAttribute("user");
 
+        String search = request.getParameter("search");
         String minDistanceParam = request.getParameter("distanceFrom");
         String maxDistanceParam = request.getParameter("distanceTo");
         String minPriceParam = request.getParameter("priceMin");
@@ -104,11 +105,11 @@ public class HomePage extends HttpServlet {
 
         List<House> houseList = daoHouse.getHousesWithPricesAndStar(minDistance, maxDistance, minPrice, maxPrice, singleRoom, doubleRoom,
                 tripleRoom, quadRoom, miniApartment, fullHouse, fingerprintLock,
-                camera, parking, fridge, washingMachine, desk, kitchen, bed, privateToilet, minRating, pageNumber, pageSize);
+                camera, parking, fridge, washingMachine, desk, kitchen, bed, privateToilet, minRating, search, pageNumber, pageSize);
 
         int totalHouses = daoHouse.getCountHousesWithPricesAndStar(minDistance, maxDistance, minPrice, maxPrice, singleRoom,
                 doubleRoom, tripleRoom, quadRoom, miniApartment, fullHouse, fingerprintLock,
-                camera, parking, fridge, washingMachine, desk, kitchen, bed, privateToilet, minRating);
+                camera, parking, fridge, washingMachine, desk, kitchen, bed, privateToilet, minRating, search);
 
         int totalPages = (int) Math.ceil((double) totalHouses / pageSize);
 
@@ -178,7 +179,7 @@ public class HomePage extends HttpServlet {
             }
 
             //kiểm tra định dạng số điện thoại
-            if (!phoneNumber.matches("\\d{10,11}")) {
+            if (!phoneNumber.matches("\\d{10}")) {
                 errorMessage = "Phone number must contain between 10 adn 11 digits!";
                 hasError = true;
             }

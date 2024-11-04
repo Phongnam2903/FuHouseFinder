@@ -340,11 +340,11 @@
         </div>
 
         <!-- Floating Button -->
-        <a href="#" class="btn btn-danger btn-lg btn-danger-custom" data-bs-toggle="modal" data-bs-target="#orderModal">
+        <a href="#" class="btn btn-danger btn-lg btn-danger-custom" data-bs-toggle="modal" data-bs-target="#reportModal">
             <i class="fas fa-flag"></i>
         </a>
 
-        <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -450,6 +450,11 @@
                     modal.style.opacity = 0; // Đặt độ mờ về 0
                 }
 
+                function showOrderModal() {
+                    const orderModal = new bootstrap.Modal(document.getElementById('reportModal'));
+                    orderModal.show();
+                }
+
                 // Lấy tham số từ URL để hiển thị thông báo (nếu có)
                 window.onload = function () {
                     const urlParams = new URLSearchParams(window.location.search);
@@ -458,6 +463,9 @@
 
                     if (status && message) {
                         showModal(message, 7000);
+                        if (status === 'error') {
+                            showOrderModal(); // Keep the order modal open on error
+                        }
                     }
                 };
         </script>

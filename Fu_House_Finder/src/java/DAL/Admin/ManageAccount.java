@@ -2,6 +2,7 @@ package DAL.Admin;
 
 import DAL.DBContext;
 import Models.User;
+import Validations.DataEncryptionSHA256;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
@@ -254,6 +255,42 @@ public class ManageAccount extends DBContext {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
         return accounts;
+    }
+
+    public boolean checkOldPassword(int userId, String oldPassword) {
+        String sql = "SELECT Password FROM [User] WHERE ID = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userId);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                String storedHashedPassword = rs.getString("Password");
+
+                String hashedOldPassword = DataEncryptionSHA256.hashPassword(oldPassword);
+
+                return storedHashedPassword.equals(hashedOldPassword);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public int changePassword(User user) {
+        int updateCount = 0;
+        String sql = "UPDATE [dbo].[User] SET [Password] = ? WHERE [ID] = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            String maskedPassword = "*".repeat(user.getPassword().length());
+            statement.setString(1, maskedPassword);
+            statement.setInt(2, user.getId());
+            updateCount = statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return updateCount;
     }
 
     public static void main(String[] args) {

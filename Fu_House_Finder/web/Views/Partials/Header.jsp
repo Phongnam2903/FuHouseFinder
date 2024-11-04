@@ -22,8 +22,18 @@
                             Hello, <c:out value="${sessionScope.user.username}" />!
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Change Password</a></li>
+                            <li>
+                                <form action="profile" method="get" id="ProfileForm">
+                                    <input type="hidden" name="service" value="profile">
+                                    <button type="submit" class="dropdown-item" style="border: none; padding-left: 16px;">Profile</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="profile" method="get" id="changePasswordForm">
+                                    <input type="hidden" name="service" value="changePass">
+                                    <button type="submit" class="dropdown-item" style="border: none; padding-left: 16px;">Change Password</button>
+                                </form>
+                            </li>
                             <li><a class="dropdown-item" href="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
                         </ul>
                     </c:when>

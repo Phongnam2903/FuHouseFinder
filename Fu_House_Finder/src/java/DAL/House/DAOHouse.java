@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class DAOHouse extends DAO {
 
-    public List<House> getHousesWithPricesAndStar() {
+    public List<House> getHousesWithPricesAndStarStaff() {
         List<House> houses = new ArrayList<>();
         String sql = "SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, House.Description, "
                 + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice, AVG(CAST(Rates.Star AS FLOAT)) AS AvgStar "
@@ -52,7 +52,7 @@ public class DAOHouse extends DAO {
             Boolean singleRoom, Boolean doubleRoom, Boolean tripleRoom, Boolean quadRoom,
             Boolean miniApartment, Boolean fullHouse, Boolean fingerprintLock, Boolean camera,
             Boolean parking, Boolean fridge, Boolean washingMachine, Boolean desk, Boolean kitchen,
-            Boolean bed, Boolean privateToilet, Integer minRating, int pageNumber, int pageSize) {
+            Boolean bed, Boolean privateToilet, Integer minRating, String search, int pageNumber, int pageSize) {
         List<House> houses = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT House.ID, House.[Address], House.[Image], House.DistanceToSchool, House.HouseName, House.Description, "
                 + "MIN(Room.Price) AS MinPrice, MAX(Room.Price) AS MaxPrice, AVG(CAST(Rates.Star AS FLOAT)) AS AvgStar "
@@ -61,6 +61,11 @@ public class DAOHouse extends DAO {
                 + "LEFT JOIN Rates ON House.ID = Rates.HouseID "
                 + "WHERE 1=1 ");
 
+        //tìm kiếm theo tên nhà trọ
+        if (search != null && !search.isEmpty()) {
+            sql.append(" AND House.HouseName LIKE ? ");
+        }
+        
         //filter khoảng cách
         if (minDistance != null) {
             sql.append(" AND House.DistanceToSchool >= ? ");
@@ -153,8 +158,11 @@ public class DAOHouse extends DAO {
         try {
             PreparedStatement pre = connection.prepareStatement(sql.toString());
             int index = 1;
+            
+            if (search != null && !search.isEmpty()) {
+                pre.setString(index++, "%" + search + "%");
+            }
 
-            // Set parameters dynamically
             if (minDistance != null) {
                 pre.setFloat(index++, minDistance);
             }
@@ -183,7 +191,6 @@ public class DAOHouse extends DAO {
                 house.setAddress(rs.getString("Address"));
                 house.setDistanceToSchool(rs.getFloat("DistanceToSchool"));
 
-                // Set giá từ bảng Room
                 house.setMinPrice(rs.getDouble("MinPrice"));
                 house.setMaxPrice(rs.getDouble("MaxPrice"));
                 house.setAverageStar(rs.getDouble("AvgStar"));
@@ -202,7 +209,7 @@ public class DAOHouse extends DAO {
             Boolean singleRoom, Boolean doubleRoom, Boolean tripleRoom, Boolean quadRoom,
             Boolean miniApartment, Boolean fullHouse, Boolean fingerprintLock, Boolean camera,
             Boolean parking, Boolean fridge, Boolean washingMachine, Boolean desk, Boolean kitchen,
-            Boolean bed, Boolean privateToilet, Integer minRating) {
+            Boolean bed, Boolean privateToilet, Integer minRating, String search) {
 
         int count = 0;
         StringBuilder sql = new StringBuilder("SELECT COUNT(DISTINCT House.ID) AS Total FROM House "
@@ -210,8 +217,12 @@ public class DAOHouse extends DAO {
                 + "LEFT JOIN Rates ON House.ID = Rates.HouseID "
                 + "WHERE 1=1 ");
 
-        // Add conditions based on filters
-        // Distance filter
+        //tìm kiếm theo tên nhà
+        if (search != null && !search.isEmpty()) {
+            sql.append(" AND House.HouseName LIKE ? ");
+        }
+        
+        //filter khoảng cách
         if (minDistance != null) {
             sql.append(" AND House.DistanceToSchool >= ? ");
         }
@@ -219,7 +230,7 @@ public class DAOHouse extends DAO {
             sql.append(" AND House.DistanceToSchool <= ? ");
         }
 
-        // Price filter
+        //filter giá phòng
         if (minPrice != null) {
             sql.append(" AND Room.Price >= ? ");
         }
@@ -227,7 +238,7 @@ public class DAOHouse extends DAO {
             sql.append(" AND Room.Price <= ? ");
         }
 
-        // Room type filter
+        //filter kiểu phòng
         List<String> roomTypeConditions = new ArrayList<>();
         if (singleRoom) {
             roomTypeConditions.add("Room.RoomTypeID = 1");
@@ -254,7 +265,7 @@ public class DAOHouse extends DAO {
             sql.append(") ");
         }
 
-        // Utility filter
+        //filter tiện ích
         List<String> utilityConditions = new ArrayList<>();
         if (fridge != null && fridge) {
             utilityConditions.add("Room.Fridge = 1");
@@ -290,7 +301,7 @@ public class DAOHouse extends DAO {
             sql.append(") ");
         }
 
-        // Rating filter
+        //filter theo số sao
         if (minRating != null) {
             sql.append(" AND Rates.Star >= ? ");
         }
@@ -299,7 +310,6 @@ public class DAOHouse extends DAO {
             PreparedStatement pre = connection.prepareStatement(sql.toString());
             int index = 1;
 
-            // Set parameters dynamically
             if (minDistance != null) {
                 pre.setFloat(index++, minDistance);
             }
