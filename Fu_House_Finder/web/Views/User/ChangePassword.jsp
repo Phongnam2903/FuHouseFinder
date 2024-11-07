@@ -22,22 +22,38 @@
                 </c:if>
 
                 <form action="profile" method="post">
-                    <input type="hidden" name="service" value="changePass">
-                    <!-- Show error/success messages if any -->
-                    <div class="mb-3">
-                        <label for="oldPassword" class="form-label">Old Password</label>
-                        <input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
-                    </div>
+                    <c:choose>
+                        <c:when test="${user.roleID == 3 && user.password != null}">
+                            <input type="hidden" name="service" value="changePass">
+                            <!-- Show error/success messages if any -->
+                            <div class="mb-3">
+                                <label for="oldPassword" class="form-label">Old Password</label>
+                                <input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="newPassword" class="form-label">New Password</label>
-                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
-                    </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                    </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="hidden" name="service" value="updatePassword">
+                            <div class="mb-3">
+                                <label for="oldPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" required>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
 
                     <div class="d-flex justify-content-between">
                         <c:choose>
@@ -48,7 +64,15 @@
                                 <a href="ListHouse" class="btn btn-secondary">Back to Home</a>
                             </c:otherwise>
                         </c:choose>
-                        <button type="submit" class="btn btn-success">Change Password</button>
+
+                        <c:choose>
+                            <c:when test="${user.roleID == 3 && user.password != null}">
+                                <button type="submit" class="btn btn-success">Change Password</button>
+                            </c:when>
+                            <c:otherwise>
+                                <button type="submit" class="btn btn-success">Update Password</button>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </form>
             </div>

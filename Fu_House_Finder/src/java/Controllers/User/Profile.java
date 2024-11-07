@@ -71,10 +71,26 @@ public class Profile extends HttpServlet {
 
             int userId = user.getId();
 
+            String username = request.getParameter("username").trim();
             String email = request.getParameter("email").trim();
             String phone = request.getParameter("phone");
             String address = request.getParameter("address");
 
+            if (username.isEmpty() || email.isEmpty()) {
+                request.setAttribute("message", "Cant be blank and white spaces!");
+                request.setAttribute("alertClass", "alert-danger");
+                request.getRequestDispatcher("/Views/User/UserProfile.jsp").forward(request, response);
+                return;
+            }
+
+            if (!phone.matches("\\d{10}")) {
+                request.setAttribute("message", "Phone must be 10 digits!");
+                request.setAttribute("alertClass", "alert-danger");
+                request.getRequestDispatcher("/Views/User/UserProfile.jsp").forward(request, response);
+                return;
+            }
+
+            user.setUsername(username);
             user.setEmail(email);
             user.setPhone(phone);
             user.setAddress(address);
@@ -131,6 +147,45 @@ public class Profile extends HttpServlet {
             } else {
                 request.setAttribute("message", "Old password is incorrect!");
                 request.setAttribute("alertClass", "alert-danger");
+            }
+
+            request.getRequestDispatcher("/Views/User/ChangePassword.jsp").forward(request, response);
+        }
+
+        if (service.equals("updatePassword")) {
+            ManageAccount manageAccount = new ManageAccount();
+            User user = (User) request.getSession().getAttribute("user");
+
+            if (user == null) {
+                response.sendRedirect("login");
+                return;
+            }
+
+            String password = request.getParameter("password").trim();
+            String confirmpassword = request.getParameter("confirmpassword").trim();
+
+            if (password != null && password.equals(confirmpassword)) {
+                user.setPassword(password);
+
+                int result = manageAccount.changePassword(user);
+
+                if (result > 0) {
+                    request.setAttribute("message", "Update Password Successfully!");
+                    request.setAttribute("alertClass", "alert-success");
+                } else {
+                    request.setAttribute("message", "Fail To Update Password!");
+                    request.setAttribute("alertClass", "alert-danger");
+                }
+            } else {
+                request.setAttribute("message", "2 mat khau khong khop nhau!");
+                request.setAttribute("alertClass", "alert-danger");
+            }
+
+            if (password.isEmpty() || confirmpassword.isEmpty()) {
+                request.setAttribute("message", "mat khau khong duoc de dau cach");
+                request.setAttribute("alertClass", "alert-danger");
+                request.getRequestDispatcher("/Views/User/ChangePassword.jsp").forward(request, response);
+                return;
             }
 
             request.getRequestDispatcher("/Views/User/ChangePassword.jsp").forward(request, response);

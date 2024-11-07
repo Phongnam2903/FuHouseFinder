@@ -257,9 +257,9 @@ public class ManageAccount extends DBContext {
     public boolean checkOldPassword(int userId, String oldPassword) {
         String sql = "SELECT Password FROM [User] WHERE ID = ?";
         try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, userId);
-            ResultSet rs = statement.executeQuery();
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, userId);
+            ResultSet rs = pre.executeQuery();
 
             if (rs.next()) {
                 String storedHashedPassword = rs.getString("Password");
@@ -275,19 +275,20 @@ public class ManageAccount extends DBContext {
     }
 
     public int changePassword(User user) {
-        int updateCount = 0;
+        int n = 0;
         String sql = "UPDATE [dbo].[User] SET [Password] = ? WHERE [ID] = ?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            String maskedPassword = "*".repeat(user.getPassword().length());
-            statement.setString(1, maskedPassword);
-            statement.setInt(2, user.getId());
-            updateCount = statement.executeUpdate();
+            PreparedStatement pre = connection.prepareStatement(sql);
+            String hashPassword = DataEncryptionSHA256.hashPassword(user.getPassword());
+            pre.setString(1, hashPassword);
+            pre.setInt(2, user.getId());
+            
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ManageAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return updateCount;
+        return n;
     }
 
     public static void main(String[] args) {
