@@ -2,18 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/AddRoom.jsp</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controllers/User/OrderServlet.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/Room/DAORoom.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/nbproject/build-impl.xml</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/User/Order.jsp</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controller/Room/ListRoom.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controller/Room/AddRoom.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/DAL/DBContext.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Validations/DataEncryptionSHA256.java</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/UpdateRoom.jsp</file>
-            <file>file:/D:/FuHouseFinder/Fu_House_Finder/src/java/Controller/Room/UpdateRoom.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
