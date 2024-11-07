@@ -48,8 +48,6 @@ public class Order {
     public void setSuggestHouseName(String suggestHouseName) {
         this.suggestHouseName = suggestHouseName;
     }
-    
-    
 
     public String getSolvedByName() {
         return solvedByName;
@@ -165,7 +163,6 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" + "id=" + id + ", userID=" + userID + ", FullName=" + FullName + ", phoneNumber=" + phoneNumber + ", email=" + email + ", orderContent=" + orderContent + ", statusID=" + statusID + ", orderedDate=" + orderedDate + ", solvedDate=" + solvedDate + ", solvedBy=" + solvedBy + ", houseID=" + houseID + '}';
+        return "Order{" + "id=" + id + ", userID=" + userID + ", FullName=" + FullName + ", phoneNumber=" + phoneNumber + ", email=" + email + ", orderContent=" + orderContent + ", statusID=" + statusID + ", orderedDate=" + orderedDate + ", solvedDate=" + solvedDate + ", solvedBy=" + solvedBy + ", houseID=" + houseID + ", solvedByName=" + solvedByName + ", houseName=" + houseName + ", houseDescription=" + houseDescription + ", suggestHouseName=" + suggestHouseName + '}';
     }
-
 }

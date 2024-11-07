@@ -179,8 +179,8 @@ public class DAOOrder extends DAO {
         }
         return orderList;
     }
-    
-    public List<Order> getAllOrders9() {
+
+    public List<Order> getAllOrders9(int userID) {
         List<Order> orderList = new ArrayList<>();
         String sql = "SELECT o.ID, \n"
                 + "       o.UserID, \n"
@@ -188,14 +188,15 @@ public class DAOOrder extends DAO {
                 + "       o.OrderedDate, \n"
                 + "       o.StatusID, \n"
                 + "       o.SolvedDate, \n"
-                + "       h.HouseName AS SuggestHouse \n"
+                + "       h.HouseName  \n"
                 + "FROM [fu_house_finder].[dbo].[Order] o \n"
                 + "JOIN [fu_house_finder].[dbo].[House] h ON o.HouseID = h.ID \n"
+                + "Where o.UserID = ?\n"
                 + "ORDER BY o.OrderedDate;";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            
+            pre.setInt(1, userID);
             ResultSet rs = pre.executeQuery();
 
             while (rs.next()) {
@@ -206,7 +207,7 @@ public class DAOOrder extends DAO {
                 order.setOrderedDate(rs.getDate("orderedDate"));
                 order.setSolvedDate(rs.getDate("solvedDate"));
                 order.setStatusID(rs.getInt("statusID"));
-                order.setHouseName(rs.getString("suggestHouseName"));
+                order.setHouseName(rs.getString("HouseName"));
 
                 orderList.add(order);
             }
@@ -215,8 +216,6 @@ public class DAOOrder extends DAO {
         }
         return orderList;
     }
-    
-    
 
     public int getTotalOrders() {
         int totalOrders = 0;
@@ -393,5 +392,13 @@ public class DAOOrder extends DAO {
             Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
         return totalOrders;
+    }
+
+    public static void main(String[] args) {
+        DAOOrder oder = new DAOOrder();
+        List<Order> orderList = oder.getAllOrders9(81);
+        for (Order order : orderList) {
+            System.out.println(order);
+        }
     }
 }
