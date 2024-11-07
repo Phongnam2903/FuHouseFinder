@@ -28,12 +28,12 @@
                                     <button type="submit" class="dropdown-item" style="border: none; padding-left: 16px;">Profile</button>
                                 </form>
                             </li>
-                            <li>
-                                <form action="profile" method="get" id="changePasswordForm">
-                                    <input type="hidden" name="service" value="changePass">
-                                    <button type="submit" class="dropdown-item" style="border: none; padding-left: 16px;">Change Password</button>
-                                </form>
-                            </li>
+                                <li>
+                                    <form action="profile" method="get" id="changePasswordForm">
+                                        <input type="hidden" name="service" value="changePass">
+                                        <button type="submit" class="dropdown-item" style="border: none; padding-left: 16px;">Change Password</button>
+                                    </form>
+                                </li>
                             <li><a class="dropdown-item" href="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
                         </ul>
                     </c:when>

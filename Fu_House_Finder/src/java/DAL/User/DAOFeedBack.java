@@ -2,12 +2,16 @@ package DAL.User;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import DAL.DAO;
 import Models.Feedback;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -45,6 +49,19 @@ public class DAOFeedBack extends DAO {
     public int deleteFeedbackById(int id) {
         int n = 0;
         String sql = "DELETE FROM [dbo].[Feedback] WHERE ID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOFeedBack.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
+
+    public int updateFeedbackStatus(int id) {
+        int n = 0;
+        String sql = "UPDATE [fu_house_finder].[dbo].[Feedback] SET [Status] = 'Solved' WHERE [ID] = ? AND [Status] = 'Pending'";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, id);
@@ -106,9 +123,38 @@ public class DAOFeedBack extends DAO {
         return feedbacks;
     }
 
+    public List<Feedback> getAllFeedbackByRenterID(int renterId) {
+        List<Feedback> feedbacks = new ArrayList<>();
+        String sql = "SELECT f.*, u.Email AS RenterEmail "
+                + "FROM Feedback f "
+                + "JOIN [User] u ON f.renterId = u.id "
+                + "WHERE f.renterId = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, renterId);  // Set the renterId parameter
+            java.sql.ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setId(rs.getInt("ID"));
+                feedback.setTitle(rs.getString("Title"));
+                feedback.setDescription(rs.getString("Description"));
+                feedback.setStatus(rs.getString("Status"));
+                feedback.setSentTime(rs.getDate("SentTime"));
+                feedback.setCreatedDate(rs.getDate("CreatedDate"));
+                feedback.setRenterId(rs.getInt("RenterID"));
+                feedback.setRenterEmail(rs.getString("RenterEmail"));
+                feedbacks.add(feedback);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOFeedBack.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return feedbacks;
+    }
+
     public Feedback getFeedbackDetailsByID(int id) {
 
-        Feedback feedbacks = null;
+        Feedback feedback = null;
         String sql = "SELECT \n"
                 + "    f.[ID],\n"
                 + "    f.[Title],\n"
@@ -142,7 +188,7 @@ public class DAOFeedBack extends DAO {
             java.sql.ResultSet rs = pre.executeQuery();
 
             if (rs.next()) {
-                Feedback feedback = new Feedback();
+                feedback = new Feedback();
                 feedback.setId(rs.getInt("ID"));
                 feedback.setTitle(rs.getString("Title"));
                 feedback.setDescription(rs.getString("Description"));
@@ -154,12 +200,151 @@ public class DAOFeedBack extends DAO {
                 feedback.setRenterName(rs.getString("RenterName"));
                 feedback.setHouseName(rs.getString("HouseName"));
                 feedback.setRoomNumber(rs.getInt("RoomNumber"));
-                System.out.println(feedback);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOFeedBack.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return feedback;
+    }
+
+    public Feedback searchFeedbackByTitle(String title) {
+        Feedback feedback = null;
+        String sql = "SELECT f.*, u.Email AS RenterEmail\r\n"
+                + //
+                "                           FROM Feedback f \r\n"
+                + //
+                "                           JOIN [User] u ON f.renterId = u.id WHERE Title LIKE ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, "%" + title + "%");
+            java.sql.ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                feedback = new Feedback();
+                feedback.setId(rs.getInt("ID"));
+                feedback.setTitle(rs.getString("Title"));
+                feedback.setDescription(rs.getString("Description"));
+                feedback.setStatus(rs.getString("Status"));
+                feedback.setSentTime(rs.getDate("SentTime"));
+                feedback.setCreatedDate(rs.getDate("CreatedDate"));
+                feedback.setRenterId(rs.getInt("RenterID"));
+                feedback.setRenterEmail(rs.getString("RenterEmail"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOFeedBack.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return feedback;
+    }
+
+    public List<Feedback> searchFeedbackByRenterEmail(String email) {
+        List<Feedback> feedbacks = new ArrayList<>();
+        String sql = "SELECT f.*, u.Email AS RenterEmail "
+                + "FROM Feedback f "
+                + "JOIN [User] u ON f.renterId = u.id "
+                + "WHERE u.Email LIKE ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, "%" + email + "%"); // sử dụng LIKE để tìm kiếm
+            java.sql.ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setId(rs.getInt("ID"));
+                feedback.setTitle(rs.getString("Title"));
+                feedback.setDescription(rs.getString("Description"));
+                feedback.setStatus(rs.getString("Status"));
+                feedback.setSentTime(rs.getDate("SentTime"));
+                feedback.setCreatedDate(rs.getDate("CreatedDate"));
+                feedback.setRenterId(rs.getInt("RenterID"));
+                feedback.setRenterEmail(rs.getString("RenterEmail"));
+                feedbacks.add(feedback);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAOFeedBack.class.getName()).log(Level.SEVERE, null, ex);
         }
         return feedbacks;
+    }
+
+    public List<Feedback> getAllFeedbackByStatus(String status) {
+        List<Feedback> feedbacks = new ArrayList<>();
+        String sql = "SELECT f.*, u.Email AS RenterEmail "
+                + "FROM Feedback f "
+                + "JOIN [User] u ON f.renterId = u.id WHERE f.Status = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, status); // Đặt giá trị cho tham số status
+            java.sql.ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setId(rs.getInt("ID"));
+                feedback.setTitle(rs.getString("Title"));
+                feedback.setDescription(rs.getString("Description"));
+                feedback.setStatus(rs.getString("Status"));
+                feedback.setSentTime(rs.getDate("SentTime"));
+                feedback.setCreatedDate(rs.getDate("CreatedDate"));
+                feedback.setRenterId(rs.getInt("RenterID"));
+                feedback.setRenterEmail(rs.getString("RenterEmail"));
+                feedbacks.add(feedback);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOFeedBack.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return feedbacks;
+    }
+
+    public List<Feedback> getAllFeedbackBySentTime(Date sentTimestart, Date sentTimeend) {
+        List<Feedback> feedbacks = new ArrayList<>();
+        String sql = "SELECT f.*, u.Email AS RenterEmail "
+                + "FROM Feedback f "
+                + "JOIN [User] u ON f.renterId = u.id "
+                + "WHERE f.SentTime BETWEEN ? AND ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+
+            // Chuyển đổi java.util.Date thành java.sql.Date
+            pre.setDate(1, new java.sql.Date(sentTimestart.getTime()));
+            pre.setDate(2, new java.sql.Date(sentTimeend.getTime()));
+
+            java.sql.ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setId(rs.getInt("ID"));
+                feedback.setTitle(rs.getString("Title"));
+                feedback.setDescription(rs.getString("Description"));
+                feedback.setStatus(rs.getString("Status"));
+                feedback.setSentTime(rs.getDate("SentTime"));
+                feedback.setCreatedDate(rs.getDate("CreatedDate"));
+                feedback.setRenterId(rs.getInt("RenterID"));
+                feedback.setRenterEmail(rs.getString("RenterEmail"));
+                feedbacks.add(feedback);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOFeedBack.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return feedbacks;
+    }
+
+    public static void main(String[] args) {
+        // Initialize DAOFeedBack with a valid database connection
+        DAOFeedBack daoFeedBack = new DAOFeedBack();
+
+        // Retrieve all feedback
+        List<Feedback> feedbackList = daoFeedBack.getAllFeedback();
+
+        // Check if feedbackList is null or empty
+        if (feedbackList != null && !feedbackList.isEmpty()) {
+            for (Feedback feedback : feedbackList) {
+                System.out.println("Feedback ID: " + feedback.getId());
+                System.out.println("Title: " + feedback.getTitle());
+                System.out.println("Description: " + feedback.getDescription());
+                System.out.println("Status: " + feedback.getStatus());
+                System.out.println("Sent Time: " + feedback.getSentTime());
+                System.out.println("Created Date: " + feedback.getCreatedDate());
+                System.out.println("Renter ID: " + feedback.getRenterId());
+                System.out.println("Renter Email: " + feedback.getRenterEmail());
+                System.out.println("---------------");
+            }
+        } else {
+            System.out.println("No feedback records found.");
+        }
     }
 
 }

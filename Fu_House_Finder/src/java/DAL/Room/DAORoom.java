@@ -367,6 +367,13 @@ public class DAORoom extends DAO {
     }
     return result;
 }
+        public static void main(String[] args) {
+        DAORoom oder = new DAORoom();
+        List<Room> roomList = oder.getRooms();
+        for (Room order : roomList) {
+            System.out.println(order);
+        }
+    }
 
 
 }
