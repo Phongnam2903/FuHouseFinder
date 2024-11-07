@@ -29,7 +29,7 @@
                     <input type="hidden" name="service" value="updateProfile">
                     <div class="mb-3">
                         <label for="username" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="username" name="username" value="${user.username}" readonly>
+                        <input type="text" class="form-control" id="username" name="username" value="${user.username}">
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
