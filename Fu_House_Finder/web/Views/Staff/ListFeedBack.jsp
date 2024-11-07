@@ -39,15 +39,28 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </c:if>
+                    <c:if test="${param.successFBU eq 'true'}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Feedback has solved successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
                     <div id="searchForm">
                         <label for="title">Title:</label>
                         <input type="text" id="title" name="title"><br><br>
 
                         <label for="status">Status:</label>
-                        <input type="text" id="status" name="status"><br><br>
+                        <select id="status" name="status">
+                            <option value="AllStatus">All</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Solved">Solved</option>
+                        </select><br><br>
 
                         <label for="sentTime">Sent Time:</label>
-                        <input type="date" id="sentTime" name="sentTime"><br><br>
+                        From:
+                        <input type="date" id="sentTimeFrom" name="sentTimeFrom">
+                        To:
+                        <input type="date" id="sentTimeTo" name="sentTimeTo"><br><br>
 
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email"><br><br>
@@ -80,24 +93,29 @@
                                     <td>${feedbacks.renterEmail}</td>
                                     <td>
 
-                                        <a href="FeedBackdetails?id=${feedbacks.id}" class="btn btn-warning" style="margin-right: 20px;">
-                                            <i class="fas fa-list"></i>
-                                        </a>
-                                            
-                                        <a href="#" class="btn btn-facebook" style="margin-right: 20px;">
-                                            <i class="fas fa-comments"></i>
-                                        </a>
+                                        <div class="d-flex justify-content-center">
+                                            <a href="FeedBackdetails?id=${feedbacks.id}" class="btn btn-secondary" style="margin-right: 20px;">
+                                                <i class="fas fa-list"></i>
+                                            </a>
 
-                                        <c:if test="${feedbacks.status.equals('Solved')}">
-                                            <a href="javascript:void(0);" onclick="openDeleteModal(${feedbacks.id}, '${feedbacks.renterEmail}');" class="btn btn-danger">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </a>
-                                        </c:if>
-                                        <c:if test="${feedbacks.status.equals('Pending')}">
-                                            <a href="javascript:void(0);" onclick="cannotopenDeleteModal(${feedbacks.id}, '${feedbacks.renterEmail}');" class="btn btn-danger">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </a>
-                                        </c:if>
+                                            <c:if test="${feedbacks.status.equals('Pending')}">
+                                                <a href="javascript:void(0);" class="btn btn-warning" onclick="openUpdateStatusModal(${feedbacks.id});" style="margin-right: 20px;">
+                                                    <i class="fas fa-tools"></i>
+                                                </a>
+                                            </c:if>
+
+                                            <c:if test="${feedbacks.status.equals('Solved')}">
+                                                <a href="javascript:void(0);" onclick="openDeleteModal(${feedbacks.id}, '${feedbacks.renterEmail}');" class="btn btn-danger" style="margin-right: 20px;">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </c:if>
+
+                                            <c:if test="${feedbacks.status.equals('Pending')}">
+                                                <a href="javascript:void(0);" onclick="cannotopenDeleteModal(${feedbacks.id}, '${feedbacks.renterEmail}');" class="btn btn-danger">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </c:if>
+                                        </div>
 
 
 
@@ -157,9 +175,9 @@
                         function filter() {
                             const title = document.getElementById('title').value.toLowerCase();
                             const status = document.getElementById('status').value.toLowerCase();
-                            const createdDate = document.getElementById('createdDate').value;
+                            const sentTimeFrom = document.getElementById('sentTimeFrom').value;
+                            const sentTimeTo = document.getElementById('sentTimeTo').value;
                             const email = document.getElementById('email').value.toLowerCase();
-                            const sentTime = document.getElementById('sentTime').value;
 
                             const tableBody = document.getElementById('feedbackTableBody');
                             const rows = tableBody.getElementsByTagName('tr');
@@ -167,18 +185,24 @@
                             for (let i = 0; i < rows.length; i++) {
                                 const cells = rows[i].getElementsByTagName('td');
                                 const rowTitle = cells[0].textContent.toLowerCase();
-                                const rowStatus = cells[1].textContent.toLowerCase();
-                                const rowCreatedDate = cells[2].textContent;
-                                const rowEmail = cells[3].textContent.toLowerCase();
-                                const rowSentTime = cells[4].textContent;
+                                const rowStatus = cells[2].textContent.toLowerCase();
+                                const rowSentTime = cells[3].textContent;
+                                const rowEmail = cells[4].textContent.toLowerCase();
 
-                                const matches = (!title || rowTitle.includes(title)) &&
-                                        (!status || rowStatus === status) &&
-                                        (!createdDate || rowCreatedDate === createdDate) &&
-                                        (!email || rowEmail === email) &&
-                                        (!sentTime || rowSentTime === sentTime);
+                                // Check if each field matches the filter criteria
+                                const matchesTitle = !title || rowTitle.includes(title);
+                                const matchesStatus = status === 'allstatus' || rowStatus === status;
+
+                                // Date range check
+                                const sentDate = new Date(rowSentTime);
+                                const fromDate = sentTimeFrom ? new Date(sentTimeFrom) : null;
+                                const toDate = sentTimeTo ? new Date(sentTimeTo) : null;
+                                const matchesSentTime = (!fromDate || sentDate >= fromDate) && (!toDate || sentDate <= toDate);
+
+                                const matchesEmail = !email || rowEmail.includes(email);
 
                                 // Show or hide row based on matches
+                                const matches = matchesTitle && matchesStatus && matchesSentTime && matchesEmail;
                                 rows[i].style.display = matches ? '' : 'none';
                             }
                         }
@@ -199,6 +223,24 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                                     <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Yes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal for Updating Status -->
+                    <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateStatusModalLabel">Confirm Status Update</h5>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure that you have solved this feedback?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                    <a id="confirmUpdateStatusBtn" href="#" class="btn btn-success">Yes</a>
                                 </div>
                             </div>
                         </div>
@@ -240,6 +282,15 @@
                 document.getElementById('confirmDeleteBtn').href = 'ListFeedback?id=' + feedbackid;  // Link for deletion
                 var deleteModal = new bootstrap.Modal(document.getElementById('cannotdeleteModal'));
                 deleteModal.show();
+            }
+        </script>
+        <script>
+            // Function to open the Update Status modal
+            function openUpdateStatusModal(feedbackId) {
+                // Set the href to trigger the status update in your backend
+                document.getElementById('confirmUpdateStatusBtn').href = 'UpdateFeedbackStatus?id=' + feedbackId;  // Adjust to your actual URL for updating status
+                var updateStatusModal = new bootstrap.Modal(document.getElementById('updateStatusModal'));
+                updateStatusModal.show();
             }
         </script>
     </body>

@@ -88,11 +88,7 @@
                     <div id="houseIdError" class="error-message"></div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="houseId" class="form-label">House Name</label>
-                    <input type="text" class="form-control" id="floorNumber" name="floorNumber" required min="1" readonly="">
-                    <div id="floorNumberError" class="error-message"></div>
-                </div>
+                
 
                 <!--Chọn loại phòng-->
                 <div class="mb-3">

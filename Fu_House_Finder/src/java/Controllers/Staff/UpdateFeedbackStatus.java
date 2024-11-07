@@ -5,12 +5,10 @@
 
 package Controllers.Staff;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-
 import DAL.User.DAOFeedBack;
 import Models.Feedback;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,13 +17,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author My Lap
  */
-@WebServlet(name="ListFeedBack", urlPatterns={"/ListFeedback"})
-public class ListFeedBack extends HttpServlet {
+@WebServlet(name="UpdateFeedbackStatus", urlPatterns={"/UpdateFeedbackStatus"})
+public class UpdateFeedbackStatus extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +41,10 @@ public class ListFeedBack extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListFeedBack</title>");  
+            out.println("<title>Servlet UpdateFeedbackStatus</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListFeedBack at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet UpdateFeedbackStatus at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,8 +58,6 @@ public class ListFeedBack extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-        
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -72,7 +69,8 @@ public class ListFeedBack extends HttpServlet {
         String status = request.getParameter("status");
         String sentTimestartStr = request.getParameter("sentTimestart");
         String sentTimeendStr = request.getParameter("sentTimeend");
-
+        
+        
         // Initialize date formatter
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -107,10 +105,13 @@ public class ListFeedBack extends HttpServlet {
             
             // If a feedback ID is provided, attempt deletion
             if (feedbackId != null) {
-                daoFeedback.deleteFeedbackById(Integer.parseInt(feedbackId));
-                response.sendRedirect("ListFeedback?successFB=true");
+                daoFeedback.updateFeedbackStatus(Integer.parseInt(feedbackId));
+                response.sendRedirect("ListFeedback?successFBU=true");
                 return;
             }
+            
+            
+            
 
         } catch (ParseException e) {
             request.setAttribute("errorMessage", "Invalid date format. Please use 'yyyy-MM-dd'.");
@@ -119,7 +120,6 @@ public class ListFeedBack extends HttpServlet {
         // Forward to the JSP page with the list of feedback or errors if any
         request.getRequestDispatcher("/Views/Staff/ListFeedBack.jsp").forward(request, response);
     }
-
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -138,5 +138,9 @@ public class ListFeedBack extends HttpServlet {
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
 
 }

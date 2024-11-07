@@ -1,15 +1,16 @@
 package DAL.User;
 
-import DAL.DAO;
-import Models.Order;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import DAL.DAO;
+import Models.Order;
 
 /**
  *
@@ -46,6 +47,46 @@ public class DAOOrder extends DAO {
     }
 
     public List<Order> getAllOrders(int pageNumber, int pageSize) {
+        List<Order> orderList = new ArrayList<>();
+        String sql = "SELECT o.*, u.FullName AS SolvedByUser "
+                + "FROM [Order] o "
+                + "LEFT JOIN [User] u ON o.SolvedBy = u.ID "
+                + "ORDER BY o.ID DESC "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            // Tính toán giá trị offset dựa trên số trang và kích thước trang
+            int offset = (pageNumber - 1) * pageSize;
+
+            pre.setInt(1, offset);
+            pre.setInt(2, pageSize);
+
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                // Lấy thông tin từ bảng Order
+                order.setId(rs.getInt("ID"));
+                order.setUserID(rs.getInt("UserID"));
+                order.setFullName(rs.getString("FullName"));
+                order.setPhoneNumber(rs.getString("PhoneNumber"));
+                order.setEmail(rs.getString("Email"));
+                order.setOrderContent(rs.getString("OrderContent"));
+                order.setStatusID(rs.getInt("StatusID"));
+                order.setOrderedDate(rs.getDate("OrderedDate"));
+                order.setSolvedDate(rs.getDate("SolvedDate"));
+                order.setSolvedBy(rs.getInt("SolvedBy"));
+                order.setSolvedByName(rs.getString("SolvedByUser"));
+
+                orderList.add(order);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orderList;
+    }
+    
+    public List<Order> getAllOrdersByUserID(int userID,int pageNumber, int pageSize) {
         List<Order> orderList = new ArrayList<>();
         String sql = "SELECT o.*, u.FullName AS SolvedByUser "
                 + "FROM [Order] o "
@@ -181,41 +222,51 @@ public class DAOOrder extends DAO {
     }
 
     public List<Order> getAllOrders9(int userID) {
-        List<Order> orderList = new ArrayList<>();
-        String sql = "SELECT o.ID, \n"
-                + "       o.UserID, \n"
-                + "       o.OrderContent, \n"
-                + "       o.OrderedDate, \n"
-                + "       o.StatusID, \n"
-                + "       o.SolvedDate, \n"
-                + "       h.HouseName  \n"
-                + "FROM [fu_house_finder].[dbo].[Order] o \n"
-                + "JOIN [fu_house_finder].[dbo].[House] h ON o.HouseID = h.ID \n"
-                + "Where o.UserID = ?\n"
-                + "ORDER BY o.OrderedDate;";
+    List<Order> orderList = new ArrayList<>();
+    String sql = "SELECT o.ID, \n"
+            + "       o.UserID, \n"
+            + "       o.OrderContent, \n"
+            + "       o.OrderedDate, \n"
+            + "       o.StatusID, \n"
+            + "       o.SolvedDate, \n"
+            + "       h.ID AS HouseID, \n"  // Thêm HouseID vào truy vấn
+            + "       h.HouseName  \n"
+            + "FROM [fu_house_finder].[dbo].[Order] o \n"
+            + "JOIN [fu_house_finder].[dbo].[House] h ON o.HouseID = h.ID \n"
+            + "WHERE o.UserID = ?\n"
+            + "ORDER BY o.OrderedDate;";
 
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, userID);
-            ResultSet rs = pre.executeQuery();
+    try {
+        PreparedStatement pre = connection.prepareStatement(sql);
+        pre.setInt(1, userID);
+        System.out.println("Executing query for userID: " + userID);  // Debug statement
+        ResultSet rs = pre.executeQuery();
 
-            while (rs.next()) {
-                Order order = new Order();
-                order.setId(rs.getInt("id"));
-                order.setUserID(rs.getInt("userID"));
-                order.setOrderContent(rs.getString("orderContent"));
-                order.setOrderedDate(rs.getDate("orderedDate"));
-                order.setSolvedDate(rs.getDate("solvedDate"));
-                order.setStatusID(rs.getInt("statusID"));
-                order.setHouseName(rs.getString("HouseName"));
-
-                orderList.add(order);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+        if (!rs.isBeforeFirst()) {  // Check if result set is empty
+            System.out.println("No orders found for userID: " + userID);
         }
-        return orderList;
+
+        while (rs.next()) {
+            Order order = new Order();
+            order.setId(rs.getInt("ID"));  // Use exact column names as in the database
+            order.setUserID(rs.getInt("UserID"));
+            order.setOrderContent(rs.getString("OrderContent"));
+            order.setOrderedDate(rs.getDate("OrderedDate"));
+            order.setSolvedDate(rs.getDate("SolvedDate"));
+            order.setStatusID(rs.getInt("StatusID"));
+            order.setHouseID(rs.getInt("HouseID"));  // Gán HouseID cho đối tượng Order
+            order.setHouseName(rs.getString("HouseName"));
+
+            orderList.add(order);
+        }
+        rs.close();
+        pre.close();
+    } catch (SQLException ex) {
+        Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
     }
+    return orderList;
+}
+
 
     public int getTotalOrders() {
         int totalOrders = 0;
@@ -396,7 +447,7 @@ public class DAOOrder extends DAO {
 
     public static void main(String[] args) {
         DAOOrder oder = new DAOOrder();
-        List<Order> orderList = oder.getAllOrders9(81);
+        List<Order> orderList = oder.getAllOrders9(29);
         for (Order order : orderList) {
             System.out.println(order);
         }
