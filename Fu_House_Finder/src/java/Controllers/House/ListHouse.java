@@ -56,11 +56,15 @@ public class ListHouse extends HttpServlet {
         if (houseIdToDelete != null) {
             //phân tích houseId và xóa nhà tương ứng
             int houseId = Integer.parseInt(houseIdToDelete);
-            daoHouse.deleteHouseById(houseId);
+            int result = daoHouse.deleteHouseById(houseId);
 
-            //chuyển hướng về trang ListHouse sau khi xóa
-            response.sendRedirect(request.getContextPath() + "/ListHouse");
-            return;
+            if (result == 0) {
+                request.setAttribute("message", "The room of the house have people live in can't delete!");
+                request.setAttribute("alertClass", "alert-danger");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/ListHouse");
+                return;
+            }
         }
 
         //chi tiết nhà
