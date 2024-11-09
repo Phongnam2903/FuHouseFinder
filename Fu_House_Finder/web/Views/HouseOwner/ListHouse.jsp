@@ -55,6 +55,12 @@
                 </form>
             </div>
 
+            <c:if test="${not empty message}">
+                <div class="alert ${alertClass}">
+                    ${message}
+                </div>
+            </c:if>
+
             <c:if test="${not empty houseList}">
                 <table class="table">
                     <thead>
@@ -111,7 +117,7 @@
                                     <a href="javascript:void(0);" onclick="openDeleteModal(${house.id}, '${house.houseName}');" class="btn btn-danger">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
-                                        <a href="ListRoom?houseId=${house.id}" class="btn btn-outline-secondary" style="margin-left: 20px;">
+                                    <a href="ListRoom?houseId=${house.id}" class="btn btn-outline-secondary" style="margin-left: 20px;">
                                         <i class="fas fa-list"></i>
                                     </a>
                                 </td>

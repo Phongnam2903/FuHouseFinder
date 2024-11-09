@@ -65,7 +65,7 @@ public class DAOHouse extends DAO {
         if (search != null && !search.isEmpty()) {
             sql.append(" AND House.HouseName LIKE ? ");
         }
-        
+
         //filter khoảng cách
         if (minDistance != null) {
             sql.append(" AND House.DistanceToSchool >= ? ");
@@ -158,7 +158,7 @@ public class DAOHouse extends DAO {
         try {
             PreparedStatement pre = connection.prepareStatement(sql.toString());
             int index = 1;
-            
+
             if (search != null && !search.isEmpty()) {
                 pre.setString(index++, "%" + search + "%");
             }
@@ -221,7 +221,7 @@ public class DAOHouse extends DAO {
         if (search != null && !search.isEmpty()) {
             sql.append(" AND House.HouseName LIKE ? ");
         }
-        
+
         //filter khoảng cách
         if (minDistance != null) {
             sql.append(" AND House.DistanceToSchool >= ? ");
@@ -461,11 +461,26 @@ public class DAOHouse extends DAO {
 
     public int deleteHouseById(int houseId) {
         int result = 0;
-        String sql = "DELETE FROM [dbo].[House] WHERE ID = ?";
+        String sqlCheck = "SELECT COUNT(*) FROM [dbo].[Room] WHERE HouseID = ? AND StatusID != 1";
+        String sqlDeleteRoom = "DELETE FROM [dbo].[Room] WHERE HouseID = ?";
+        String sqlDeleteHouse = "DELETE FROM [dbo].[House] WHERE ID = ?";
         try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, houseId);
-            result = pre.executeUpdate();
+            PreparedStatement checkPre = connection.prepareStatement(sqlCheck);
+            checkPre.setInt(1, houseId);
+            ResultSet rs = checkPre.executeQuery();
+
+            if (rs.next() && rs.getInt(1) > 0) {
+                return 0;
+            }
+
+            // Nếu tất cả các phòng có status = 1, tiến hành xóa tất cả các phòng
+            PreparedStatement preDeleteRoom = connection.prepareStatement(sqlDeleteRoom);
+            preDeleteRoom.setInt(1, houseId);
+            preDeleteRoom.executeUpdate();
+
+            PreparedStatement preDeleteHouse = connection.prepareStatement(sqlDeleteHouse);
+            preDeleteHouse.setInt(1, houseId);
+            result = preDeleteHouse.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
         }
