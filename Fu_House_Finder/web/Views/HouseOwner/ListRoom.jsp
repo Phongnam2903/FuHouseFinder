@@ -88,7 +88,7 @@
                                 <td>${room.roomNumber}</td>
                                 <td>${room.floorNumber}</td>
                                 <td>${room.description}</td>
-                                <td><img src="${room.image}" width="50px" height="50ps" /></td>
+                                <td><img class="mb-3" src="${pageContext.request.contextPath}/images/${room.image}" alt="Image 1" width="50"></td>
                                 <td>${room.price} đ</td>
                                 <td>${room.area} m²</td>
                                 <td>

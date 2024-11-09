@@ -130,13 +130,14 @@ public class DAOLogin extends DBContext {
     }
 
     public User loginUser(String emailOrPhone, String password) {
-        String sql = "SELECT * FROM [User] WHERE Email = ? OR PhoneNumber = ?";
+        String sql = "SELECT * FROM [User] WHERE Email = ? OR PhoneNumber = ? AND Password = ?";
         User student = null;
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, emailOrPhone);
             statement.setString(2, emailOrPhone);
+            statement.setString(3, password);
             ResultSet rs = statement.executeQuery();
 
             // Kiểm tra nếu người dùng tồn tại với email đó

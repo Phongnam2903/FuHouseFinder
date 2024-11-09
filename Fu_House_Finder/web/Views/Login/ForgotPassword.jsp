@@ -38,7 +38,7 @@
                         <div class="mb-3">
                             <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                             <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" 
-                                   value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>">
+                                   value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>" required>
                             <div class="error-message">
                                 <%= request.getAttribute("errorEmailMessage") != null ? request.getAttribute("errorEmailMessage") : "" %>
                             </div>

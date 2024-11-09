@@ -177,12 +177,12 @@ public class Profile extends HttpServlet {
                     request.setAttribute("alertClass", "alert-danger");
                 }
             } else {
-                request.setAttribute("message", "2 mat khau khong khop nhau!");
+                request.setAttribute("message", "Password don't match!");
                 request.setAttribute("alertClass", "alert-danger");
             }
 
             if (password.isEmpty() || confirmpassword.isEmpty()) {
-                request.setAttribute("message", "mat khau khong duoc de dau cach");
+                request.setAttribute("message", "Password haven't space!");
                 request.setAttribute("alertClass", "alert-danger");
                 request.getRequestDispatcher("/Views/User/ChangePassword.jsp").forward(request, response);
                 return;

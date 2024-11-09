@@ -40,9 +40,15 @@
         <div class="container mt-4">    
             <h2 class="text-center mb-4">Add new room</h2>
             <div class="mb-4">
-                <a href="ListRoom" class="btn btn-secondary">Cancel</a>
+                <a href="ListRoom?houseId=${houseId}" class="btn btn-secondary">Cancel</a>
             </div>
-            <form action="AddRoom" method="post" onsubmit="return validateForm()">
+            <form action="AddRoom" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="houseName" class="form-label">House Name</label>
+                    <input type="text" class="form-control" id="houseName" name="houseName"  value="${houseName}" readonly>
+                    <input type="hidden" name="houseId" value="${houseId}">
+                    <div id="houseNameError" class="error-message"></div>
+                </div>
                 <!--Text điền tòa nhà-->
                 <div class="mb-3">
                     <label for="roomNumber" class="form-label">Room number</label>
@@ -78,17 +84,6 @@
                     <input type="number" class="form-control" id="area" name="area" required min="0" step="0.01">
                     <div id="areaError" class="error-message"></div>
                 </div>
-                <div class="mb-3">
-                    <label for="houseId" class="form-label" >House name</label>
-                    <select class="form-select" id="houseId" name="houseId" required>
-                        <c:forEach items="${houseList}" var="house">
-                            <option value="${house.id}">${house.houseName}</option>
-                        </c:forEach>
-                    </select>
-                    <div id="houseIdError" class="error-message"></div>
-                </div>
-
-                
 
                 <!--Chọn loại phòng-->
                 <div class="mb-3">

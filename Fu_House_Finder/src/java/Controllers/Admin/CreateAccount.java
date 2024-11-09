@@ -175,7 +175,7 @@ public class CreateAccount extends HttpServlet {
             ManageAccount manageAccount = new ManageAccount();
 
             if (manageAccount.checkUserPhoneNumber(phone)) {
-                errorPassword = "Phone number already exists! Please use a different phone number.";
+                errorPhoneNumber = "Phone number already exists! Please use a different phone number.";
             } else {
                 int rowsAffected = manageAccount.insertAccount(user); // Returns the number of affected rows
 

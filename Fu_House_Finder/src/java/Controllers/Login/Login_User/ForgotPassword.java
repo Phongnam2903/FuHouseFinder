@@ -97,7 +97,7 @@ public class ForgotPassword extends HttpServlet {
         } else {
             // If email is not found, set an error message
             message = "Account not exist!";
-            request.setAttribute("message", message); // Store message in request for displaying on JSP
+            request.setAttribute("errorEmailMessage", message); // Store message in request for displaying on JSP
 
             // Forward back to Forgot Password page with error message
             request.getRequestDispatcher("Views/Login/ForgotPassword.jsp").forward(request, response);

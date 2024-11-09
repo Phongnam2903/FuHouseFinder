@@ -13,6 +13,22 @@ import Models.Room;
 
 public class DAORoom extends DAO {
 
+    public String getHouseNameByHouseId(int houseId) {
+        String houseName = "";
+        String sql = "Select h.HouseName from House h INNER JOIN Room r ON h.id = r.houseId Where h.id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, houseId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                houseName = rs.getString("houseName");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAORoom.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return houseName;
+    }
+
     // Lấy danh sách phòng thuộc một nhà (houseId)
     public List<Room> getRoomsByHouseId(int houseId, int pageNumber, int pageSize) {
         List<Room> roomList = new ArrayList<>();
@@ -284,96 +300,82 @@ public class DAORoom extends DAO {
 
     //Thêm phòng
     public int addRoom(Room room) {
-    int result = 0;
+        int result = 0;
 
-    // SQL để kiểm tra xem houseId có tồn tại không
-    String checkHouseSql = "SELECT COUNT(*) FROM [dbo].[house] WHERE houseId = ?";
-    
-    // SQL để thêm phòng
-    String insertRoomSql = "INSERT INTO [dbo].[room]\n"
-            + "           ([roomNumber]\n"
-            + "           ,[floorNumber]\n"
-            + "           ,[houseId]\n"
-            + "           ,[description]\n"
-            + "           ,[image]\n"
-            + "           ,[price]\n"
-            + "           ,[area]\n"
-            + "           ,[liveInHouseOwner]\n"
-            + "           ,[fridge]\n"
-            + "           ,[bed]\n"
-            + "           ,[desk]\n"
-            + "           ,[kitchen]\n"
-            + "           ,[closedToilet]\n"
-            + "           ,[washingMachine]\n"
-            + "           ,[createdDate]\n"
-            + "           ,[lastModifiedDate]\n"
-            + "           ,[statusID]\n"
-            + "           ,[roomTypeID]\n"
-            + "           ,[deleted])\n"
-            + "     VALUES\n"
-            + "           (?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?"
-            + "           ,GETDATE()"
-            + "           ,GETDATE()"
-            + "           ,?"
-            + "           ,?"
-            + "           ,?)";
+        // SQL để kiểm tra xem houseId có tồn tại không
+        String checkHouseSql = "SELECT COUNT(*) FROM [dbo].[house] WHERE ID = ?";
 
-    try {
-        // Kiểm tra xem houseId có tồn tại không
-        PreparedStatement checkHouseStmt = connection.prepareStatement(checkHouseSql);
-        checkHouseStmt.setInt(1, room.getHouseId());
-        ResultSet rs = checkHouseStmt.executeQuery();
+        // SQL để thêm phòng
+        String insertRoomSql = """
+                               INSERT INTO [dbo].[Room]
+                                          ([RoomNumber]
+                                          ,[FloorNumber]
+                                          ,[HouseID]
+                                          ,[Description]
+                                          ,[Image]
+                                          ,[Price]
+                                          ,[Area]
+                                          ,[LiveInHouseOwner]
+                                          ,[Fridge]
+                                          ,[Bed]
+                                          ,[Desk]
+                                          ,[Kitchen]
+                                          ,[ClosedToilet]
+                                          ,[WashingMachine]
+                                          ,[CreatedDate]
+                                          ,[LastModifiedDate]
+                                          ,[StatusID]
+                                          ,[RoomTypeID]
+                                          ,[Deleted])
+                                    VALUES
+                                          (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), GETDATE(), ?, ?, ?)
+                               """;
 
-        if (rs.next() && rs.getInt(1) > 0) {
-            // Nếu houseId tồn tại, thực hiện thêm phòng
-            PreparedStatement pre = connection.prepareStatement(insertRoomSql);
-            pre.setInt(1, room.getRoomNumber());
-            pre.setInt(2, room.getFloorNumber());
-            pre.setInt(3, room.getHouseId());
-            pre.setString(4, room.getDescription());
-            pre.setString(5, room.getImage());
-            pre.setDouble(6, room.getPrice());
-            pre.setDouble(7, room.getArea());
-            pre.setBoolean(8, room.isLiveInHouseOwner());
-            pre.setBoolean(9, room.isFridge());
-            pre.setBoolean(10, room.isBed());
-            pre.setBoolean(11, room.isDesk());
-            pre.setBoolean(12, room.isKitchen());
-            pre.setBoolean(13, room.isClosedToilet());
-            pre.setBoolean(14, room.isWashingMachine());
-            pre.setInt(15, room.getStatusId());
-            pre.setInt(16, room.getRoomTypeId());
-            pre.setBoolean(17, room.isDeleted());
+        try {
+            // Kiểm tra xem houseId có tồn tại không
+            PreparedStatement checkHouseStmt = connection.prepareStatement(checkHouseSql);
+            checkHouseStmt.setInt(1, room.getHouseId());
+            ResultSet rs = checkHouseStmt.executeQuery();
 
-            result = pre.executeUpdate();
+            if (rs.next() && rs.getInt(1) > 0) {
+                // Nếu houseId tồn tại, thực hiện thêm phòng
+                PreparedStatement pre = connection.prepareStatement(insertRoomSql);
+                pre.setInt(1, room.getRoomNumber());
+                pre.setInt(2, room.getFloorNumber());
+                pre.setInt(3, room.getHouseId());
+                pre.setString(4, room.getDescription());
+                pre.setString(5, room.getImage());
+                pre.setDouble(6, room.getPrice());
+                pre.setDouble(7, room.getArea());
+                pre.setBoolean(8, room.isLiveInHouseOwner());
+                pre.setBoolean(9, room.isFridge());
+                pre.setBoolean(10, room.isBed());
+                pre.setBoolean(11, room.isDesk());
+                pre.setBoolean(12, room.isKitchen());
+                pre.setBoolean(13, room.isClosedToilet());
+                pre.setBoolean(14, room.isWashingMachine());
+                pre.setInt(15, room.getStatusId());
+                pre.setInt(16, room.getRoomTypeId());
+                pre.setBoolean(17, room.isDeleted());
+
+                result = pre.executeUpdate();
+            } else {
+                System.out.println("House ID không tồn tại, không thể thêm phòng.");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAORoom.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        DAORoom test = new DAORoom();
+        int houseId = 1;
+        String houseName = test.getHouseNameByHouseId(houseId);
+        if (houseName != null && !houseName.isEmpty()) {
+            System.out.println("House name for houseID " + houseId + " : " + houseName);
         } else {
-            System.out.println("House ID không tồn tại, không thể thêm phòng.");
-        }
-    } catch (SQLException ex) {
-        Logger.getLogger(DAORoom.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    return result;
-}
-        public static void main(String[] args) {
-        DAORoom oder = new DAORoom();
-        List<Room> roomList = oder.getRooms();
-        for (Room order : roomList) {
-            System.out.println(order);
+            System.out.println("No house found with houseId" + houseId);
         }
     }
-
-
 }

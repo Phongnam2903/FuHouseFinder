@@ -65,7 +65,7 @@ public class DAOHouse extends DAO {
         if (search != null && !search.isEmpty()) {
             sql.append(" AND House.HouseName LIKE ? ");
         }
-        
+
         //filter khoảng cách
         if (minDistance != null) {
             sql.append(" AND House.DistanceToSchool >= ? ");
@@ -158,7 +158,7 @@ public class DAOHouse extends DAO {
         try {
             PreparedStatement pre = connection.prepareStatement(sql.toString());
             int index = 1;
-            
+
             if (search != null && !search.isEmpty()) {
                 pre.setString(index++, "%" + search + "%");
             }
@@ -221,7 +221,7 @@ public class DAOHouse extends DAO {
         if (search != null && !search.isEmpty()) {
             sql.append(" AND House.HouseName LIKE ? ");
         }
-        
+
         //filter khoảng cách
         if (minDistance != null) {
             sql.append(" AND House.DistanceToSchool >= ? ");
@@ -544,6 +544,60 @@ public class DAOHouse extends DAO {
             Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        return houses;
+    }
+
+    public int getHousesCount(String searchName) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM [House] Where HouseName LIKE ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, "%" + searchName + "%");
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+
+    public List<House> getHousesByPage(int page, int pageSize, String searchName) {
+        List<House> houses = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[House] h WHERE h.HouseName LIKE ? "
+                + "ORDER BY h.ID "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, "%" + searchName + "%");
+            statement.setInt(2, (page - 1) * pageSize);
+            statement.setInt(3, pageSize);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                House house = new House();
+                house.setId(rs.getInt("id"));
+                house.setHouseName(rs.getString("houseName"));
+                house.setAddress(rs.getString("address"));
+                house.setDescription(rs.getString("description"));
+                house.setDistanceToSchool(rs.getFloat("distanceToSchool"));
+                house.setOwnerId(rs.getInt("ownerid"));
+                house.setPowerPrice(rs.getDouble("powerPrice"));
+                house.setWaterPrice(rs.getDouble("waterPrice"));
+                house.setOtherServicePrice(rs.getDouble("otherServicePrice"));
+                house.setFingerPrintLock(rs.getInt("fingerPrintLock") == 1);
+                house.setCamera(rs.getInt("camera") == 1);
+                house.setParking(rs.getInt("parking") == 1);
+                house.setCreatedDate(rs.getDate("createdDate"));
+                house.setLastModifiedDate(rs.getDate("lastModifiedDate"));
+                house.setImage(rs.getString("image"));
+
+                houses.add(house);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOHouse.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return houses;
     }
 

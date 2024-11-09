@@ -62,35 +62,39 @@
                             </div>
                         </div>
                     </div>
+                    <h2 class="text-center mt-4 mb-5">List House</h2>
 
+                    <!-- Filter Form -->
+                    <form method="GET" action="houseList" class="d-flex mb-3">
+                        <input class="me-2"
+                               type="text" name="search" placeholder="Search by Name" value="${searchName}">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
                     <table class="table table-bordered table-hover mt-4">
                         <thead class="table-danger">
                             <tr>
-                                <th scope="col">No.</th>
                                 <th scope="col">House Name</th>
                                 <th scope="col">Electricity Price (VND)</th>
                                 <th scope="col">Water Price (VND)</th>
-                                <th scope="col">Adults</th>
-                                <th scope="col">Children</th>
-                                <th scope="col">Vacant Rooms</th>
-                                <th scope="col">Facilities</th>
+                                <th scope="col">Other Service Price (VND)</th>
+                                <th scope="col">House Owner (KM)</th>
+                                <th scope="col">Distance To School</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Tam Le House</td>
-                                <td>3,700</td>
-                                <td>1,200</td>
-                                <td>1</td>
-                                <td>3</td>
-                                <td>5</td>
-                                <td>
-                                    <i class="fas fa-wifi"></i>
-                                    <i class="fas fa-tv"></i>
-                                </td>
-                            </tr>
-                            <!-- Add more rows as needed -->
+                            <c:forEach var="house" items="${listHouse}" varStatus="status">
+                                <tr>
+                                    <td>${house.houseName}</td>
+                                    <td>${house.powerPrice}</td>
+                                    <td>${house.waterPrice}</td>
+                                    <td>${house.otherServicePrice}</td>
+                                    <td>${house.distanceToSchool}</td>
+                                    <td>
+                                        <i class="fas fa-wifi"></i>
+                                        <i class="fas fa-tv"></i>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </div>

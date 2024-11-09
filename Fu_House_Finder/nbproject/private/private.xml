@@ -2,9 +2,22 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
         <group>
-            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Login/Login_User/ResetPassword.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/DAL/House/DAOHouse.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/HouseOwner/AddRoom.jsp</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controller/Room/AddRoom.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/Login/Login.jsp</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Models/House.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/DAL/Room/DAORoom.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/User/Profile.java</file>
+        </group>
+        <group>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Staff/HouseList.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/DAL/House/DAOHouse.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controller/Room/AddRoom.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/Staff/ListHouse.jsp</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Models/House.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/web/Views/Admin/AdminListAccount.jsp</file>
         </group>
     </open-files>
 </project-private>

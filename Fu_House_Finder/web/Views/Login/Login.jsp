@@ -67,7 +67,7 @@
                     </div>
 
                     <!-- Login button -->
-                    <button type="submit" name="submit" class="btn-login btn-lg mb-3 w-100 text-orange">Đăng nhập</button>
+                    <button type="submit" name="submit" class="btn-login btn-lg mb-3 w-100 text-orange">Login</button>
                 </form>
 
                 <!-- Social Login buttons -->
