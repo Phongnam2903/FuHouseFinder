@@ -48,7 +48,7 @@ public class DataEncryptionSHA256 {
     }
 
     public static void main(String[] args) {
-        String password = "daiduong";
+        String password = "Phong@17";
 
         // Băm mật khẩu
         String hashedPassword = DataEncryptionSHA256.hashPassword(password);

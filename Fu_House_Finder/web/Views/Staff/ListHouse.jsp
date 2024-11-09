@@ -31,73 +31,45 @@
                     </nav>
 
                     <div class="row mt-4 text-center">
-                        <div class="col-md-2">
-                            <div class="stats-box bg-light p-3 rounded">
-                                <h4>31</h4>
-                                <p>Total Houses</p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="stats-box bg-light p-3 rounded">
-                                <h4>73</h4>
-                                <p>Total Rooms</p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="stats-box bg-light p-3 rounded">
-                                <h4>63</h4>
-                                <p>Vacant Rooms</p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="stats-box bg-light p-3 rounded">
-                                <h4>155</h4>
-                                <p>Total Slots</p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="stats-box bg-light p-3 rounded">
-                                <h4>81</h4>
-                                <p>Vacant Slots</p>
-                            </div>
-                        </div>
-                    </div>
-                    <h2 class="text-center mt-4 mb-5">List House</h2>
 
-                    <!-- Filter Form -->
-                    <form method="GET" action="houseList" class="d-flex mb-3">
-                        <input class="me-2"
-                               type="text" name="search" placeholder="Search by Name" value="${searchName}">
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </form>
-                    <table class="table table-bordered table-hover mt-4">
-                        <thead class="table-danger">
-                            <tr>
-                                <th scope="col">House Name</th>
-                                <th scope="col">Electricity Price (VND)</th>
-                                <th scope="col">Water Price (VND)</th>
-                                <th scope="col">Other Service Price (VND)</th>
-                                <th scope="col">House Owner (KM)</th>
-                                <th scope="col">Distance To School</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="house" items="${listHouse}" varStatus="status">
+
+                        <h2 class="text-center mt-4 mb-5">List House</h2>
+
+                        <!-- Filter Form -->
+                        <form method="GET" action="houseList" class="d-flex mb-3">
+                            <input class="me-2"
+                                   type="text" name="search" placeholder="Search by Name" value="${searchName}">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </form>
+                        <table class="table table-bordered table-hover mt-4">
+                            <thead class="table-danger">
                                 <tr>
-                                    <td>${house.houseName}</td>
-                                    <td>${house.powerPrice}</td>
-                                    <td>${house.waterPrice}</td>
-                                    <td>${house.otherServicePrice}</td>
-                                    <td>${house.distanceToSchool}</td>
-                                    <td>
-                                        <i class="fas fa-wifi"></i>
-                                        <i class="fas fa-tv"></i>
-                                    </td>
+                                    <th scope="col">House Name</th>
+                                    <th scope="col">Electricity Price (VND)</th>
+                                    <th scope="col">Water Price (VND)</th>
+                                    <th scope="col">Other Service Price (VND)</th>
+                                    <th scope="col">House Owner (KM)</th>
+                                    <th scope="col">Distance To School</th>
                                 </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="house" items="${listHouse}" varStatus="status">
+                                    <tr>
+                                        <td>${house.houseName}</td>
+                                        <td>${house.powerPrice}</td>
+                                        <td>${house.waterPrice}</td>
+                                        <td>${house.otherServicePrice}</td>
+                                        <td>${house.distanceToSchool}</td>
+                                        <td>
+                                            <i class="fas fa-wifi"></i>
+                                            <i class="fas fa-tv"></i>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>    
             </div>
         </div>
 

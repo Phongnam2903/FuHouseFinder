@@ -37,7 +37,7 @@ public class UserProcess extends DAO {
             ps.setString(3, phone);
             ps.setString(4, DataEncryptionSHA256.hashPassword(password));
             ps.setString(5, "1");
-            ps.setString(6, "4");
+            ps.setString(6, "5");
             int rowsAffected = ps.executeUpdate(); // Sử dụng executeUpdate
             if (rowsAffected > 0) {
                 System.out.println("User registered successfully.");

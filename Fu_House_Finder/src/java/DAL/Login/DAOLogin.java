@@ -130,45 +130,24 @@ public class DAOLogin extends DBContext {
     }
 
     public User loginUser(String emailOrPhone, String password) {
-        String sql = "SELECT * FROM [User] WHERE Email = ? OR PhoneNumber = ? AND Password = ?";
+        String sql = "SELECT * FROM [User] WHERE (Email = ? OR PhoneNumber = ?) AND [Password] = ?";
         User student = null;
 
         try {
+            String hashedInputPassword = DataEncryptionSHA256.hashPassword(password);
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, emailOrPhone);
             statement.setString(2, emailOrPhone);
-            statement.setString(3, password);
+            statement.setString(3, hashedInputPassword);
             ResultSet rs = statement.executeQuery();
 
             // Kiểm tra nếu người dùng tồn tại với email đó
             if (rs.next()) {
                 // Nếu tồn tại, hãy lấy thông tin người dùng
-                student = new User(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getString(6),
-                        rs.getString(7),
-                        rs.getDate(8),
-                        rs.getString(9),
-                        rs.getInt(10),
-                        rs.getInt(11),
-                        rs.getString(12),
-                        rs.getDate(13),
-                        rs.getInt(14)
-                );
-                // băm mật khẩu vào
-                String hashedInputPassword = DataEncryptionSHA256.hashPassword(password);
-                // Nếu mật khẩu đã băm không trùng với dấu * thì xác nhận thành công
-                if (hashedInputPassword.equals(student.getPassword())) {
-                    // Đăng nhập thành công
-                    return student;
-                } else {
-                    // Mật khẩu không đúng
-                    student = null;
-                }
+                student = new User(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getDate(8), rs.getString(9), rs.getInt(10), rs.getInt(11), rs.getString(12),
+                        rs.getDate(13), rs.getInt(14));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAOLogin.class.getName()).log(Level.SEVERE, null, ex);
@@ -197,23 +176,24 @@ public class DAOLogin extends DBContext {
     }
 
     public static void main(String[] args) {
-        DAOLogin login = new DAOLogin();
-//        String testEmail = "phongnnhe176274@fpt.edu.vn";
-//        String testPassword = "admin";
-//        User acc = login.loginUser(testEmail, testPassword);
-//        if (acc != null) {
-//            System.out.println("Login successful");
-//            System.out.println("UserId: " + acc.getId());
-//            System.out.println("Role: " + acc.getRoleID());
-//        } else {
-//            System.out.println("Login Failed!");
-//        }
-//        String googleUserId = "114468492892790826988";
-//        String name = "Phong Nguyễn Nam";
-//        String email = "xuxumanh1@gmail.com";
+        DAOLogin daoLogin = new DAOLogin();
 
-        login.saveUserPassword("DangPH", "dang542003@gmail.com", "123", 1, 4);
+        // Sample input values for testing
+        String emailOrPhone = "phongnnhe176274@fpt.edu.vn";
+        String password = "9ca3ed7b95e123306120cd3c154045b2ed12b738628de727389aefd8a0f734f5";
 
-        System.out.println("Test saveUser completed.");
+        // Call the loginUser method
+        User user = daoLogin.loginUser(emailOrPhone, password);
+
+        // Check if the login was successful
+        if (user != null) {
+            System.out.println("Login successful! User details:");
+            System.out.println("ID: " + user.getId());
+            System.out.println("Name: " + user.getUsername());
+            System.out.println("Email: " + user.getEmail());
+            System.out.println("Phone Number: " + user.getPhone());
+        } else {
+            System.out.println("Login failed: Invalid email/phone or password.");
+        }
     }
 }

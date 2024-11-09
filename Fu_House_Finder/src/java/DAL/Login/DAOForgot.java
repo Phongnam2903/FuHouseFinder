@@ -59,19 +59,10 @@ public class DAOForgot extends DBContext {
     }
 
     public static void main(String[] args) {
-//        DAOForgot dao = new DAOForgot();
-//        String email = "phongnnhe176274@fpt.edu.vn";
-//
-//        User user = dao.checkUsersForChangePass(email);
-//        if (user != null) {
-//            System.out.println("User found:" + email);
-//        } else {
-//            System.out.println("User not found!");
-//        }
         DAOForgot dao = new DAOForgot();
 
         // Sample user ID and new password
-        int userId = 3; // replace with the actual user ID you want to update
+        int userId = 85; // replace with the actual user ID you want to update
         String newPassword = "123"; // replace with the new password
 
         // Call the changePassword method
