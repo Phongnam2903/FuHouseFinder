@@ -8,9 +8,11 @@
  */
 package Controllers.Staff;
 
+import DAL.Staff.DAOHouseOwner;
 import DAL.Staff.DAORoomForStaff;
 import Models.House;
 import Models.Room;
+import Models.User;
 import java.util.List;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -49,7 +51,6 @@ public class ListOfRoom extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         DAORoomForStaff roomDAO = new DAORoomForStaff(); // DAO for handling room data operations
 
         try {

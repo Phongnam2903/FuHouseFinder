@@ -56,15 +56,6 @@
                             <button class="btn btn-primary" type="submit">Search</button>
                         </form>
 
-
-                        <div class="filter-form">
-                            <label>Status:</label>
-                            <div>
-                                <input type="radio" id="statusAll" name="status" value="" checked > All
-                                <input type="radio" id="statusActive" name="status" value="Active" > Active
-                                <input type="radio" id="statusInactive" name="status" value="InActive"> InActive
-                            </div>
-                        </div>
                     </div>
                     <div class="container-fluid mt-4">
                         <table class="table table-bordered table-hover" id="accountTable">

@@ -46,7 +46,7 @@ public class ListHouseOwnerDetail extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOHouseOwner houseOwnerDAO = new DAOHouseOwner();
-
+        
         int landlordId;
         try {
             // Retrieve the "id" parameter from the request and parse it as an integer

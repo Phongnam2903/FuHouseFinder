@@ -30,7 +30,9 @@
                             <li class="breadcrumb-item"><a href="staffDashboard">Staff Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="listhouseowner">List of Landlords</a></li>
                             <li class="breadcrumb-item">
-                                <a href="${pageContext.request.contextPath}/listHouseOwnerDetail?id=${houseOwnerId}">List of Rental Houses</a>
+                                <form action="listHouseOwnerDetail" method="Post">
+                                    <a href="listHouseOwnerDetail?id=${landlordID}">List of Rental Houses</a>
+                                </form>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">List of Rooms</li>
                         </ol>

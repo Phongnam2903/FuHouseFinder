@@ -9,7 +9,9 @@
         </group>
         <group>
             <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Login/Login_User/ResetPassword.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Models/User.java</file>
             <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Controllers/Login/Login_User/Login_User.java</file>
+            <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/Validations/DataEncryptionSHA256.java</file>
             <file>file:/D:/SWP391/FuHouseFinder/Fu_House_Finder/src/java/DAL/Login/DAOLogin.java</file>
         </group>
     </open-files>
